@@ -3,9 +3,9 @@ export default (httpClient) => ({
     return httpClient.post("/login", data);
   },
   registerUser: (data) => {
-    return httpClient.post("/api/sign-up", data);
+    return httpClient.post("/sign-up", data);
   },
   userLogout: () => {
-    return httpClient.post("/api/logout");
+    return httpClient.post("/logout");
   },
 });

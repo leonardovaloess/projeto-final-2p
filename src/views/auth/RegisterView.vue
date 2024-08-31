@@ -61,7 +61,7 @@ watch(payload.value, () => {
   <div class="flex login-view-container">
     <div class="form-container">
       <div class="flex column form">
-        <h1 class="poppins-medium">Cadastre-se</h1>
+        <h1 class="poppins-medium">Cadastrar Instituição</h1>
 
         <div class="flex column input-container">
           <label>Nome de Usuário</label>

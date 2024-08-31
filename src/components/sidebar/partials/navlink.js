@@ -11,12 +11,12 @@ const links = ref([
       },
       {
         name: "Professores",
-        path: "/home/professors",
+        path: "/professors",
       },
 
       {
         name: "Alunos",
-        path: "/home/students",
+        path: "/students",
       },
     ],
   },

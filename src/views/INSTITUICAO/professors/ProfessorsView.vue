@@ -3,11 +3,8 @@ import { ref, onMounted, watch } from "vue";
 
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
-import CreateEditTaskModal from "./Partials/CreateEditTaskModal.vue";
+import CreateEditProfessorModal from "./Partials/CreateEditProfessorModal.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
-
-import TaskTab from "./Partials/TaskTab.vue";
-import { useTaskStore } from "@/stores/tasks";
 
 const loading = ref(false);
 loading.value = true;
@@ -16,12 +13,6 @@ loading.value = false;
 const openModal = ref(false);
 const createModal = ref(true);
 const search = ref(null);
-
-const taskStore = useTaskStore();
-const { getToDoTasks, getCompletedTasks } = taskStore;
-
-const toDotasks = ref([]);
-const completedTasks = ref([]);
 
 const refreshList = async (ev) => {
   if (ev == true) {
@@ -32,27 +23,12 @@ const refreshList = async (ev) => {
 
 const initFunction = async () => {
   loading.value = true;
-  toDotasks.value = await getToDoTasks();
-  completedTasks.value = await getCompletedTasks();
 
   loading.value = false;
 };
 
-const filterTasks = (tasks, query) => {
-  if (!query) return tasks;
-  return tasks.filter((task) =>
-    task.title.toLowerCase().includes(query.toLowerCase())
-  );
-};
-
 onMounted(async () => {
   await initFunction();
-});
-
-watch(search, async (newVal) => {
-  const query = newVal || "";
-  toDotasks.value = filterTasks(await getToDoTasks(), query);
-  completedTasks.value = filterTasks(await getCompletedTasks(), query);
 });
 </script>
 
@@ -67,32 +43,16 @@ watch(search, async (newVal) => {
       <div class="btns-container flex gap-1">
         <BaseButton
           class="base-button"
-          label="Adicionar Tarefa"
-          @click="openModal = !openModal"
-        />
-        <BaseButton
-          class="base-button"
-          label="Editar Tarefa"
-          @click="openModal = !openModal"
-        />
-        <BaseButton
-          class="base-button"
-          label="Excluir Tarefa"
+          label="Cadastrar Professor"
           @click="openModal = !openModal"
         />
       </div>
     </div>
-    <div class="tasks" v-if="!loading">
-      <TaskTab
-        :to-do-arr="toDotasks"
-        :completed-arr="completedTasks"
-        @update:refresh="refreshList"
-      />
-    </div>
+    <div class="tasks" v-if="!loading"></div>
     <div v-else class="loading">
       <BaseLoading class="loading-icon" />
     </div>
-    <CreateEditTaskModal
+    <CreateEditProfessorModal
       :open="openModal"
       @update:open="openModal = $event"
       @update:refresh="refreshList($event)"

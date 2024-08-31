@@ -2,14 +2,10 @@
 import BaseButton from "@/components/buttons/BaseButton.vue";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
-import { useTaskStore } from "@/stores/tasks";
 import { ref } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
-
-const taskStore = useTaskStore();
-const { createTask } = taskStore;
 
 const props = defineProps({
   open: Boolean,
@@ -31,7 +27,7 @@ const payload = ref({
 
 const handlePayload = async () => {
   if (payload.value.title) {
-    const task = await createTask(payload.value);
+    const task = [];
 
     if (task) {
       close.value = false;
