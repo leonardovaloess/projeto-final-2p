@@ -29,7 +29,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
-          path: "",
+          path: "/disciplines",
           name: "Disciplinas",
           component: () =>
             import("../views/INSTITUICAO/discipline/DisciplinesView.vue"),

@@ -5,11 +5,13 @@ import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
 import CreateEditStudentModal from "./Partials/CreateEditStudentModal.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
+import { useRoute } from "vue-router";
 
 const loading = ref(false);
 loading.value = true;
 loading.value = false;
 
+const route = useRoute();
 const openModal = ref(false);
 const createModal = ref(true);
 const search = ref(null);
@@ -38,7 +40,7 @@ onMounted(async () => {
       <BaseInput
         class="base-input"
         v-model="search"
-        placeholder="Buscar Tarefa..."
+        placeholder="Buscar Aluno..."
       />
       <div class="btns-container flex gap-1">
         <BaseButton

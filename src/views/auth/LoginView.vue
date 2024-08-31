@@ -28,7 +28,7 @@ const handleSubmit = async () => {
     localStorage.setItem("token-auth", login.token);
     localStorage.setItem("user_id", login.user_id);
 
-    router.push({ path: "/home" });
+    router.push({ path: "/disciplines" });
   } else {
     error.value = true;
 
@@ -157,7 +157,7 @@ watch(payload.value, () => {
       </div>
     </div>
     <div class="theme">
-      <img src="../../assets/img/png/login-img2.jpg" alt="theme" />
+      <img src="../../assets/img/png/faculdade-formatura.jpg" alt="theme" />
     </div>
   </div>
 </template>
@@ -194,10 +194,11 @@ h2 {
   width: 50%;
   background-color: black;
   img {
-    width: 100%;
+    width: 130%;
     opacity: 0.6;
     height: 100vh;
     object-fit: cover;
+    position: relative;
   }
 }
 .form-container {

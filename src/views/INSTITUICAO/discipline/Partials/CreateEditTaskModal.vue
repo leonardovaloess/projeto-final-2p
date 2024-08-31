@@ -73,7 +73,7 @@ const handleClose = () => {
   <BaseModal :open="close" :closeIcon="true">
     <template v-slot:header>
       <div class="header">
-        <h1>{{ props.create ? "Criar tarefa" : "Editar Tarefa" }}</h1>
+        <h1>{{ props.create ? "Cadastrar Matéria" : "Editar Matéria" }}</h1>
       </div>
     </template>
     <template v-slot:body>

@@ -38,7 +38,7 @@ onMounted(async () => {
       <BaseInput
         class="base-input"
         v-model="search"
-        placeholder="Buscar Tarefa..."
+        placeholder="Buscar Disciplina..."
       />
       <div class="btns-container flex gap-1">
         <BaseButton
