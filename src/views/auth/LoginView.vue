@@ -28,7 +28,7 @@ const handleSubmit = async () => {
     localStorage.setItem("token-auth", login.token);
     localStorage.setItem("user_id", login.user_id);
 
-    router.push({ path: "/disciplines" });
+    router.push({ path: "/course" });
   } else {
     error.value = true;
 

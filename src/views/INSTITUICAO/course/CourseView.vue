@@ -3,30 +3,9 @@ import { ref, onMounted, watch } from "vue";
 
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
-import CreateEditProfessorModal from "./Partials/CreateEditProfessorModal.vue";
+import CreateEditCourseModal from "./Partials/CreateEditCourseModal.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
-import BaseTable from "@/components/table/BaseTable.vue";
-import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 
-const fields = [
-  { key: "user_id", label: "id" },
-  { key: "user_name", label: "Nome" },
-];
-
-const rows = [
-  {
-    user_id: "1",
-    user_name: "leo",
-  },
-  {
-    user_id: "2",
-    user_name: "erick",
-  },
-  {
-    user_id: "3",
-    user_name: "guilherme",
-  },
-];
 const loading = ref(false);
 loading.value = true;
 loading.value = false;
@@ -48,10 +27,6 @@ const initFunction = async () => {
   loading.value = false;
 };
 
-const showId = (id) => {
-  alert(id)
-}
-
 onMounted(async () => {
   await initFunction();
 });
@@ -63,41 +38,21 @@ onMounted(async () => {
       <BaseInput
         class="base-input"
         v-model="search"
-        placeholder="Buscar Professor..."
+        placeholder="Buscar Curso..."
       />
       <div class="btns-container flex gap-1">
         <BaseButton
           class="base-button"
-          label="Cadastrar Professor"
+          label="Cadastrar Curso"
           @click="openModal = !openModal"
         />
       </div>
     </div>
-    <div class="tasks" v-if="!loading">
-      <BaseTable :fields="fields" :has-options="true">
-        <template v-slot:body>
-          <tr v-for="(row, index) in rows" :key="index">
-            <td v-for="field in fields" :key="field.key">
-              {{ row[field.key] }}
-            </td>
-            <td>
-              <BaseDropdown>
-                <template v-slot:["drop-options"]>
-                  <div class="options">
-                    <BaseButton class="drop-btn" label="Editar" @click="showId(row.user_id)"/>
-                    <BaseButton class="drop-btn" label="Excluir"/>
-                  </div>
-                </template>
-              </BaseDropdown>
-            </td>
-          </tr>
-        </template>
-      </BaseTable>
-    </div>
+    <div class="tasks" v-if="!loading"></div>
     <div v-else class="loading">
       <BaseLoading class="loading-icon" />
     </div>
-    <CreateEditProfessorModal
+    <CreateEditCourseModal
       :open="openModal"
       @update:open="openModal = $event"
       @update:refresh="refreshList($event)"
@@ -107,7 +62,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-
 .loading {
   height: 400px;
   width: 100%;

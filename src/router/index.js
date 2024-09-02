@@ -29,10 +29,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
-          path: "/disciplines",
+          path: "/course/:course_id/disciplines",
           name: "Disciplinas",
           component: () =>
             import("../views/INSTITUICAO/discipline/DisciplinesView.vue"),
+        },
+        {
+          path: "/course",
+          name: "Cursos",
+          component: () => import("../views/INSTITUICAO/course/CourseView.vue"),
         },
         {
           path: "/professors",

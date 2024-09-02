@@ -1,16 +1,36 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 const props = defineProps({
-  label: String,
-  customCLick: Function,
+  options: Array,
 });
 
 const openDrop = ref(false);
+const dropdownRef = ref(null); // Referência ao contêiner do dropdown
+const optionsRef = ref(null); // Referência à div de opções
+
+const handleClickOutside = (event) => {
+  if (
+    dropdownRef.value &&
+    !dropdownRef.value.contains(event.target) &&
+    optionsRef.value &&
+    !optionsRef.value.contains(event.target)
+  ) {
+    openDrop.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <template>
-  <div class="btn-container" tabindex="1">
+  <div class="btn-container" tabindex="1" ref="dropdownRef">
     <button @click="openDrop = !openDrop" tabindex="1">
       <svg
         width="20px"
@@ -42,9 +62,9 @@ const openDrop = ref(false);
         />
       </svg>
     </button>
-  </div>
-  <div class="options" v-if="openDrop">
-    <v-slot></v-slot>
+    <div class="options" v-if="openDrop" ref="optionsRef">
+      <slot name="drop-options" class="drop-options"></slot>
+    </div>
   </div>
 </template>
 
@@ -60,14 +80,15 @@ button {
 }
 
 .btn-container {
-  position: absolute;
+  position: relative;
 }
 
 .options {
-  background-color: #f4f4f4;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  background-color: #ffffff;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.336);
   z-index: 99999;
-  right: 0;
+  right: 20; /* Corrigido para px */
+  border-radius: 6px;
 }
 </style>
