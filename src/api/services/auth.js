@@ -3,7 +3,7 @@ export default (httpClient) => ({
     return httpClient.post("/login", data);
   },
   registerUser: (data) => {
-    return httpClient.post("/sign-up", data);
+    return httpClient.post("/register", data);
   },
   userLogout: () => {
     return httpClient.post("/logout");

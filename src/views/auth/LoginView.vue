@@ -17,7 +17,7 @@ const disabled = ref(true);
 
 const payload = ref({
   email: "",
-  password: "",
+  senha: "",
 });
 
 const handleSubmit = async () => {
@@ -26,7 +26,8 @@ const handleSubmit = async () => {
 
   if (login) {
     localStorage.setItem("token-auth", login.token);
-    localStorage.setItem("user_id", login.user_id);
+    localStorage.setItem("user_id", login.user.user_id);
+    localStorage.setItem("user_type_id", login.user.user_type_id);
 
     router.push({ path: "/course" });
   } else {
@@ -46,7 +47,7 @@ const handleKeyPress = (event) => {
 };
 
 watch(payload.value, () => {
-  if (payload.value.email.length > 1 && payload.value.password.length > 1) {
+  if (payload.value.email.length > 1 && payload.value.senha.length > 1) {
     disabled.value = false;
   } else {
     disabled.value = true;
@@ -74,7 +75,7 @@ watch(payload.value, () => {
         <div class="flex column input-container">
           <BasePasswordInput
             label="Senha"
-            v-model="payload.password"
+            v-model="payload.senha"
             @keydown="handleKeyPress"
           />
         </div>

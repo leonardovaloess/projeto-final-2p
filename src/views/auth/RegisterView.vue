@@ -14,13 +14,13 @@ const disabled = ref(true);
 
 const passwordConfirm = ref("");
 const payload = ref({
-  name: "",
+  nome: "",
   email: "",
-  password: "",
+  senha: "",
 });
 
 const handleSubmit = async () => {
-  if (payload.value.password !== passwordConfirm.value) {
+  if (payload.value.senha !== passwordConfirm.value) {
     error.value = true;
     setTimeout(() => {
       error.value = false;
@@ -33,7 +33,7 @@ const handleSubmit = async () => {
   if (login) {
     localStorage.setItem("token-auth", login.token);
     localStorage.setItem("user_id", login.user.id);
-
+    localStorage.setItem("user_type_id", login.user_type_id);
     router.push({ path: "/home" });
   } else {
     error.value = true;
@@ -47,8 +47,8 @@ const handleSubmit = async () => {
 watch(payload.value, () => {
   if (
     payload.value.email.length > 1 &&
-    payload.value.password.length > 1 &&
-    payload.value.name.length > 1
+    payload.value.senha.length > 1 &&
+    payload.value.nome.length > 1
   ) {
     disabled.value = false;
   } else {
@@ -64,12 +64,12 @@ watch(payload.value, () => {
         <h1 class="poppins-medium">Cadastrar Instituição</h1>
 
         <div class="flex column input-container">
-          <label>Nome de Usuário</label>
+          <label>Nome da Instituição</label>
           <input
             type="text"
             placeholder="Insira seu nome de usuário"
-            :value="payload.name"
-            @input="(ev) => (payload.name = ev.target.value)"
+            :value="payload.nome"
+            @input="(ev) => (payload.nome = ev.target.value)"
           />
         </div>
         <div class="flex column input-container">
@@ -86,8 +86,8 @@ watch(payload.value, () => {
           <input
             type="password"
             placeholder="Crie sua senha"
-            :value="payload.password"
-            @input="(ev) => (payload.password = ev.target.value)"
+            :value="payload.senha"
+            @input="(ev) => (payload.senha = ev.target.value)"
           />
         </div>
         <div class="flex column input-container">
