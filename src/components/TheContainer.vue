@@ -24,9 +24,6 @@ import BaseSidebar from "./sidebar/BaseSidebar.vue";
   position: relative;
 }
 
-.view {
-  z-index: 0;
-}
 .sidebar {
   position: fixed;
   z-index: 99;
@@ -37,7 +34,6 @@ import BaseSidebar from "./sidebar/BaseSidebar.vue";
   background-color: #d4d4d4;
   padding: 2rem;
   flex: 1;
-  z-index: 0;
 }
 
 .header {

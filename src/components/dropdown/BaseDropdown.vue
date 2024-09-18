@@ -55,9 +55,12 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .dropdown {
-  display: inline-block;
-  position: relative;
+  position: absolute;
+  z-index: 1;
   outline: none;
+  margin-top: -10px;
+  /*top: 50%;
+  transform: translateY(-50%);*/
 }
 
 .dropdown-btn {
