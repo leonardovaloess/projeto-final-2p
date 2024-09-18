@@ -7,26 +7,31 @@ import CreateEditProfessorModal from "./Partials/CreateEditProfessorModal.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
 import BaseTable from "@/components/table/BaseTable.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
+import { useUserStore } from "@/stores/users";
+
+const userStore = useUserStore();
+const { getProfessores } = userStore;
 
 const fields = [
-  { key: "user_id", label: "id" },
-  { key: "user_name", label: "Nome" },
+  { key: "id", label: "id" },
+  { key: "nome", label: "Nome" },
 ];
 
-const rows = [
+const optionsStatusCreation = [
   {
-    user_id: "1",
-    user_name: "leo",
+    id: 0,
+    name: "Editar",
+    icon: "edit",
   },
   {
-    user_id: "2",
-    user_name: "erick",
-  },
-  {
-    user_id: "3",
-    user_name: "guilherme",
+    id: 1,
+    name: "Excluir",
+    icon: "delete",
   },
 ];
+
+const tableData = ref([]);
+
 const loading = ref(false);
 loading.value = true;
 loading.value = false;
@@ -44,13 +49,9 @@ const refreshList = async (ev) => {
 
 const initFunction = async () => {
   loading.value = true;
-
+  tableData.value = await getProfessores();
   loading.value = false;
 };
-
-const showId = (id) => {
-  alert(id)
-}
 
 onMounted(async () => {
   await initFunction();
@@ -76,19 +77,15 @@ onMounted(async () => {
     <div class="tasks" v-if="!loading">
       <BaseTable :fields="fields" :has-options="true">
         <template v-slot:body>
-          <tr v-for="(row, index) in rows" :key="index">
+          <tr v-for="(row, index) in tableData" :key="index">
             <td v-for="field in fields" :key="field.key">
               {{ row[field.key] }}
             </td>
             <td>
-              <BaseDropdown>
-                <template v-slot:["drop-options"]>
-                  <div class="options">
-                    <BaseButton class="drop-btn" label="Editar" @click="showId(row.user_id)"/>
-                    <BaseButton class="drop-btn" label="Excluir"/>
-                  </div>
-                </template>
-              </BaseDropdown>
+              <BaseDropdown
+                :options="optionsStatusCreation"
+                @select="(option) => handleSelect(item, option.id)"
+              />
             </td>
           </tr>
         </template>
@@ -107,7 +104,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-
 .loading {
   height: 400px;
   width: 100%;

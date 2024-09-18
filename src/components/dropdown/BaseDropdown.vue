@@ -1,94 +1,125 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import DropdownIcons from "./DropdownIcons.vue";
+
+const emit = defineEmits(["select"]);
 
 const props = defineProps({
-  options: Array,
-});
-
-const openDrop = ref(false);
-const dropdownRef = ref(null); // Referência ao contêiner do dropdown
-const optionsRef = ref(null); // Referência à div de opções
-
-const handleClickOutside = (event) => {
-  if (
-    dropdownRef.value &&
-    !dropdownRef.value.contains(event.target) &&
-    optionsRef.value &&
-    !optionsRef.value.contains(event.target)
-  ) {
-    openDrop.value = false;
-  }
-};
-
-onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
+  options: {
+    type: Array,
+    required: true,
+  },
+  width: {
+    type: String,
+    default: "125px",
+  },
+  whiteIcon: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
 <template>
-  <div class="btn-container" tabindex="1" ref="dropdownRef">
-    <button @click="openDrop = !openDrop" tabindex="1">
+  <div class="dropdown" tabindex="1">
+    <i class="ghost" tabindex="1"></i>
+    <div class="dropdown-btn">
       <svg
-        width="20px"
-        height="20px"
-        viewBox="0 0 24 24"
+        class="pointer hover-fx"
+        width="18"
+        height="18"
+        viewBox="0 0 16 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
-          stroke="#000000"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
-          stroke="#000000"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
-          stroke="#000000"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          d="M8 2C7.45 2 7 2.45 7 3C7 3.55 7.45 4 8 4C8.55 4 9 3.55 9 3C9 2.45 8.55 2 8 2ZM8 12C7.45 12 7 12.45 7 13C7 13.55 7.45 14 8 14C8.55 14 9 13.55 9 13C9 12.45 8.55 12 8 12ZM8 7C7.45 7 7 7.45 7 8C7 8.55 7.45 9 8 9C8.55 9 9 8.55 9 8C9 7.45 8.55 7 8 7Z"
+          :fill="props.whiteIcon ? '#fff' : 'black'"
         />
       </svg>
-    </button>
-    <div class="options" v-if="openDrop" ref="optionsRef">
-      <slot name="drop-options" class="drop-options"></slot>
+      <div class="dropdown-content" :style="{ minWidth: props.width }">
+        <div
+          @click="emit('select', item)"
+          v-for="item of props.options"
+          :key="'dropdown-item-' + item.id"
+          class="option flex align-center"
+        >
+          <DropdownIcons :icon="item.icon" />
+          <div class="button-medium ml-3 pb-1 pr-2" style="margin-top: 5px">
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-button {
-  border-radius: 8px;
-  color: #fff;
-  transform: rotate(90deg);
-
-  &:hover {
-    transition: 0.3s;
-  }
+.dropdown {
+  display: inline-block;
+  position: relative;
+  outline: none;
 }
 
-.btn-container {
+.dropdown-btn {
+  color: var(--color-white);
+  cursor: pointer;
   position: relative;
 }
 
-.options {
-  position: fixed;
-  background-color: #ffffff;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.336);
-  z-index: 99999;
-  right: 20; /* Corrigido para px */
-  border-radius: 6px;
+.dropdown-content {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #fff;
+  box-shadow: 0px 3px 5px rgba(9, 30, 66, 0.2);
+  border-radius: 8px;
+  z-index: 9999;
+  display: none;
+  opacity: 0;
+  transition: 0.15s ease-out;
+}
+
+.button-medium {
+  margin-bottom: 6px;
+}
+
+.dropdown-content .option {
+  padding: 0.75rem 1rem;
+  transition: 0.15s ease-out;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
+.dropdown-content .option:hover {
+  background-color: rgb(225, 225, 225);
+}
+
+.dropdown:focus .dropdown-content {
+  outline: none;
+  transform: translateY(20px);
+  display: block;
+  opacity: 1;
+}
+
+.dropdown .ghost {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+  display: none;
+}
+
+.dropdown:focus .ghost {
+  display: inline-block;
+}
+
+.dropdown .ghost:focus .dropdown-content {
+  outline: none;
+  visibility: hidden;
+  opacity: 0;
 }
 </style>

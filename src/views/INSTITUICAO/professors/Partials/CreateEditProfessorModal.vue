@@ -6,6 +6,10 @@ import { ref } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
+import { useUserStore } from "@/stores/users";
+
+const userStore = useUserStore();
+const { createUser } = userStore;
 
 const props = defineProps({
   open: Boolean,
@@ -21,16 +25,17 @@ const success = ref(false);
 const close = ref(props.open);
 
 const payload = ref({
-  name: "",
+  nome: "",
   email: "",
-  password: "",
+  senha: "",
+  type_id: "2",
 });
 
 const handlePayload = async () => {
-  if (payload.value.title) {
-    const task = [];
+  if (payload.value.email) {
+    const professor = await createUser(payload.value);
 
-    if (task) {
+    if (professor) {
       close.value = false;
       emit("update:open", false);
       emit("update:refresh", true);
@@ -46,7 +51,7 @@ const handlePayload = async () => {
         error.value = false;
       }, 3000);
 
-      textError.value = "Não foi possivel criar a tarefa";
+      textError.value = "Não foi possivel cadastrar o Professor";
     }
   } else {
     error.value = true;
@@ -79,10 +84,13 @@ const handleClose = () => {
     </template>
     <template v-slot:body>
       <div class="body">
+        <pre>
+          {{ payload }}
+        </pre>
         <label>Nome do professor</label>
         <BaseInput
           class="input"
-          v-model="payload.name"
+          v-model="payload.nome"
           label="Nome do professor"
           placeholder="título:"
         />
@@ -96,7 +104,7 @@ const handleClose = () => {
         <label>Senha:</label>
         <BaseInput
           class="input"
-          v-model="payload.password"
+          v-model="payload.senha"
           label="Descrição (opcional)"
           placeholder="Email:"
         />
