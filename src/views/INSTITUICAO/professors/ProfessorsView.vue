@@ -4,17 +4,20 @@ import { ref, onMounted, watch } from "vue";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
 import CreateEditProfessorModal from "./Partials/CreateEditProfessorModal.vue";
+import DeleteProfessorModal from "./Partials/DeleteProfessorModal.vue";
+import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
 import BaseTable from "@/components/table/BaseTable.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import { useUserStore } from "@/stores/users";
-
+import formatDate from "@/utils/date";
 const userStore = useUserStore();
 const { getProfessores } = userStore;
 
 const fields = [
   { key: "id", label: "id" },
   { key: "nome", label: "Nome" },
+  { key: "created_at", label: "Cadastro em" },
 ];
 
 const optionsStatusCreation = [
@@ -25,24 +28,33 @@ const optionsStatusCreation = [
   },
   {
     id: 1,
-    name: "Excluir",
+    name: "Desvincular",
     icon: "delete",
   },
 ];
 
 const tableData = ref([]);
 
+const professorToEdit = ref(null);
+
 const loading = ref(false);
 loading.value = true;
 loading.value = false;
 
 const openModal = ref(false);
+const openDeleteModal = ref(false);
 const createModal = ref(true);
 const search = ref(null);
 
+const cancel = (ev) => {
+  openModal.value = ev;
+  openDeleteModal.value = ev;
+  professorToEdit.value = null;
+};
 const refreshList = async (ev) => {
   if (ev == true) {
     openModal.value = false;
+    openDeleteModal.value = false;
     await initFunction();
   }
 };
@@ -51,6 +63,20 @@ const initFunction = async () => {
   loading.value = true;
   tableData.value = await getProfessores();
   loading.value = false;
+};
+
+const handleSelect = (item, id) => {
+  console.log("item", item);
+  console.log("id", id);
+
+  if (id == 0) {
+    professorToEdit.value = item;
+    openModal.value = true;
+  }
+  if (id == 1) {
+    professorToEdit.value = item;
+    openDeleteModal.value = true;
+  }
 };
 
 onMounted(async () => {
@@ -75,30 +101,48 @@ onMounted(async () => {
       </div>
     </div>
     <div class="tasks" v-if="!loading">
-      <BaseTable :fields="fields" :has-options="true">
-        <template v-slot:body>
-          <tr v-for="(row, index) in tableData" :key="index">
-            <td v-for="field in fields" :key="field.key">
-              {{ row[field.key] }}
-            </td>
-            <td>
-              <BaseDropdown
-                :options="optionsStatusCreation"
-                @select="(option) => handleSelect(item, option.id)"
-              />
-            </td>
-          </tr>
-        </template>
-      </BaseTable>
+      <div v-if="tableData">
+        <BaseTable :fields="fields" :has-options="true">
+          <template v-slot:body>
+            <tr v-for="(row, index) in tableData" :key="index">
+              <td v-for="field in fields" :key="field.key">
+                {{
+                  field.key == "created_at"
+                    ? formatDate(row[field.key])
+                    : row[field.key]
+                }}
+              </td>
+              <td>
+                <BaseDropdown
+                  :options="optionsStatusCreation"
+                  @select="(option) => handleSelect(row, option.id)"
+                />
+              </td>
+            </tr>
+          </template>
+        </BaseTable>
+      </div>
+      <div v-else>
+        <BaseNoDataAlert
+          text="Nenhum Professor Cadastrado"
+          title="Nehnum Dado Encontrado!"
+        />
+      </div>
     </div>
     <div v-else class="loading">
       <BaseLoading class="loading-icon" />
     </div>
     <CreateEditProfessorModal
       :open="openModal"
-      @update:open="openModal = $event"
+      @update:open="cancel($event)"
       @update:refresh="refreshList($event)"
-      :create="createModal"
+      :info="professorToEdit"
+    />
+    <DeleteProfessorModal
+      :open="openDeleteModal"
+      @update:open="cancel($event)"
+      @update:refresh="refreshList($event)"
+      :info="professorToEdit"
     />
   </div>
 </template>

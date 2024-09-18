@@ -5,4 +5,10 @@ export default (httpClient) => ({
   getProfessors: () => {
     return httpClient.get("/professores");
   },
+  editProfessor: (id, payload) => {
+    return httpClient.put(`/professores/${id}`, payload);
+  },
+  deleteProfessor: (id) => {
+    return httpClient.delete(`/professores/${id}`);
+  },
 });
