@@ -112,7 +112,7 @@ onMounted(async () => {
                     : row[field.key]
                 }}
               </td>
-              <td>
+              <td class="col-options">
                 <BaseDropdown
                   :options="optionsStatusCreation"
                   @select="(option) => handleSelect(row, option.id)"

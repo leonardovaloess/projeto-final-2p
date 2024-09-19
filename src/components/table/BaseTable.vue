@@ -22,7 +22,11 @@ onMounted(() => {
       </thead>
       <tbody>
         <slot name="body"></slot>
-        <slot v-if="props.hasOptions == true" name="options"></slot>
+        <slot
+          v-if="props.hasOptions == true"
+          class="col-options"
+          name="options"
+        ></slot>
       </tbody>
     </table>
   </div>

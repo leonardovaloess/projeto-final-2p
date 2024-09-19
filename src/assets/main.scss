@@ -180,6 +180,8 @@ td {
   padding: 20px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  height: min-content;
+  unicode-bidi: isolate;
 }
 th {
   background-color: var(--secondary);
@@ -199,19 +201,7 @@ caption {
 }
 /* Define uma altura fixa para as linhas da tabela */
 
-.options {
-  width: 80px;
-  border-radius: 10px;
-  .drop-btn {
-    background: none;
-    color: black;
-    border-radius: 0;
-    text-align: left;
-    width: 100%;
-    &:hover {
-      background-color: rgba(128, 128, 128, 0.158);
-    }
-  }
+.col-options {
 }
 
 .m-0 {

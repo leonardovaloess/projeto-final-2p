@@ -36,17 +36,17 @@ const props = defineProps({
           :fill="props.whiteIcon ? '#fff' : 'black'"
         />
       </svg>
-      <div class="dropdown-content" :style="{ minWidth: props.width }">
-        <div
-          @click="emit('select', item)"
-          v-for="item of props.options"
-          :key="'dropdown-item-' + item.id"
-          class="option flex align-center"
-        >
-          <DropdownIcons :icon="item.icon" />
-          <div class="button-medium ml-3 pb-1 pr-2" style="margin-top: 5px">
-            {{ item.name }}
-          </div>
+    </div>
+    <div class="dropdown-content" :style="{ minWidth: props.width }">
+      <div
+        @click="emit('select', item)"
+        v-for="item of props.options"
+        :key="'dropdown-item-' + item.id"
+        class="option flex align-center"
+      >
+        <DropdownIcons :icon="item.icon" />
+        <div class="button-medium ml-3 pb-1 pr-2" style="margin-top: 5px">
+          {{ item.name }}
         </div>
       </div>
     </div>
@@ -55,28 +55,35 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .dropdown {
-  position: absolute;
-  z-index: 1;
+  position: relative;
+  z-index: 0;
   outline: none;
+  width: 100%;
   margin-top: -10px;
-  /*top: 50%;
-  transform: translateY(-50%);*/
+  left: 50;
 }
 
 .dropdown-btn {
   color: var(--color-white);
+  position: absolute;
   cursor: pointer;
-  position: relative;
+  width: 100%;
+  z-index: 0;
+}
+
+.ghost {
+  position: absolute;
+  right: 0;
 }
 
 .dropdown-content {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: -20px;
+  right: 100%;
   background-color: #fff;
   box-shadow: 0px 3px 5px rgba(9, 30, 66, 0.2);
   border-radius: 8px;
-  z-index: 9999;
+  z-index: 9999 !important;
   display: none;
   opacity: 0;
   transition: 0.15s ease-out;
@@ -90,6 +97,7 @@ const props = defineProps({
   padding: 0.75rem 1rem;
   transition: 0.15s ease-out;
   cursor: pointer;
+
   border-radius: inherit;
 }
 
@@ -111,8 +119,8 @@ const props = defineProps({
   bottom: 0;
   left: 0;
   opacity: 0;
+  z-index: -1;
   cursor: pointer;
-  z-index: 10;
   display: none;
 }
 
