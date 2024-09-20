@@ -33,7 +33,7 @@ const handleSubmit = async () => {
   if (login) {
     localStorage.setItem("token-auth", login.token);
     localStorage.setItem("user_type_id", login.type_id);
-    router.push({ path: "/home" });
+    router.push({ path: "/course" });
   } else {
     error.value = true;
 
