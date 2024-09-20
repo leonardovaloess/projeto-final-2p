@@ -2,11 +2,16 @@
 const props = defineProps({
   label: String,
   customCLick: Function,
+  disabled: Boolean,
 });
 </script>
 
 <template>
-  <button @click="props.customCLick">
+  <button
+    :class="props.disabled ? 'disabled' : ''"
+    :disabled="props.disabled"
+    @click="props.customCLick"
+  >
     {{ props.label }}
   </button>
 </template>
@@ -21,6 +26,14 @@ button {
   &:hover {
     background-color: var(--primary);
     transition: 0.3s;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+
+  &:hover {
+    background-color: var(--secondary);
   }
 }
 </style>
