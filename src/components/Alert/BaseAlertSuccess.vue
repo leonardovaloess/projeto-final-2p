@@ -20,7 +20,7 @@ const props = defineProps({
   transform: translateY(10px);
   animation: moveleft 0.15s linear forwards;
   background-color: rgb(34, 226, 34) !important;
-  position: absolute;
+  position: fixed;
   display: flex;
   color: #fff !important;
   align-items: center;

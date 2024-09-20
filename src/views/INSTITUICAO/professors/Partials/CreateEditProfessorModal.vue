@@ -178,7 +178,11 @@ const handleClose = () => {
     <template v-slot:footer>
       <div class="footer flex gap-1">
         <BaseButton class="cancel btn" label="Cancelar" @click="handleClose" />
-        <BaseButton class="btn" label="Salvar" @click="handlePayload" />
+        <BaseButton
+          class="btn"
+          :label="!props.info ? 'Cadastrar' : 'Salvar'"
+          @click="handlePayload"
+        />
       </div>
     </template>
   </BaseModal>

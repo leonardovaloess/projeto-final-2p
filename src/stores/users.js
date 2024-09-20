@@ -20,9 +20,27 @@ export const useUserStore = defineStore("user", () => {
     }
   }
 
+  async function getAlunos() {
+    try {
+      const response = await api.user.getAlunos();
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function editProfessor(id, payload) {
     try {
       const response = await api.user.editProfessor(id, payload);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function editAluno(id, payload) {
+    try {
+      const response = await api.user.editAluno(id, payload);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -37,11 +55,22 @@ export const useUserStore = defineStore("user", () => {
       console.log(error);
     }
   }
+  async function deleteAluno(id) {
+    try {
+      const response = await api.user.deleteAluno(id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return {
     createUser,
+    editAluno,
+    getAlunos,
     getProfessores,
     editProfessor,
     deleteProfessor,
+    deleteAluno,
   };
 });
