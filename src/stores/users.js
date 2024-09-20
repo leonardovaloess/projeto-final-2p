@@ -64,11 +64,21 @@ export const useUserStore = defineStore("user", () => {
     }
   }
 
+  async function getUserProfile() {
+    try {
+      const response = await api.user.getUserProfile();
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
     createUser,
     editAluno,
     getAlunos,
     getProfessores,
+    getUserProfile,
     editProfessor,
     deleteProfessor,
     deleteAluno,

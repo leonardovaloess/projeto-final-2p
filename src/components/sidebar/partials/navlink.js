@@ -1,6 +1,31 @@
 import { ref } from "vue";
+const links1 = ref([
+  {
+    label: "Usuário",
+    opened: true,
+    childreen: [
+      {
+        name: "Perfil",
+        path: "/profile",
+      },
+    ],
+  },
+]);
 
-const links = ref([
+const links2 = ref([
+  {
+    label: "Usuário",
+    opened: true,
+    childreen: [
+      {
+        name: "Perfil",
+        path: "/profile",
+      },
+    ],
+  },
+]);
+
+const links3 = ref([
   {
     label: "Home",
     opened: true,
@@ -26,10 +51,10 @@ const links = ref([
     childreen: [
       {
         name: "Perfil",
-        path: "/home/profile",
+        path: "/profile",
       },
     ],
   },
 ]);
 
-export default links;
+export { links1, links2, links3 };

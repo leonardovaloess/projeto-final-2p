@@ -22,4 +22,8 @@ export default (httpClient) => ({
   deleteAluno: (id) => {
     return httpClient.delete(`/alunos/${id}`);
   },
+
+  getUserProfile: (id) => {
+    return httpClient.get(`/perfil`);
+  },
 });

@@ -1,11 +1,13 @@
 <script setup>
 import { useRouter } from "vue-router";
-import links from "./partials/navlink";
+import { links1, links2, links3 } from "./partials/navlink";
 import { useAuthStore } from "@/stores/auth";
+import { ref } from "vue";
 
 const authStore = useAuthStore();
 const { userLogout } = authStore;
 const router = useRouter();
+const user_type_id = localStorage.getItem("user_type_id");
 
 const handleLogout = async () => {
   await userLogout();
@@ -23,8 +25,67 @@ const handleLogout = async () => {
       <div class="nav-header">
         <img src="../../assets/img/png/logo-2.png" alt="" />
       </div>
+
       <div class="nav-links">
-        <div v-for="item in links">
+        <div v-if="user_type_id == 1" v-for="item in links1">
+          <div class="flex gap-05 align-center">
+            <p>{{ item.label }}</p>
+            <svg
+              width="20px"
+              height="20px"
+              class="close-link-icon"
+              :class="{ rotate: !item.opened }"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              @click="item.opened = !item.opened"
+            >
+              <path
+                d="M18.2929 15.2893C18.6834 14.8988 18.6834 14.2656 18.2929 13.8751L13.4007 8.98766C12.6195 8.20726 11.3537 8.20757 10.5729 8.98835L5.68257 13.8787C5.29205 14.2692 5.29205 14.9024 5.68257 15.2929C6.0731 15.6835 6.70626 15.6835 7.09679 15.2929L11.2824 11.1073C11.673 10.7168 12.3061 10.7168 12.6966 11.1073L16.8787 15.2893C17.2692 15.6798 17.9024 15.6798 18.2929 15.2893Z"
+                fill="#0F0F0F"
+              />
+            </svg>
+          </div>
+          <div v-for="link in item.childreen" v-if="item.opened" class="links">
+            <RouterLink
+              class="link"
+              :to="link.path"
+              activeClass="active-link"
+              >{{ link.name }}</RouterLink
+            >
+          </div>
+        </div>
+
+        <div v-if="user_type_id == 2" v-for="item in links2">
+          <div class="flex gap-05 align-center">
+            <p>{{ item.label }}</p>
+            <svg
+              width="20px"
+              height="20px"
+              class="close-link-icon"
+              :class="{ rotate: !item.opened }"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              @click="item.opened = !item.opened"
+            >
+              <path
+                d="M18.2929 15.2893C18.6834 14.8988 18.6834 14.2656 18.2929 13.8751L13.4007 8.98766C12.6195 8.20726 11.3537 8.20757 10.5729 8.98835L5.68257 13.8787C5.29205 14.2692 5.29205 14.9024 5.68257 15.2929C6.0731 15.6835 6.70626 15.6835 7.09679 15.2929L11.2824 11.1073C11.673 10.7168 12.3061 10.7168 12.6966 11.1073L16.8787 15.2893C17.2692 15.6798 17.9024 15.6798 18.2929 15.2893Z"
+                fill="#0F0F0F"
+              />
+            </svg>
+          </div>
+          <div v-for="link in item.childreen" v-if="item.opened" class="links">
+            <RouterLink
+              class="link"
+              :to="link.path"
+              activeClass="active-link"
+              >{{ link.name }}</RouterLink
+            >
+          </div>
+        </div>
+
+        <div v-if="user_type_id == 3" v-for="item in links3">
           <div class="flex gap-05 align-center">
             <p>{{ item.label }}</p>
             <svg

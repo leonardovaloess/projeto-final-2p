@@ -1,11 +1,12 @@
 <script setup>
 import { useRouter } from "vue-router";
-import links from "./partials/navlink";
+import { links1, links2, links3 } from "./partials/navlink";
 import { useAuthStore } from "@/stores/auth";
 
 const authStore = useAuthStore();
 const { userLogout } = authStore;
 const router = useRouter();
+const user_type_id = localStorage.getItem("user_type_id");
 
 const handleLogout = async () => {
   await userLogout();
@@ -23,8 +24,10 @@ const handleLogout = async () => {
       <div class="nav-header">
         <img src="../../assets/img/png/logo-2.png" alt="" />
       </div>
+      <pre>{{ user }}</pre>
       <div class="nav-links">
-        <div v-for="item in links">
+        {{ user }}
+        <div v-if="user_type_id == 3" v-for="item in links3">
           <div class="flex gap-05 align-center">
             <p>{{ item.label }}</p>
             <svg
