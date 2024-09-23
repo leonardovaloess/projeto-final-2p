@@ -32,7 +32,7 @@ onMounted(async () => {
   <div class="page-background">
     <div
       v-if="!loading && user"
-      class="container flex flex-column justify-center"
+      class="container pt-5 flex flex-column justify-center"
     >
       <h2 class="mb-3">Dados do Usuário:</h2>
       <div class="input-container mb-3">
@@ -52,14 +52,14 @@ onMounted(async () => {
         />
       </div>
 
-      <h2 class="mb-3">Nova Senha</h2>
+      <h2 class="mb-3">Nova Senha:</h2>
       <div class="input-container mb-3">
         <label>Senha Atual:</label>
-        <BaseInput class="input" />
+        <BaseInput class="input" type="password" />
       </div>
       <div class="input-container">
         <label for="email">Nova Senha:</label>
-        <BaseInput class="input" />
+        <BaseInput class="input" type="password" />
       </div>
       <div class="btns flex mt-4 gap-05">
         <BaseButton label="Mudar Senha" />
@@ -94,6 +94,19 @@ onMounted(async () => {
 
 .container {
   width: 600px;
+
+  @media (max-width: 1100px) {
+    width: 100%;
+    padding: 10px;
+
+    h2 {
+      font-size: 27px;
+    }
+
+    .input {
+      padding: 8px;
+    }
+  }
 }
 
 .input {

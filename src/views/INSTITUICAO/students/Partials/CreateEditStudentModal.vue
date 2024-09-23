@@ -53,7 +53,7 @@ const handlePayload = async () => {
           nome: "",
           email: "",
           senha: "",
-          type_id: "2",
+          type_id: "1",
         };
       } else {
         error.value = true;

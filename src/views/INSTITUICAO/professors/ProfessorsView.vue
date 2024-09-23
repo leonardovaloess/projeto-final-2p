@@ -212,6 +212,7 @@ onMounted(async () => {
 
 .tasks {
   width: 100%;
+
   gap: 40px;
   margin-top: 50px;
   justify-content: space-around;
