@@ -6,13 +6,24 @@ import BaseButton from "@/components/buttons/BaseButton.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
 import { useUserStore } from "@/stores/users";
 
+import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
+import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
+
 const userStore = useUserStore();
-const { getUserProfile } = userStore;
+const { getUserProfile, editUserProfile } = userStore;
+
+const textSuccess = ref(null);
+const textError = ref(null);
 
 const loading = ref(false);
 const user = ref(null);
 
+const actualPassword = ref("");
+const newPassword = ref("");
+
 const disableEdit = ref(true);
+const success = ref(false);
+const error = ref(false);
 
 const initFunction = async () => {
   loading.value = true;
@@ -20,9 +31,36 @@ const initFunction = async () => {
   loading.value = false;
 };
 
-const testDisabled = () => {
-  alert("click");
+const handleUpdate = async () => {
+  const response = await editUserProfile(user.value);
+  console.log(response);
+  if (response) {
+    console.log("to aqui carai");
+
+    textSuccess.value = "Credenciais Editadas com Sucesso!!";
+    success.value = true;
+
+    setTimeout(() => {
+      success.value = false;
+    }, 3000);
+  } else {
+    textError.value = "Falha ao Editar Credenciais!!!";
+    error.value = true;
+
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
+  }
 };
+
+const handleUpdatePassword = async () => {
+  const payload = { ...user.value, senha: newPassword.value };
+
+  const response = await editUserProfile(payload);
+  if (response) {
+  }
+};
+
 onMounted(async () => {
   await initFunction();
 });
@@ -43,32 +81,47 @@ onMounted(async () => {
         <label for="email">Email:</label>
         <BaseInput class="input" v-model="user.email" :disabled="disableEdit" />
       </div>
-      <div class="btns flex mt-4 gap-05">
-        <BaseButton class="edit-btn" label="Editar" />
+      <div class="btns flex mt-4 mb-4 gap-05">
+        <BaseButton
+          class="edit-btn"
+          label="Editar"
+          @click="disableEdit = !disableEdit"
+        />
         <BaseButton
           label="Salvar"
           :disabled="disableEdit"
-          @click="testDisabled"
+          @click="handleUpdate"
         />
       </div>
 
       <h2 class="mb-3">Nova Senha:</h2>
       <div class="input-container mb-3">
-        <label>Senha Atual:</label>
-        <BaseInput class="input" type="password" />
+        <label>Senha Atual:</label> {{ actualPassword }}
+        <BaseInput class="input" type="password" v-model="actualPassword" />
       </div>
       <div class="input-container">
-        <label for="email">Nova Senha:</label>
-        <BaseInput class="input" type="password" />
+        <label for="email">Nova Senha:</label> {{ newPassword }}
+        <BaseInput class="input" type="password" v-model="newPassword" />
       </div>
       <div class="btns flex mt-4 gap-05">
-        <BaseButton label="Mudar Senha" />
+        <BaseButton label="Mudar Senha" @click="handleUpdatePassword" />
       </div>
     </div>
 
     <div v-else class="loading">
       <BaseLoading class="loading-icon" />
     </div>
+
+    <BaseAlertError
+      v-if="error"
+      class="alert"
+      :text="textError"
+    ></BaseAlertError>
+    <BaseAlertSuccess
+      v-if="success"
+      class="alert"
+      :text="textSuccess"
+    ></BaseAlertSuccess>
   </div>
 </template>
 

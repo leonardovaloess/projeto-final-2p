@@ -73,6 +73,15 @@ export const useUserStore = defineStore("user", () => {
     }
   }
 
+  async function editUserProfile(payload) {
+    try {
+      const response = await api.user.editUserProfile(payload);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
     createUser,
     editAluno,
@@ -82,5 +91,6 @@ export const useUserStore = defineStore("user", () => {
     editProfessor,
     deleteProfessor,
     deleteAluno,
+    editUserProfile,
   };
 });

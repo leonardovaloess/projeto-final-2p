@@ -187,20 +187,6 @@ onMounted(async () => {
       }
     }
   }
-  @media (max-width: 630px) {
-    gap: 1rem;
-    padding: 15px;
-
-    .btns-container {
-      gap: 0.5rem;
-    }
-
-    .base-button {
-      font-size: 10px;
-
-      width: 10%;
-    }
-  }
 
   @media (max-width: 400px) {
     .btns-container {
@@ -228,8 +214,5 @@ onMounted(async () => {
   align-items: center;
   padding: 2rem;
   height: 100%;
-  @media (max-width: 630px) {
-    padding: 1rem;
-  }
 }
 </style>

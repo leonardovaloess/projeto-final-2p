@@ -26,4 +26,16 @@ export default (httpClient) => ({
   getUserProfile: (id) => {
     return httpClient.get(`/perfil`);
   },
+
+  editUserProfile: (payload) => {
+    return httpClient.put(`/updatePerfil`, payload); //nome email senha
+  },
+
+  editUserPassword: (payload) => {
+    return httpClient.put(`/updateUserSenha`, payload); //nome email senha
+  },
+
+  forgotPassword: (payload) => {
+    return httpClient.put(`/forgotPassword`, payload); // email senha
+  },
 });
