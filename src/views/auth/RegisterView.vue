@@ -11,7 +11,7 @@ const { registerUser } = authStore;
 const error = ref(false);
 const router = useRouter();
 const disabled = ref(true);
-
+const textError = ref(null);
 const passwordConfirm = ref("");
 const payload = ref({
   nome: "",
@@ -21,6 +21,7 @@ const payload = ref({
 
 const handleSubmit = async () => {
   if (payload.value.senha !== passwordConfirm.value) {
+    textError.value = "As Senhas não Coincidem!!";
     error.value = true;
     setTimeout(() => {
       error.value = false;
@@ -35,6 +36,7 @@ const handleSubmit = async () => {
     localStorage.setItem("user_type_id", login.user.type_id);
     router.push({ path: "/course" });
   } else {
+    textError.value = "instituição já Existente!";
     error.value = true;
 
     setTimeout(() => {
@@ -115,11 +117,7 @@ watch(payload.value, () => {
           alt=""
           style="width: 110px; margin: auto"
         />
-        <BaseAlertError
-          v-if="error"
-          type="error"
-          text="As senhas não coincidem"
-        />
+        <BaseAlertError v-if="error" type="error" :text="textError" />
       </div>
     </div>
     <div class="theme">
