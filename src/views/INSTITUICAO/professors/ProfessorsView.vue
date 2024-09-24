@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
@@ -34,9 +34,14 @@ const optionsStatusCreation = [
 ];
 
 const tableData = ref([]);
+const filteredData = computed(() => {
+  if (!search.value) return tableData.value;
+  return tableData.value.filter((item) =>
+    item.nome.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
 
 const professorToEdit = ref(null);
-
 const loading = ref(false);
 loading.value = true;
 loading.value = false;
@@ -44,13 +49,14 @@ loading.value = false;
 const openModal = ref(false);
 const openDeleteModal = ref(false);
 const createModal = ref(true);
-const search = ref(null);
+const search = ref("");
 
 const cancel = (ev) => {
   openModal.value = ev;
   openDeleteModal.value = ev;
   professorToEdit.value = null;
 };
+
 const refreshList = async (ev) => {
   if (ev == true) {
     openModal.value = false;
@@ -104,7 +110,7 @@ onMounted(async () => {
       <div v-if="tableData">
         <BaseTable :fields="fields" :has-options="true">
           <template v-slot:body>
-            <tr v-for="(row, index) in tableData" :key="index">
+            <tr v-for="(row, index) in filteredData" :key="index">
               <td v-for="field in fields" :key="field.key">
                 {{
                   field.key == "created_at"
@@ -125,7 +131,7 @@ onMounted(async () => {
       <div v-else>
         <BaseNoDataAlert
           text="Nenhum Professor Cadastrado"
-          title="Nehnum Dado Encontrado!"
+          title="Nenhum Dado Encontrado!"
         />
       </div>
     </div>

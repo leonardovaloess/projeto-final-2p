@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
@@ -34,6 +34,12 @@ const optionsStatusCreation = [
 ];
 
 const tableData = ref([]);
+const filteredData = computed(() => {
+  if (!search.value) return tableData.value;
+  return tableData.value.filter((item) =>
+    item.nome.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
 
 const alunoToEdit = ref(null);
 
@@ -103,7 +109,7 @@ onMounted(async () => {
       <div v-if="tableData">
         <BaseTable :fields="fields" :has-options="true">
           <template v-slot:body>
-            <tr v-for="(row, index) in tableData" :key="index">
+            <tr v-for="(row, index) in filteredData" :key="index">
               <td v-for="field in fields" :key="field.key">
                 {{
                   field.key == "created_at"

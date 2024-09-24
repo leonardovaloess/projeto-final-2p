@@ -2,6 +2,7 @@ import axios from "axios";
 
 import AuthService from "./services/auth";
 import usersService from "./services/users";
+import CourseService from "./services/course";
 
 const baseURL = import.meta.env.VITE_URL_API;
 
@@ -63,4 +64,5 @@ httpClient.interceptors.response.use(
 export default {
   auth: AuthService(httpClient),
   user: usersService(httpClient),
+  course: CourseService(httpClient),
 };

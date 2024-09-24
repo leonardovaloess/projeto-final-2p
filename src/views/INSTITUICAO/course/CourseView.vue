@@ -1,30 +1,88 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
 import CreateEditCourseModal from "./Partials/CreateEditCourseModal.vue";
+import DeleteCourseModal from "./Partials/DeleteCourseModal.vue";
+import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
+import BaseTable from "@/components/table/BaseTable.vue";
+import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
+import { useCourseStore } from "@/stores/course";
+import formatDate from "@/utils/date";
+const courseStore = useCourseStore();
+const { getCourses } = courseStore;
 
+const fields = [
+  { key: "id", label: "id" },
+  { key: "nome", label: "Nome" },
+  { key: "created_at", label: "Cadastro em" },
+];
+
+const optionsStatusCreation = [
+  {
+    id: 0,
+    name: "Editar",
+    icon: "edit",
+  },
+  {
+    id: 1,
+    name: "Desvincular",
+    icon: "delete",
+  },
+];
+
+const tableData = ref([]);
+const filteredData = computed(() => {
+  if (!search.value) return tableData.value;
+  return tableData.value.filter((item) =>
+    item.nome.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
+
+const courseToEdit = ref(null);
 const loading = ref(false);
 loading.value = true;
 loading.value = false;
 
 const openModal = ref(false);
+const openDeleteModal = ref(false);
 const createModal = ref(true);
-const search = ref(null);
+const search = ref("");
+
+const cancel = (ev) => {
+  openModal.value = ev;
+  openDeleteModal.value = ev;
+  courseToEdit.value = null;
+};
 
 const refreshList = async (ev) => {
   if (ev == true) {
     openModal.value = false;
+    openDeleteModal.value = false;
     await initFunction();
   }
 };
 
 const initFunction = async () => {
   loading.value = true;
-
+  tableData.value = await getCourses();
   loading.value = false;
+};
+
+const handleSelect = (item, id) => {
+  console.log("item", item);
+  console.log("id", id);
+
+  if (id == 0) {
+    courseToEdit.value = item;
+    openModal.value = true;
+  }
+  if (id == 1) {
+    courseToEdit.value = item;
+    openDeleteModal.value = true;
+  }
 };
 
 onMounted(async () => {
@@ -38,7 +96,7 @@ onMounted(async () => {
       <BaseInput
         class="base-input"
         v-model="search"
-        placeholder="Buscar Curso..."
+        placeholder="Buscar Professor..."
       />
       <div class="btns-container flex gap-1">
         <BaseButton
@@ -48,15 +106,49 @@ onMounted(async () => {
         />
       </div>
     </div>
-    <div class="tasks" v-if="!loading"></div>
+    <div class="tasks" v-if="!loading">
+      <div v-if="filteredData">
+        <BaseTable :fields="fields" :has-options="true">
+          <template v-slot:body>
+            <tr v-for="(row, index) in filteredData" :key="index">
+              <td v-for="field in fields" :key="field.key">
+                {{
+                  field.key == "created_at"
+                    ? formatDate(row[field.key])
+                    : row[field.key]
+                }}
+              </td>
+              <td class="col-options">
+                <BaseDropdown
+                  :options="optionsStatusCreation"
+                  @select="(option) => handleSelect(row, option.id)"
+                />
+              </td>
+            </tr>
+          </template>
+        </BaseTable>
+      </div>
+      <div v-else>
+        <BaseNoDataAlert
+          text="Nenhum Curso Cadastrado"
+          title="Nenhum Dado Encontrado!"
+        />
+      </div>
+    </div>
     <div v-else class="loading">
       <BaseLoading class="loading-icon" />
     </div>
     <CreateEditCourseModal
       :open="openModal"
-      @update:open="openModal = $event"
+      @update:open="cancel($event)"
       @update:refresh="refreshList($event)"
-      :create="createModal"
+      :info="courseToEdit"
+    />
+    <DeleteCourseModal
+      :open="openDeleteModal"
+      @update:open="cancel($event)"
+      @update:refresh="refreshList($event)"
+      :info="courseToEdit"
     />
   </div>
 </template>
@@ -101,20 +193,6 @@ onMounted(async () => {
       }
     }
   }
-  @media (max-width: 630px) {
-    gap: 1rem;
-    padding: 15px;
-
-    .btns-container {
-      gap: 0.5rem;
-    }
-
-    .base-button {
-      font-size: 10px;
-
-      width: 10%;
-    }
-  }
 
   @media (max-width: 400px) {
     .btns-container {
@@ -126,6 +204,7 @@ onMounted(async () => {
 
 .tasks {
   width: 100%;
+
   gap: 40px;
   margin-top: 50px;
   justify-content: space-around;
@@ -141,8 +220,5 @@ onMounted(async () => {
   align-items: center;
   padding: 2rem;
   height: 100%;
-  @media (max-width: 630px) {
-    padding: 1rem;
-  }
 }
 </style>
