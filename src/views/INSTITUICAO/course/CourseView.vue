@@ -8,18 +8,11 @@ import CreateEditCourseModal from "./Partials/CreateEditCourseModal.vue";
 import DeleteCourseModal from "./Partials/DeleteCourseModal.vue";
 import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
-import BaseTable from "@/components/table/BaseTable.vue";
-import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
+
 import { useCourseStore } from "@/stores/course";
-import formatDate from "@/utils/date";
+
 const courseStore = useCourseStore();
 const { getCourses } = courseStore;
-
-const fields = [
-  { key: "id", label: "id" },
-  { key: "nome", label: "Nome" },
-  { key: "created_at", label: "Cadastro em" },
-];
 
 const tableData = ref([]);
 const filteredData = computed(() => {
