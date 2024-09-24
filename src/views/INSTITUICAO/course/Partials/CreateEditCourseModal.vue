@@ -28,18 +28,18 @@ const close = ref(props.open);
 
 const payload = ref({
   nome: "",
-  descricao: "",
-  periodos: "",
+  descricao: "aaa",
+  periodos: "1",
 });
 
 const handlePayload = async () => {
   if (!props.info) {
-    if (payload.value.email) {
-      const professor = await createCourse(payload.value);
+    if (payload.value.nome) {
+      const course = await createCourse(payload.value);
 
-      if (professor) {
+      if (course) {
         close.value = false;
-        textSuccess.value = "Professor Criado com Sucesso!";
+        textSuccess.value = "course Criado com Sucesso!";
         emit("update:open", false);
         emit("update:refresh", true);
         success.value = true;
@@ -50,8 +50,8 @@ const handlePayload = async () => {
 
         payload.value = {
           nome: "",
-          descricao: "",
-          periodos: "",
+          descricao: "aaa",
+          periodos: "1",
         };
       } else {
         error.value = true;
@@ -70,7 +70,7 @@ const handlePayload = async () => {
       }, 3000);
     }
   } else {
-    const response = await editProfessor(
+    const response = await editCourse(
       professorToEditInModal.value.id,
       professorToEditInModal.value
     );
@@ -128,48 +128,26 @@ const handleClose = () => {
     <template v-slot:header>
       <div class="header">
         <h1>
-          {{ props.info ? "Editar Professor" : "Cadastrar Professor" }}
+          {{ props.info ? "Editar Curso" : "Cadastrar Curso" }}
         </h1>
       </div>
     </template>
     <template v-slot:body>
       <div class="body" v-if="!props.info">
-        <label>Nome do professor</label>
+        <label>Nome do Curso:</label>
         <BaseInput
           class="input"
           v-model="payload.nome"
-          label="Nome do professor"
-          placeholder="título:"
-        />
-        <label>Email:</label>
-        <BaseInput
-          class="input"
-          v-model="payload.email"
-          label="Descrição (opcional)"
-          placeholder="Email:"
-        />
-        <label>Senha:</label>
-        <BaseInput
-          class="input"
-          v-model="payload.senha"
-          label="Descrição (opcional)"
-          placeholder="Senha:"
+          placeholder="Nome do Curso:"
         />
       </div>
       <div class="body" v-else>
-        <label>Nome do professor</label>
+        <label>Nome do Curso</label>
         <BaseInput
           class="input"
-          v-model="professorToEditInModal.nome"
+          v-model="courseToEditInModal.nome"
           label="Nome do professor"
           placeholder="título:"
-        />
-        <label>Email:</label>
-        <BaseInput
-          class="input mb-2"
-          v-model="professorToEditInModal.email"
-          label="Descrição (opcional)"
-          placeholder="Email:"
         />
       </div>
     </template>

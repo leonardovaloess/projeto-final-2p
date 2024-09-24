@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from "vue";
 
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
+import CourseCard from "./Partials/CourseCard.vue";
 import CreateEditCourseModal from "./Partials/CreateEditCourseModal.vue";
 import DeleteCourseModal from "./Partials/DeleteCourseModal.vue";
 import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
@@ -18,19 +19,6 @@ const fields = [
   { key: "id", label: "id" },
   { key: "nome", label: "Nome" },
   { key: "created_at", label: "Cadastro em" },
-];
-
-const optionsStatusCreation = [
-  {
-    id: 0,
-    name: "Editar",
-    icon: "edit",
-  },
-  {
-    id: 1,
-    name: "Desvincular",
-    icon: "delete",
-  },
 ];
 
 const tableData = ref([]);
@@ -71,20 +59,6 @@ const initFunction = async () => {
   loading.value = false;
 };
 
-const handleSelect = (item, id) => {
-  console.log("item", item);
-  console.log("id", id);
-
-  if (id == 0) {
-    courseToEdit.value = item;
-    openModal.value = true;
-  }
-  if (id == 1) {
-    courseToEdit.value = item;
-    openDeleteModal.value = true;
-  }
-};
-
 onMounted(async () => {
   await initFunction();
 });
@@ -108,25 +82,13 @@ onMounted(async () => {
     </div>
     <div class="tasks" v-if="!loading">
       <div v-if="filteredData">
-        <BaseTable :fields="fields" :has-options="true">
-          <template v-slot:body>
-            <tr v-for="(row, index) in filteredData" :key="index">
-              <td v-for="field in fields" :key="field.key">
-                {{
-                  field.key == "created_at"
-                    ? formatDate(row[field.key])
-                    : row[field.key]
-                }}
-              </td>
-              <td class="col-options">
-                <BaseDropdown
-                  :options="optionsStatusCreation"
-                  @select="(option) => handleSelect(row, option.id)"
-                />
-              </td>
-            </tr>
-          </template>
-        </BaseTable>
+        <div class="cards-container">
+          <CourseCard
+            v-for="course in filteredData"
+            :key="course.id"
+            :course="course"
+          />
+        </div>
       </div>
       <div v-else>
         <BaseNoDataAlert
@@ -212,6 +174,14 @@ onMounted(async () => {
   @media (max-width: 630px) {
     margin-top: 20px;
   }
+}
+
+.cards-container {
+  width: 100%;
+  display: flex !important;
+  flex-wrap: wrap;
+  padding: 1rem;
+  gap: 30px;
 }
 
 .page-background {

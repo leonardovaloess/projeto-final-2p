@@ -56,7 +56,7 @@ const props = defineProps({
 <style scoped lang="scss">
 .dropdown {
   position: relative;
-  z-index: 0;
+  z-index: 10;
   outline: none;
   width: 100%;
   margin-top: -10px;
@@ -79,7 +79,7 @@ const props = defineProps({
 .dropdown-content {
   position: absolute;
   top: -20px;
-  right: 45px;
+  left: 20px;
   background-color: #fff;
   box-shadow: 0px 3px 5px rgba(9, 30, 66, 0.2);
   border-radius: 8px;
@@ -97,6 +97,7 @@ const props = defineProps({
   padding: 0.75rem 1rem;
   transition: 0.15s ease-out;
   cursor: pointer;
+  z-index: 99999;
 
   border-radius: inherit;
 }
