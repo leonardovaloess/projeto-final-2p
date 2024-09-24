@@ -32,7 +32,7 @@ export default (httpClient) => ({
   },
 
   editUserPassword: (payload) => {
-    return httpClient.put(`/updateUserSenha`, payload); //nome email senha
+    return httpClient.put(`/updateSenha`, payload); //senha atual e nova senha
   },
 
   forgotPassword: (payload) => {

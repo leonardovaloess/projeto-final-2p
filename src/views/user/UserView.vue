@@ -10,7 +10,7 @@ import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
 
 const userStore = useUserStore();
-const { getUserProfile, editUserProfile } = userStore;
+const { getUserProfile, editUserProfile, editUserPassword } = userStore;
 
 const textSuccess = ref(null);
 const textError = ref(null);
@@ -35,8 +35,6 @@ const handleUpdate = async () => {
   const response = await editUserProfile(user.value);
   console.log(response);
   if (response) {
-    console.log("to aqui carai");
-
     textSuccess.value = "Credenciais Editadas com Sucesso!!";
     success.value = true;
 
@@ -54,10 +52,26 @@ const handleUpdate = async () => {
 };
 
 const handleUpdatePassword = async () => {
-  const payload = { ...user.value, senha: newPassword.value };
+  const payload = {
+    senha_atual: actualPassword.value,
+    nova_senha: newPassword.value,
+  };
 
-  const response = await editUserProfile(payload);
+  const response = await editUserPassword(payload);
   if (response) {
+    textSuccess.value = "Senha Editada com Sucesso!!";
+    success.value = true;
+
+    setTimeout(() => {
+      success.value = false;
+    }, 3000);
+  } else {
+    textError.value = "Senha Atual Incorreta!";
+    error.value = true;
+
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
   }
 };
 
@@ -104,7 +118,11 @@ onMounted(async () => {
         <BaseInput class="input" type="password" v-model="newPassword" />
       </div>
       <div class="btns flex mt-4 gap-05">
-        <BaseButton label="Mudar Senha" @click="handleUpdatePassword" />
+        <BaseButton
+          label="Mudar Senha"
+          @click="handleUpdatePassword"
+          :disabled="!newPassword || !actualPassword"
+        />
       </div>
     </div>
 
