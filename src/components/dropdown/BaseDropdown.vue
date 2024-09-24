@@ -79,7 +79,7 @@ const props = defineProps({
 .dropdown-content {
   position: absolute;
   top: -20px;
-  right: 100%;
+  right: 45px;
   background-color: #fff;
   box-shadow: 0px 3px 5px rgba(9, 30, 66, 0.2);
   border-radius: 8px;
