@@ -32,7 +32,7 @@ const router = createRouter({
           path: "/course/:course_id/disciplines",
           name: "Disciplinas",
           component: () =>
-            import("../views/INSTITUICAO/discipline/DisciplinesView.vue"),
+            import("../views/INSTITUICAO/discipline/DisciplineView.vue"),
         },
         {
           path: "/course",
