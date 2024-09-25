@@ -1,10 +1,34 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
+import CreateEditCourseModal from "./CreateEditDisciplineModal.vue";
+import DeleteCourseModal from "./DeleteDisciplineModal.vue";
+import { useRouter } from "vue-router";
+
+const openModal = ref(false);
+
+const openDeleteModal = ref(false);
+const router = useRouter();
+const courseToEdit = ref(null);
+const emit = defineEmits(["refresh"]);
 
 const props = defineProps({
-  course: Object,
+  discipline: Object,
 });
+
+const cancel = (ev) => {
+  openModal.value = ev;
+  openDeleteModal.value = ev;
+  courseToEdit.value = null;
+};
+
+const refreshList = async (ev) => {
+  if (ev == true) {
+    openModal.value = false;
+    openDeleteModal.value = false;
+    emit("refresh", true);
+  }
+};
 
 const options = [
   {
@@ -41,6 +65,10 @@ const handleSelect = (item, id) => {
     courseToEdit.value = item;
     openDeleteModal.value = true;
   }
+
+  if (id == 3) {
+    router.push(`/course/${item.id}/disciplines`);
+  }
 };
 
 onMounted(() => {
@@ -57,6 +85,19 @@ onMounted(() => {
     />
     <h2 class="w-100">{{ course.nome }}</h2>
   </div>
+
+  <CreateEditCourseModal
+    :open="openModal"
+    @update:open="cancel($event)"
+    @update:refresh="refreshList($event)"
+    :info="courseToEdit"
+  />
+  <DeleteCourseModal
+    :open="openDeleteModal"
+    @update:open="cancel($event)"
+    @update:refresh="refreshList($event)"
+    :info="courseToEdit"
+  />
 </template>
 
 <style scoped lang="scss">

@@ -7,9 +7,9 @@ export default async (to) => {
 
   // Mapeamento de rotas permitidas por tipo de usuário
   const userRoutes = {
-    1: ["/profile"], // Rotas permitidas para user_type_id = 1
-    2: ["/profile"], // Rotas permitidas para user_type_id = 2
-    3: ["/course", "/students", "/professors", "/profile"], // Rotas permitidas para user_type_id = 3
+    1: ["Perfil"], // Rotas permitidas para user_type_id = 1
+    2: ["Perfil"], // Rotas permitidas para user_type_id = 2
+    3: ["Cursos", "Alunos", "Professors", "Perfil", "Disciplinas"], // Rotas permitidas para user_type_id = 3
   };
 
   // Redireciona para o home se estiver logado e tentar acessar a página de login
@@ -25,7 +25,7 @@ export default async (to) => {
 
     // Verifica se o tipo de usuário tem permissão para acessar a rota
     const allowedRoutes = userRoutes[user_type_id] || [];
-    if (!allowedRoutes.includes(to.path)) {
+    if (!allowedRoutes.includes(to.name)) {
       return { name: "NotFound2" }; // Redireciona para uma página de erro de permissão
     }
 

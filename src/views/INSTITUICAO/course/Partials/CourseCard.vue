@@ -3,11 +3,12 @@ import { onMounted, ref } from "vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import CreateEditCourseModal from "./CreateEditCourseModal.vue";
 import DeleteCourseModal from "./DeleteCourseModal.vue";
+import { useRouter } from "vue-router";
 
 const openModal = ref(false);
 
 const openDeleteModal = ref(false);
-
+const router = useRouter();
 const courseToEdit = ref(null);
 const emit = defineEmits(["refresh"]);
 const props = defineProps({
@@ -62,6 +63,11 @@ const handleSelect = (item, id) => {
   if (id == 1) {
     courseToEdit.value = item;
     openDeleteModal.value = true;
+  }
+
+  if (id == 3) {
+    localStorage.setItem("course_id", item.id);
+    router.push(`/course/${item.id}/disciplines`);
   }
 };
 

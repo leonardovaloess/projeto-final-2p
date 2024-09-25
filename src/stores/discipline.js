@@ -20,9 +20,9 @@ export const useDisciplineStore = defineStore("discipline", () => {
     }
   }
 
-  async function getDisciplines() {
+  async function getDisciplines(curso_id) {
     try {
-      const response = await api.discipline.getDisciplines();
+      const response = await api.discipline.getDisciplines(curso_id);
       return response.data;
     } catch (error) {
       console.log(error);

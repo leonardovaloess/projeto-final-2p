@@ -3,24 +3,28 @@ import { ref, onMounted, computed } from "vue";
 
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseButton from "@/components/buttons/BaseButton.vue";
-import CourseCard from "./Partials/DisciplineCard.vue";
+import DisciplineCard from "./Partials/DisciplineCard.vue";
 import CreateEditCourseModal from "./Partials/CreateEditDisciplineModal.vue";
-import DeleteCourseModal from "./Partials/DeleteDisciplineModal.vue";
+
 import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
 
-import { useCourseStore } from "@/stores/course";
+import { useDisciplineStore } from "@/stores/discipline";
+import { useRoute } from "vue-router";
 
-const courseStore = useCourseStore();
-const { getCourses } = courseStore;
+const disciplineStore = useDisciplineStore();
+const { getDisciplines } = disciplineStore;
 
 const tableData = ref([]);
+
 const filteredData = computed(() => {
   if (!search.value) return tableData.value;
   return tableData.value.filter((item) =>
     item.nome.toLowerCase().includes(search.value.toLowerCase())
   );
 });
+
+const route = useRoute();
 
 const courseToEdit = ref(null);
 const loading = ref(false);
@@ -46,9 +50,16 @@ const refreshList = async (ev) => {
   }
 };
 
+const refreshListCard = async (ev) => {
+  if (ev == true) {
+    await initFunction();
+  }
+};
+
 const initFunction = async () => {
   loading.value = true;
-  tableData.value = await getCourses();
+  const cursoId = route.params.course_id;
+  tableData.value = await getDisciplines(cursoId);
   loading.value = false;
 };
 
@@ -63,12 +74,12 @@ onMounted(async () => {
       <BaseInput
         class="base-input"
         v-model="search"
-        placeholder="Buscar Professor..."
+        placeholder="Buscar Disciplina..."
       />
       <div class="btns-container flex gap-1">
         <BaseButton
           class="base-button"
-          label="Cadastrar Curso"
+          label="Cadastrar Disciplina"
           @click="openModal = !openModal"
         />
       </div>
@@ -76,10 +87,11 @@ onMounted(async () => {
     <div class="tasks" v-if="!loading">
       <div v-if="filteredData">
         <div class="cards-container">
-          <CourseCard
-            v-for="course in filteredData"
-            :key="course.id"
-            :course="course"
+          <DisciplineCard
+            @refresh="refreshListCard"
+            v-for="discipline in filteredData"
+            :key="discipline.id"
+            :discipline="discipline"
           />
         </div>
       </div>
@@ -95,12 +107,6 @@ onMounted(async () => {
     </div>
     <CreateEditCourseModal
       :open="openModal"
-      @update:open="cancel($event)"
-      @update:refresh="refreshList($event)"
-      :info="courseToEdit"
-    />
-    <DeleteCourseModal
-      :open="openDeleteModal"
       @update:open="cancel($event)"
       @update:refresh="refreshList($event)"
       :info="courseToEdit"

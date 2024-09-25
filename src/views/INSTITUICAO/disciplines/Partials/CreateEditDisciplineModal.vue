@@ -1,8 +1,9 @@
 <script setup>
 import BaseButton from "@/components/buttons/BaseButton.vue";
 import BaseInput from "@/components/input/BaseInput.vue";
+import BaseSelect from "@/components/select/BaseSelect.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
@@ -16,12 +17,17 @@ const props = defineProps({
   info: Object,
 });
 
+const selectValue = ref({
+  label: "",
+  value: null,
+});
+
 const error = ref(false);
 const textSuccess = ref("");
 const textError = ref("Preencha todos os campos obrigatórios!");
 const emit = defineEmits(["update:open", "update:refresh"]);
 
-const professorToEditInModal = ref(null);
+const courseToEditInModal = ref(null);
 const success = ref(false);
 
 const close = ref(props.open);
@@ -30,6 +36,32 @@ const payload = ref({
   nome: "",
   descricao: "aaa",
   periodos: "1",
+});
+
+const options = ref([
+  {
+    label: "opcao 1",
+    value: 1,
+  },
+  {
+    label: "opcao 2",
+    value: 2,
+  },
+  {
+    label: "opcao 3",
+    value: 1,
+  },
+  {
+    label: "opcao 4",
+    value: 2,
+  },
+]);
+
+const filteredOptions = computed(() => {
+  if (!selectValue.value.label) return options.value;
+  return options.value.filter((item) =>
+    item.label.toLowerCase().includes(selectValue.value.label.toLowerCase())
+  );
 });
 
 const handlePayload = async () => {
@@ -71,8 +103,8 @@ const handlePayload = async () => {
     }
   } else {
     const response = await editCourse(
-      professorToEditInModal.value.id,
-      professorToEditInModal.value
+      courseToEditInModal.value.id,
+      courseToEditInModal.value
     );
 
     if (response) {
@@ -111,7 +143,7 @@ watch(
     //console.log("posttoedit");
 
     if (newVal) {
-      professorToEditInModal.value = { ...newVal };
+      courseToEditInModal.value = { ...newVal };
     }
   },
   { immediate: true }
@@ -128,26 +160,37 @@ const handleClose = () => {
     <template v-slot:header>
       <div class="header">
         <h1>
-          {{ props.info ? "Editar Curso" : "Cadastrar Curso" }}
+          {{ props.info ? "Editar Disciplina" : "Cadastrar Disciplina" }}
         </h1>
       </div>
     </template>
     <template v-slot:body>
       <div class="body" v-if="!props.info">
-        <label>Nome do Curso:</label>
-        <BaseInput
-          class="input"
-          v-model="payload.nome"
-          placeholder="Nome do Curso:"
-        />
+        <div class="flex flex-column gap-05">
+          <label>Nome da Disciplina:</label>
+          <BaseInput
+            class="input"
+            v-model="payload.nome"
+            placeholder="Nome da Disciplina:"
+          />
+        </div>
+
+        <div class="flex flex-column gap-05">
+          <label>Professor Responsável:</label>
+          <BaseSelect
+            class="input"
+            :options="filteredOptions"
+            v-model="selectValue.label"
+            @select="selectValue = $event"
+          />
+        </div>
       </div>
       <div class="body" v-else>
         <label>Nome do Curso</label>
         <BaseInput
           class="input"
           v-model="courseToEditInModal.nome"
-          label="Nome do professor"
-          placeholder="título:"
+          placeholder="Nome da Disciplina:"
         />
       </div>
     </template>
@@ -201,6 +244,7 @@ const handleClose = () => {
   margin-top: 15px;
   display: flex;
   flex-direction: column;
+
   gap: 10px;
 }
 

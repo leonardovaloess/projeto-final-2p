@@ -87,7 +87,7 @@ const props = defineProps({
   display: none;
   opacity: 0;
   transition: 0.15s ease-out;
-  height: 120px;
+  max-height: 155px;
   overflow-y: auto;
 }
 
