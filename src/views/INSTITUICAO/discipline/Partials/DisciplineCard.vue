@@ -1,32 +1,10 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
-import CreateEditCourseModal from "./CreateEditCourseModal.vue";
-import DeleteCourseModal from "./DeleteCourseModal.vue";
 
-const openModal = ref(false);
-
-const openDeleteModal = ref(false);
-
-const courseToEdit = ref(null);
-const emit = defineEmits(["refresh"]);
 const props = defineProps({
   course: Object,
 });
-
-const cancel = (ev) => {
-  openModal.value = ev;
-  openDeleteModal.value = ev;
-  courseToEdit.value = null;
-};
-
-const refreshList = async (ev) => {
-  if (ev == true) {
-    openModal.value = false;
-    openDeleteModal.value = false;
-    emit("refresh", true);
-  }
-};
 
 const options = [
   {
@@ -79,19 +57,6 @@ onMounted(() => {
     />
     <h2 class="w-100">{{ course.nome }}</h2>
   </div>
-
-  <CreateEditCourseModal
-    :open="openModal"
-    @update:open="cancel($event)"
-    @update:refresh="refreshList($event)"
-    :info="courseToEdit"
-  />
-  <DeleteCourseModal
-    :open="openDeleteModal"
-    @update:open="cancel($event)"
-    @update:refresh="refreshList($event)"
-    :info="courseToEdit"
-  />
 </template>
 
 <style scoped lang="scss">

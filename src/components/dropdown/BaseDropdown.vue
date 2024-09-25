@@ -87,6 +87,8 @@ const props = defineProps({
   display: none;
   opacity: 0;
   transition: 0.15s ease-out;
+  height: 120px;
+  overflow-y: auto;
 }
 
 .button-medium {

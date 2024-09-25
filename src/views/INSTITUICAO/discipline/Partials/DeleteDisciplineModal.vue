@@ -6,10 +6,10 @@ import { ref } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
-import { useCourseStore } from "@/stores/course";
+import { useUserStore } from "@/stores/users";
 
-const courseStore = useCourseStore();
-const { deleteCourse } = courseStore;
+const userStore = useUserStore();
+const { deleteProfessor } = userStore;
 
 const props = defineProps({
   open: Boolean,
@@ -21,19 +21,19 @@ const textSuccess = ref("");
 
 const emit = defineEmits(["update:open", "update:refresh"]);
 
-const courseToEditInModal = ref(null);
+const professorToEditInModal = ref(null);
 const success = ref(false);
 
 const close = ref(props.open);
 
 const handlePayload = async () => {
-  const response = await deleteCourse(courseToEditInModal.value.id);
+  const response = await deleteProfessor(professorToEditInModal.value.id);
 
   if (response) {
     close.value = false;
     emit("update:open", false);
     emit("update:refresh", true);
-    textSuccess.value = "Curso deletado com Sucesso!";
+    textSuccess.value = "Professor deletado com Sucesso!";
 
     success.value = true;
 
@@ -47,7 +47,7 @@ const handlePayload = async () => {
       error.value = false;
     }, 3000);
 
-    textError.value = "Não foi possivel deletar o Curso";
+    textError.value = "Não foi possivel deletar o Professor";
   }
 };
 
@@ -64,7 +64,7 @@ watch(
     //console.log("posttoedit");
 
     if (newVal) {
-      courseToEditInModal.value = { ...newVal };
+      professorToEditInModal.value = { ...newVal };
     }
   },
   { immediate: true }
@@ -80,14 +80,14 @@ const handleClose = () => {
   <BaseModal :open="close" :closeIcon="true">
     <template v-slot:header>
       <div class="header">
-        <h1>Remover Curso</h1>
+        <h1>Desvincular Professor</h1>
       </div>
     </template>
     <template v-slot:body>
-      <div class="body" v-if="courseToEditInModal">
+      <div class="body" v-if="professorToEditInModal">
         <p>
-          Você tem certeza que deseja excluir o Curso:
-          <span style="font-weight: 600">{{ courseToEditInModal.nome }}</span
+          Você tem certeza que deseja desvincular o professor:
+          <span style="font-weight: 600">{{ professorToEditInModal.nome }}</span
           >?
         </p>
       </div>

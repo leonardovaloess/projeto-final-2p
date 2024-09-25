@@ -21,7 +21,7 @@ const textSuccess = ref("");
 const textError = ref("Preencha todos os campos obrigatórios!");
 const emit = defineEmits(["update:open", "update:refresh"]);
 
-const professorToEditInModal = ref(null);
+const courseToEditInModal = ref(null);
 const success = ref(false);
 
 const close = ref(props.open);
@@ -71,8 +71,8 @@ const handlePayload = async () => {
     }
   } else {
     const response = await editCourse(
-      professorToEditInModal.value.id,
-      professorToEditInModal.value
+      courseToEditInModal.value.id,
+      courseToEditInModal.value
     );
 
     if (response) {
@@ -111,7 +111,7 @@ watch(
     //console.log("posttoedit");
 
     if (newVal) {
-      professorToEditInModal.value = { ...newVal };
+      courseToEditInModal.value = { ...newVal };
     }
   },
   { immediate: true }

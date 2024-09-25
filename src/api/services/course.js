@@ -6,9 +6,9 @@ export default (httpClient) => ({
     return httpClient.get("/cursos");
   },
   editCourse: (id, data) => {
-    return httpClient.put(`/cursos/$${id}`, data); //nome, descricao, periodos
+    return httpClient.put(`/cursos/${id}`, data); //nome, descricao, periodos
   },
   deleteCourse: (id, data) => {
-    return httpClient.delete(`/cursos${id}`, data);
+    return httpClient.delete(`/cursos/${id}`, data);
   },
 });

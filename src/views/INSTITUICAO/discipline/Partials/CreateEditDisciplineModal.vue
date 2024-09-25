@@ -6,33 +6,81 @@ import { ref } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
+import { useCourseStore } from "@/stores/course";
+
+const courseStore = useCourseStore();
+const { createCourse, editCourse } = courseStore;
 
 const props = defineProps({
   open: Boolean,
-  create: Boolean,
+  info: Object,
 });
 
 const error = ref(false);
+const textSuccess = ref("");
 const textError = ref("Preencha todos os campos obrigatórios!");
 const emit = defineEmits(["update:open", "update:refresh"]);
 
+const professorToEditInModal = ref(null);
 const success = ref(false);
 
 const close = ref(props.open);
 
 const payload = ref({
-  title: "",
-  content: "",
+  nome: "",
+  descricao: "aaa",
+  periodos: "1",
 });
 
 const handlePayload = async () => {
-  if (payload.value.title) {
-    const task = [];
+  if (!props.info) {
+    if (payload.value.nome) {
+      const course = await createCourse(payload.value);
 
-    if (task) {
+      if (course) {
+        close.value = false;
+        textSuccess.value = "course Criado com Sucesso!";
+        emit("update:open", false);
+        emit("update:refresh", true);
+        success.value = true;
+
+        setTimeout(() => {
+          success.value = false;
+        }, 3000);
+
+        payload.value = {
+          nome: "",
+          descricao: "aaa",
+          periodos: "1",
+        };
+      } else {
+        error.value = true;
+
+        setTimeout(() => {
+          error.value = false;
+        }, 3000);
+
+        textError.value = "Não foi possivel cadastrar o Curso";
+      }
+    } else {
+      error.value = true;
+
+      setTimeout(() => {
+        error.value = false;
+      }, 3000);
+    }
+  } else {
+    const response = await editCourse(
+      professorToEditInModal.value.id,
+      professorToEditInModal.value
+    );
+
+    if (response) {
       close.value = false;
       emit("update:open", false);
       emit("update:refresh", true);
+      textSuccess.value = "Curso editado com Sucesso!";
+
       success.value = true;
 
       setTimeout(() => {
@@ -45,14 +93,8 @@ const handlePayload = async () => {
         error.value = false;
       }, 3000);
 
-      textError.value = "Não foi possivel criar a tarefa";
+      textError.value = "Não foi possivel editar o Professor";
     }
-  } else {
-    error.value = true;
-
-    setTimeout(() => {
-      error.value = false;
-    }, 3000);
   }
 };
 
@@ -61,6 +103,18 @@ watch(
   (newVal) => {
     close.value = newVal;
   }
+);
+
+watch(
+  () => props.info,
+  (newVal) => {
+    //console.log("posttoedit");
+
+    if (newVal) {
+      professorToEditInModal.value = { ...newVal };
+    }
+  },
+  { immediate: true }
 );
 
 const handleClose = () => {
@@ -73,31 +127,38 @@ const handleClose = () => {
   <BaseModal :open="close" :closeIcon="true">
     <template v-slot:header>
       <div class="header">
-        <h1>{{ props.create ? "Cadastrar Matéria" : "Editar Matéria" }}</h1>
+        <h1>
+          {{ props.info ? "Editar Curso" : "Cadastrar Curso" }}
+        </h1>
       </div>
     </template>
     <template v-slot:body>
-      <div class="body">
-        <label>Título da tarefa (obrigatório)</label>
+      <div class="body" v-if="!props.info">
+        <label>Nome do Curso:</label>
         <BaseInput
           class="input"
-          v-model="payload.title"
-          label="Título da Tarefa (obrigatório)"
-          placeholder="título"
+          v-model="payload.nome"
+          placeholder="Nome do Curso:"
         />
-        <label>Descrição (opcional)</label>
+      </div>
+      <div class="body" v-else>
+        <label>Nome do Curso</label>
         <BaseInput
           class="input"
-          v-model="payload.content"
-          label="Descrição (opcional)"
-          placeholder="Descrição"
+          v-model="courseToEditInModal.nome"
+          label="Nome do professor"
+          placeholder="título:"
         />
       </div>
     </template>
     <template v-slot:footer>
       <div class="footer flex gap-1">
         <BaseButton class="cancel btn" label="Cancelar" @click="handleClose" />
-        <BaseButton class="btn" label="Salvar" @click="handlePayload" />
+        <BaseButton
+          class="btn"
+          :label="!props.info ? 'Cadastrar' : 'Salvar'"
+          @click="handlePayload"
+        />
       </div>
     </template>
   </BaseModal>
@@ -106,7 +167,7 @@ const handleClose = () => {
   <BaseAlertSuccess
     v-if="success"
     class="alert"
-    text="Tarefa criada com sucesso"
+    :text="textSuccess"
   ></BaseAlertSuccess>
 </template>
 
@@ -129,7 +190,7 @@ const handleClose = () => {
   justify-content: center;
 
   h1 {
-    font-size: 35px;
+    font-size: 30px;
     width: 100%;
 
     text-align: center;

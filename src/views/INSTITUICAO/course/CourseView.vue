@@ -46,6 +46,12 @@ const refreshList = async (ev) => {
   }
 };
 
+const refreshListCard = async (ev) => {
+  if (ev == true) {
+    await initFunction();
+  }
+};
+
 const initFunction = async () => {
   loading.value = true;
   tableData.value = await getCourses();
@@ -63,7 +69,7 @@ onMounted(async () => {
       <BaseInput
         class="base-input"
         v-model="search"
-        placeholder="Buscar Professor..."
+        placeholder="Buscar Curso..."
       />
       <div class="btns-container flex gap-1">
         <BaseButton
@@ -77,6 +83,7 @@ onMounted(async () => {
       <div v-if="filteredData">
         <div class="cards-container">
           <CourseCard
+            @refresh="refreshListCard"
             v-for="course in filteredData"
             :key="course.id"
             :course="course"
@@ -95,12 +102,6 @@ onMounted(async () => {
     </div>
     <CreateEditCourseModal
       :open="openModal"
-      @update:open="cancel($event)"
-      @update:refresh="refreshList($event)"
-      :info="courseToEdit"
-    />
-    <DeleteCourseModal
-      :open="openDeleteModal"
       @update:open="cancel($event)"
       @update:refresh="refreshList($event)"
       :info="courseToEdit"

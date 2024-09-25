@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthService from "./services/auth";
 import usersService from "./services/users";
 import CourseService from "./services/course";
+import DisciplineService from "./services/discipline";
 
 const baseURL = import.meta.env.VITE_URL_API;
 
@@ -65,4 +66,5 @@ export default {
   auth: AuthService(httpClient),
   user: usersService(httpClient),
   course: CourseService(httpClient),
+  discipline: DisciplineService(httpClient),
 };
