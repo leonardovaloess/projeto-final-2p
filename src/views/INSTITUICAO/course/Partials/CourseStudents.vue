@@ -120,13 +120,15 @@ onMounted(async () => {
 watch(
   () => selectValue.value.value,
   (newVal) => {
-    if (
-      newVal &&
-      !alunosSelecionados.value.some((aluno) => aluno.value === newVal)
-    ) {
-      if (newVal == "todos") {
+    if (newVal) {
+      if (newVal === "todos") {
         options.value.forEach((aluno) => {
-          if (aluno.value !== "todos") {
+          if (
+            aluno.value !== "todos" &&
+            !alunosSelecionados.value.some(
+              (selected) => selected.value === aluno.value
+            )
+          ) {
             alunosSelecionados.value.push({
               label: aluno.label,
               value: aluno.value,
@@ -138,8 +140,15 @@ watch(
           value: "",
         };
       } else {
-        const novoObjeto = { ...selectValue.value }; // cria uma cópia do objeto atual
-        alunosSelecionados.value.push(novoObjeto);
+        // Para outros valores, adiciona apenas se ainda não estiver na lista
+        const novoObjeto = { ...selectValue.value };
+        if (
+          !alunosSelecionados.value.some(
+            (aluno) => aluno.value === novoObjeto.value
+          )
+        ) {
+          alunosSelecionados.value.push(novoObjeto);
+        }
         selectValue.value = {
           label: "",
           value: "",
