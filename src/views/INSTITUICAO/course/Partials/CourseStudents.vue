@@ -1,0 +1,301 @@
+<script setup>
+import BaseButton from "@/components/buttons/BaseButton.vue";
+import BaseInput from "@/components/input/BaseInput.vue";
+import BaseModal from "@/components/modal/BaseModal.vue";
+import { onMounted, ref, computed } from "vue";
+import { watch } from "vue";
+import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
+import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
+import { useCourseStore } from "@/stores/course";
+import BaseSelect from "@/components/select/BaseSelect.vue";
+import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
+import { useUserStore } from "@/stores/users";
+
+const courseStore = useCourseStore();
+const { cadastrarAluno } = courseStore;
+
+const userStore = useUserStore();
+const { getAlunos } = userStore;
+
+const filteredOptions = computed(() => {
+  if (!selectValue.value.label) return options.value;
+  return options.value.filter((item) =>
+    item.label.toLowerCase().includes(selectValue.value.label.toLowerCase())
+  );
+});
+
+const options = ref([
+  {
+    label: "Adicionar Todos",
+    value: "todos",
+  },
+]);
+
+const props = defineProps({
+  open: Boolean,
+});
+
+const selectValue = ref({
+  label: "",
+  value: "nada",
+});
+
+const usuariosCadastrados = ref([]);
+
+const alunosSelecionados = ref([]);
+
+const error = ref(false);
+const textSuccess = ref("");
+
+const emit = defineEmits(["update:open", "update:refresh"]);
+
+const success = ref(false);
+
+const close = ref(props.open);
+
+const handlePayload = async () => {
+  const response = await deleteCourse(courseToEditInModal.value.id);
+
+  if (response) {
+    close.value = false;
+    emit("update:open", false);
+    emit("update:refresh", true);
+    textSuccess.value = "Curso deletado com Sucesso!";
+
+    success.value = true;
+
+    setTimeout(() => {
+      success.value = false;
+    }, 3000);
+  } else {
+    error.value = true;
+
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
+
+    textError.value = "Não foi possivel deletar o Curso";
+  }
+};
+
+watch(
+  () => props.open,
+  (newVal) => {
+    close.value = newVal;
+  }
+);
+
+watch(
+  () => props.info,
+  (newVal) => {
+    //console.log("posttoedit");
+
+    if (newVal) {
+      courseToEditInModal.value = { ...newVal };
+    }
+  },
+  { immediate: true }
+);
+
+const handleClose = () => {
+  close.value = false;
+  emit("update:open", false);
+};
+
+const initFunction = async () => {
+  const alunos = await getAlunos();
+
+  alunos.forEach((aluno) => {
+    options.value.push({
+      label: aluno.nome,
+      value: aluno.id,
+    });
+  });
+};
+
+onMounted(async () => {
+  await initFunction();
+});
+
+watch(
+  () => selectValue.value.value,
+  (newVal) => {
+    if (
+      newVal &&
+      !alunosSelecionados.value.some((aluno) => aluno.value === newVal)
+    ) {
+      if (newVal == "todos") {
+        options.value.forEach((aluno) => {
+          if (aluno.value !== "todos") {
+            alunosSelecionados.value.push({
+              label: aluno.label,
+              value: aluno.value,
+            });
+          }
+        });
+        selectValue.value = {
+          label: "",
+          value: "",
+        };
+      } else {
+        const novoObjeto = { ...selectValue.value }; // cria uma cópia do objeto atual
+        alunosSelecionados.value.push(novoObjeto);
+        selectValue.value = {
+          label: "",
+          value: "",
+        };
+      }
+    }
+  }
+);
+</script>
+
+<template>
+  <BaseModal :open="close" :closeIcon="true" width="900">
+    <template v-slot:header>
+      <div class="header mb-5">
+        <h1>Alunos</h1>
+      </div>
+    </template>
+    <template v-slot:body>
+      <div class="body-container">
+        <div class="left">
+          <div class="flex flex-column gap-1">
+            <h4>Cadastrar Alunos</h4>
+            <BaseSelect
+              class="input"
+              :options="filteredOptions"
+              v-model="selectValue.label"
+              @select="selectValue = $event"
+            />
+
+            <div
+              class="aluno-selecionado-card"
+              v-for="(aluno, index) in alunosSelecionados"
+              :key="index"
+            >
+              <span>{{ aluno.label }}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 48 48"
+                style="cursor: pointer"
+                fill="none"
+                @click="alunosSelecionados.splice(index, 1)"
+              >
+                <path
+                  d="M14 12V6C14 5.46957 14.2107 4.96086 14.5858 4.58579C14.9609 4.21071 15.4696 4 16 4H32C32.5304 4 33.0391 4.21071 33.4142 4.58579C33.7893 4.96086 34 5.46957 34 6V12H44V16H40V42C40 42.5304 39.7893 43.0392 39.4142 43.4142C39.0391 43.7893 38.5304 44 38 44H10C9.46957 44 8.96086 43.7893 8.58579 43.4142C8.21071 43.0392 8 42.5304 8 42V16H4V12H14ZM18 8V12H30V8H18Z"
+                  fill="red"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="ALunos-para-cadastrar"></div>
+        </div>
+        <div class="right">
+          <h4>Alunos Cadastrados</h4>
+          <div
+            class="flex flex-column gap-1"
+            v-if="usuariosCadastrados.length > 0"
+          >
+            <div class="user-card"></div>
+          </div>
+          <div v-else>
+            <BaseNoDataAlert width="300" text="Nenhum aluno cadastrado" />
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-slot:footer>
+      <div class="footer flex gap-1">
+        <BaseButton class="cancel btn" label="Cancelar" @click="handleClose" />
+        <BaseButton class="btn" label="Confirmar" @click="handlePayload" />
+      </div>
+    </template>
+  </BaseModal>
+
+  <BaseAlertError v-if="error" class="alert" :text="textError"></BaseAlertError>
+  <BaseAlertSuccess
+    v-if="success"
+    class="alert"
+    :text="textSuccess"
+  ></BaseAlertSuccess>
+</template>
+
+<style scoped lang="scss">
+.aluno-selecionado-card {
+  padding: 15px;
+  border: 2px solid rgb(201, 201, 201);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.input {
+  padding: 12px;
+}
+
+.btn {
+  width: 110px;
+}
+
+.alert {
+  z-index: 99999 !important;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    font-size: 30px;
+    width: 100%;
+
+    text-align: center;
+  }
+}
+
+h4 {
+  font-size: 20px;
+  font-weight: 450;
+  width: 100%;
+  text-align: center;
+}
+
+.body {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer {
+  margin-top: 25px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancel {
+  background-color: rgb(252, 31, 31);
+}
+
+.body-container {
+  display: flex;
+  width: 100%;
+  height: 400px;
+  overflow-y: auto;
+  .left {
+    width: 50%;
+    padding: 10px 40px 10px 20px;
+    border-right: 1px solid rgba(65, 65, 65, 0.31);
+  }
+
+  .right {
+    width: 50%;
+    padding: 10px 20px 10px 40px;
+    border-left: 1px solid rgba(65, 65, 65, 0.31);
+  }
+}
+</style>

@@ -3,11 +3,15 @@ import { onMounted, ref } from "vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import CreateEditCourseModal from "./CreateEditCourseModal.vue";
 import DeleteCourseModal from "./DeleteCourseModal.vue";
+import CourseStudents from "./CourseStudents.vue";
 import { useRouter } from "vue-router";
 
 const openModal = ref(false);
 
 const openDeleteModal = ref(false);
+
+const openStudentsModal = ref(false);
+
 const router = useRouter();
 const courseToEdit = ref(null);
 const emit = defineEmits(["refresh"]);
@@ -53,9 +57,6 @@ const options = [
 ];
 
 const handleSelect = (item, id) => {
-  console.log("item", item);
-  console.log("id", id);
-
   if (id == 0) {
     courseToEdit.value = item;
     openModal.value = true;
@@ -64,7 +65,9 @@ const handleSelect = (item, id) => {
     courseToEdit.value = item;
     openDeleteModal.value = true;
   }
-
+  if (id == 2) {
+    openStudentsModal.value = true;
+  }
   if (id == 3) {
     localStorage.setItem("course_id", item.id);
     router.push(`/course/${item.id}/disciplines`);
@@ -90,6 +93,14 @@ const handleSelect = (item, id) => {
     @update:refresh="refreshList($event)"
     :info="courseToEdit"
   />
+
+  <CourseStudents
+    :open="openStudentsModal"
+    @update:open="cancel($event)"
+    @update:refresh="refreshList($event)"
+    :info="courseToEdit"
+  />
+
   <DeleteCourseModal
     :open="openDeleteModal"
     @update:open="cancel($event)"

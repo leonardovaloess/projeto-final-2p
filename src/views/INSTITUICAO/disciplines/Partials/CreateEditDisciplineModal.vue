@@ -211,12 +211,22 @@ onMounted(async () => {
         </div>
       </div>
       <div class="body" v-else>
-        <label>Nome do Curso</label>
-        <BaseInput
-          class="input"
-          v-model="courseToEditInModal.nome"
-          placeholder="Nome da Disciplina:"
-        />
+        <div class="flex flex-column gap-05">
+          <label>Nome do Curso</label>
+          <BaseInput
+            class="input"
+            v-model="courseToEditInModal.nome"
+            placeholder="Nome da Disciplina:"
+          />
+        </div>
+        <div class="flex flex-column gap-05">
+          <label>Capa da Disciplina:</label>
+          <BaseInput
+            class="input"
+            v-model="courseToEditInModal.disciplina_img"
+            placeholder="Url da Imagem..."
+          />
+        </div>
       </div>
     </template>
     <template v-slot:footer>

@@ -6,10 +6,10 @@ import { ref } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
-import { useCourseStore } from "@/stores/course";
+import { useDisciplineStore } from "@/stores/discipline";
 
-const courseStore = useCourseStore();
-const { deleteCourse } = courseStore;
+const disciplineStore = useDisciplineStore();
+const { deleteDiscipline } = disciplineStore;
 
 const props = defineProps({
   open: Boolean,
@@ -27,13 +27,13 @@ const success = ref(false);
 const close = ref(props.open);
 
 const handlePayload = async () => {
-  const response = await deleteCourse(courseToEditInModal.value.id);
+  const response = await deleteDiscipline(courseToEditInModal.value.id);
 
   if (response) {
     close.value = false;
     emit("update:open", false);
     emit("update:refresh", true);
-    textSuccess.value = "Curso deletado com Sucesso!";
+    textSuccess.value = "Disciplina deletada com Sucesso!";
 
     success.value = true;
 
@@ -47,7 +47,7 @@ const handlePayload = async () => {
       error.value = false;
     }, 3000);
 
-    textError.value = "Não foi possivel deletar o Curso";
+    textError.value = "Não foi possivel deletar a Disciplina";
   }
 };
 
@@ -80,13 +80,13 @@ const handleClose = () => {
   <BaseModal :open="close" :closeIcon="true">
     <template v-slot:header>
       <div class="header">
-        <h1>Remover Curso</h1>
+        <h1>Remover Disciplina</h1>
       </div>
     </template>
     <template v-slot:body>
       <div class="body" v-if="courseToEditInModal">
         <p>
-          Você tem certeza que deseja excluir o Curso:
+          Você tem certeza que deseja excluir a Disciplina:
           <span style="font-weight: 600">{{ courseToEditInModal.nome }}</span
           >?
         </p>

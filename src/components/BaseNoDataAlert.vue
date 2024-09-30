@@ -2,12 +2,21 @@
 const props = defineProps({
   title: String,
   text: String,
+  width: {
+    type: String,
+    default: 350,
+  },
 });
 </script>
 
 <template>
   <div class="container">
-    <img src="../assets/img/png/no-data-rafiki.png" alt="" />
+    <img
+      src="../assets/img/png/no-data-rafiki.png"
+      alt=""
+      :width="props.width + 'px'"
+    />
+
     <h1>{{ props.title }}</h1>
     <p>{{ props.text }}</p>
   </div>
@@ -19,9 +28,6 @@ const props = defineProps({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  img {
-    width: 350px;
-  }
 
   h1 {
     font-size: 28px;
