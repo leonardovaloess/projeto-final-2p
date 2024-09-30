@@ -70,10 +70,6 @@ const handleSelect = (item, id) => {
     router.push(`/course/${item.id}/disciplines`);
   }
 };
-
-onMounted(() => {
-  console.log(props.fields);
-});
 </script>
 
 <template>

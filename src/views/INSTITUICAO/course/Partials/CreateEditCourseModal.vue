@@ -30,6 +30,7 @@ const payload = ref({
   nome: "",
   descricao: "aaa",
   periodos: "1",
+  curso_img: "",
 });
 
 const handlePayload = async () => {
@@ -52,6 +53,7 @@ const handlePayload = async () => {
           nome: "",
           descricao: "aaa",
           periodos: "1",
+          curso_img: "",
         };
       } else {
         error.value = true;
@@ -138,7 +140,13 @@ const handleClose = () => {
         <BaseInput
           class="input"
           v-model="payload.nome"
-          placeholder="Nome do Curso:"
+          placeholder="Nome do Curso..."
+        />
+        <label>Capa do Curso:</label>
+        <BaseInput
+          class="input"
+          v-model="payload.curso_img"
+          placeholder="Url da imagem...:"
         />
       </div>
       <div class="body" v-else>
@@ -147,7 +155,14 @@ const handleClose = () => {
           class="input"
           v-model="courseToEditInModal.nome"
           label="Nome do professor"
-          placeholder="título:"
+          placeholder="Nome do Curso..."
+        />
+        <label>Capa do Curso:</label>
+        <BaseInput
+          class="input"
+          v-model="courseToEditInModal.curso_img"
+          label="Url da imagem:"
+          placeholder="Url da imagem..."
         />
       </div>
     </template>

@@ -106,7 +106,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="tasks" v-if="!loading">
-      <div v-if="tableData">
+      <div v-if="tableData.length > 0">
         <BaseTable :fields="fields" :has-options="true">
           <template v-slot:body>
             <tr v-for="(row, index) in filteredData" :key="index">

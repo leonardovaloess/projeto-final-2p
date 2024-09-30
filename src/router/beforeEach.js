@@ -9,7 +9,7 @@ export default async (to) => {
   const userRoutes = {
     1: ["Perfil"], // Rotas permitidas para user_type_id = 1
     2: ["Perfil"], // Rotas permitidas para user_type_id = 2
-    3: ["Cursos", "Alunos", "Professors", "Perfil", "Disciplinas"], // Rotas permitidas para user_type_id = 3
+    3: ["Cursos", "Alunos", "Professores", "Perfil", "Disciplinas"], // Rotas permitidas para user_type_id = 3
   };
 
   // Redireciona para o home se estiver logado e tentar acessar a página de login

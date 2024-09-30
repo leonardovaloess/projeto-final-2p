@@ -1,0 +1,65 @@
+ENDPOINTS PARA PROJETO
+
+/cursos
+
+payload {
+nome,
+descrição,
+períodos,
+curso_img "pode ser null"
+}
+
+/disciplinas
+
+payload {
+nome
+carga_horaria
+curso_id
+professor_id
+}
+
+
+/disciplinas/{curso_id} = 'retorna as disciplinas cadastradas no curso'
+
+
+/alunosCursos .get('retorna todos os cursos com os alunos cadastrados numa array')
+
+/alunosCursos/{curso_id} = 'retorna todos os alunos cadastrados no curso"
+
+payload {
+aluno_id
+curso_id
+
+}
+
+
+ENDPOINTS PARA PROFESSORES
+
+/tarefas
+
+payload {
+nome
+descrição
+disciplina_id
+data entrega
+}
+
+/notas
+
+payload {
+nota,
+aluno_id,
+tarefa_id
+}
+
+
+ENDPOINTS PARA ALUNOS
+
+/myNotas/{tarefa_id} 
+
+/myTarefas
+/myTarefas/{disciplina_id}
+
+/myDisciplinas
+/myCurso
+
