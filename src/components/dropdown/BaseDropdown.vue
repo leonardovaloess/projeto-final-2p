@@ -8,6 +8,10 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  whiteIcon: {
+    type: Boolean,
+    default: false,
+  },
   width: {
     type: String,
     default: "125px",
@@ -36,6 +40,7 @@ const props = defineProps({
           :fill="props.whiteIcon ? '#fff' : 'black'"
         />
       </svg>
+      {{ whiteIcon }}
     </div>
     <div class="dropdown-content" :style="{ minWidth: props.width }">
       <div

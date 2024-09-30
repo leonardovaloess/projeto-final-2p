@@ -81,9 +81,10 @@ onMounted(() => {
     <BaseDropdown
       :options="options"
       class="dropdown-card"
-      @select="(option) => handleSelect(course, option.id)"
+      :white-icon="true"
+      @select="(option) => handleSelect(discipline, option.id)"
     />
-    <h2 class="w-100">{{ course.nome }}</h2>
+    <h2 class="w-100">{{ discipline.nome }}</h2>
   </div>
 
   <CreateEditCourseModal

@@ -3,14 +3,19 @@ import BaseButton from "@/components/buttons/BaseButton.vue";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseSelect from "@/components/select/BaseSelect.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
-import { useCourseStore } from "@/stores/course";
+import { useDisciplineStore } from "@/stores/discipline";
+import { useUserStore } from "@/stores/users";
+import { useRoute } from "vue-router";
 
-const courseStore = useCourseStore();
-const { createCourse, editCourse } = courseStore;
+const userStore = useUserStore();
+const { getProfessores } = userStore;
+
+const disciplineStore = useDisciplineStore();
+const { createDiscipline, editDiscipline } = disciplineStore;
 
 const props = defineProps({
   open: Boolean,
@@ -21,6 +26,8 @@ const selectValue = ref({
   label: "",
   value: null,
 });
+
+const route = useRoute();
 
 const error = ref(false);
 const textSuccess = ref("");
@@ -34,28 +41,13 @@ const close = ref(props.open);
 
 const payload = ref({
   nome: "",
-  descricao: "aaa",
-  periodos: "1",
+  professor_id: "",
+  carga_horaria: "999",
+  curso_id: route.params.course_id,
+  disciplina_img: "",
 });
 
-const options = ref([
-  {
-    label: "opcao 1",
-    value: 1,
-  },
-  {
-    label: "opcao 2",
-    value: 2,
-  },
-  {
-    label: "opcao 3",
-    value: 1,
-  },
-  {
-    label: "opcao 4",
-    value: 2,
-  },
-]);
+const options = ref([]);
 
 const filteredOptions = computed(() => {
   if (!selectValue.value.label) return options.value;
@@ -66,12 +58,12 @@ const filteredOptions = computed(() => {
 
 const handlePayload = async () => {
   if (!props.info) {
-    if (payload.value.nome) {
-      const course = await createCourse(payload.value);
+    if (payload.value.nome && payload.value.professor_id) {
+      const discipline = await createDiscipline(payload.value);
 
-      if (course) {
+      if (discipline) {
         close.value = false;
-        textSuccess.value = "course Criado com Sucesso!";
+        textSuccess.value = "Disciplina Criado com Sucesso!";
         emit("update:open", false);
         emit("update:refresh", true);
         success.value = true;
@@ -82,8 +74,10 @@ const handlePayload = async () => {
 
         payload.value = {
           nome: "",
-          descricao: "aaa",
-          periodos: "1",
+          professor_id: "",
+          carga_horaria: "999",
+          curso_id: route.params.course_id,
+          disciplina_img: "",
         };
       } else {
         error.value = true;
@@ -92,7 +86,7 @@ const handlePayload = async () => {
           error.value = false;
         }, 3000);
 
-        textError.value = "Não foi possivel cadastrar o Curso";
+        textError.value = "Não foi possivel cadastrar a Disciplina";
       }
     } else {
       error.value = true;
@@ -102,7 +96,7 @@ const handlePayload = async () => {
       }, 3000);
     }
   } else {
-    const response = await editCourse(
+    const response = await editDiscipline(
       courseToEditInModal.value.id,
       courseToEditInModal.value
     );
@@ -130,10 +124,29 @@ const handlePayload = async () => {
   }
 };
 
+const initFunction = async () => {
+  console.log(route.params.course_id);
+
+  const professors = await getProfessores();
+  professors.forEach((professor) => {
+    options.value.push({
+      label: professor.nome,
+      value: professor.id,
+    });
+  });
+};
+
 watch(
   () => props.open,
   (newVal) => {
     close.value = newVal;
+  }
+);
+
+watch(
+  () => selectValue.value,
+  (newVal) => {
+    payload.value.professor_id = newVal.value;
   }
 );
 
@@ -153,6 +166,10 @@ const handleClose = () => {
   close.value = false;
   emit("update:open", false);
 };
+
+onMounted(async () => {
+  await initFunction();
+});
 </script>
 
 <template>
@@ -163,6 +180,9 @@ const handleClose = () => {
           {{ props.info ? "Editar Disciplina" : "Cadastrar Disciplina" }}
         </h1>
       </div>
+      <pre>
+        {{ payload }}
+      </pre>
     </template>
     <template v-slot:body>
       <div class="body" v-if="!props.info">
@@ -171,7 +191,7 @@ const handleClose = () => {
           <BaseInput
             class="input"
             v-model="payload.nome"
-            placeholder="Nome da Disciplina:"
+            placeholder="Nome da Disciplina..."
           />
         </div>
 
@@ -182,6 +202,14 @@ const handleClose = () => {
             :options="filteredOptions"
             v-model="selectValue.label"
             @select="selectValue = $event"
+          />
+        </div>
+        <div class="flex flex-column gap-05">
+          <label>Capa da Disciplina:</label>
+          <BaseInput
+            class="input"
+            v-model="payload.disciplina_img"
+            placeholder="Url da Imagem..."
           />
         </div>
       </div>

@@ -77,8 +77,10 @@ const handleSelect = (item, id) => {
     <BaseDropdown
       :options="options"
       class="dropdown-card"
+      :white-icon="true"
       @select="(option) => handleSelect(course, option.id)"
     />
+    <img :src="course.curso_img" alt="" />
     <h2 class="w-100">{{ course.nome }}</h2>
   </div>
 
@@ -104,6 +106,11 @@ const handleSelect = (item, id) => {
   background-color: rgb(255, 255, 255);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.221);
 
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   .dropdown-card {
     position: absolute;
     left: 10px;
@@ -116,7 +123,7 @@ const handleSelect = (item, id) => {
     font-size: 16px;
     position: absolute;
     padding: 10px;
-    background-color: rgba(214, 214, 214, 0.199);
+    background-color: rgba(214, 214, 214, 0.829);
     bottom: 0;
   }
 }
