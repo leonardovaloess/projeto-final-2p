@@ -41,16 +41,6 @@ const options = [
     name: "Excluir",
     icon: "delete",
   },
-  {
-    id: 2,
-    name: "Alunos",
-    icon: "view",
-  },
-  {
-    id: 3,
-    name: "Disciplinas",
-    icon: "eye",
-  },
 ];
 
 const handleSelect = (item, id) => {
@@ -84,6 +74,7 @@ onMounted(() => {
       :white-icon="true"
       @select="(option) => handleSelect(discipline, option.id)"
     />
+    <img :src="discipline.disciplina_img" alt="" />
     <h2 class="w-100">{{ discipline.nome }}</h2>
   </div>
 
@@ -108,7 +99,11 @@ onMounted(() => {
   height: 250px;
   background-color: rgb(255, 255, 255);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.221);
-
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   .dropdown-card {
     position: absolute;
     left: 10px;
@@ -121,7 +116,7 @@ onMounted(() => {
     font-size: 16px;
     position: absolute;
     padding: 10px;
-    background-color: rgba(214, 214, 214, 0.199);
+    background-color: rgba(214, 214, 214, 0.894);
     bottom: 0;
   }
 }

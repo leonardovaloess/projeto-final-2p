@@ -34,6 +34,20 @@ const handleSelect = (option) => {
       v-bind="$attrs"
       :disabled="props.disabled"
     />
+    <span class="select-btn">
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M23.9999 26.3438L33.8999 16.4438L36.7279 19.2718L23.9999 31.9998L11.2719 19.2718L14.0999 16.4438L23.9999 26.3438Z"
+          fill="black"
+        />
+      </svg>
+    </span>
     <div class="options-container" v-if="showOptions">
       <span
         v-for="(option, index) in props.options"
@@ -53,6 +67,12 @@ const handleSelect = (option) => {
   padding: 0 !important;
 
   z-index: 9999;
+}
+
+.select-btn {
+  position: absolute;
+  top: 12px;
+  right: 15px;
 }
 
 input {
@@ -79,8 +99,8 @@ input {
 
   span {
     width: 100%;
-    padding: 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.324);
+    padding: 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.104);
 
     &:last-of-type {
       border: none;

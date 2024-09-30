@@ -180,9 +180,6 @@ onMounted(async () => {
           {{ props.info ? "Editar Disciplina" : "Cadastrar Disciplina" }}
         </h1>
       </div>
-      <pre>
-        {{ payload }}
-      </pre>
     </template>
     <template v-slot:body>
       <div class="body" v-if="!props.info">

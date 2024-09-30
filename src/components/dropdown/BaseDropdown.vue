@@ -40,7 +40,6 @@ const props = defineProps({
           :fill="props.whiteIcon ? '#fff' : 'black'"
         />
       </svg>
-      {{ whiteIcon }}
     </div>
     <div class="dropdown-content" :style="{ minWidth: props.width }">
       <div

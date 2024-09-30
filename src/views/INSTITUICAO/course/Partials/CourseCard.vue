@@ -104,7 +104,8 @@ const handleSelect = (item, id) => {
   width: 250px;
   height: 250px;
   background-color: rgb(255, 255, 255);
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.221);
+  box-shadow: 1px 3px 16px rgba(0, 0, 0, 0.219);
+  border-radius: 6px;
 
   img {
     width: 100%;
