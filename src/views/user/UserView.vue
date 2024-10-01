@@ -8,9 +8,12 @@ import { useUserStore } from "@/stores/users";
 
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
+import UserImageModal from "./partials/UserImageModal.vue";
 
 const userStore = useUserStore();
 const { getUserProfile, editUserProfile, editUserPassword } = userStore;
+
+const openModal = ref(false);
 
 const textSuccess = ref(null);
 const textError = ref(null);
@@ -51,6 +54,15 @@ const handleUpdate = async () => {
   }
 };
 
+const cancel = (ev) => {
+  openModal.value = ev;
+};
+
+const refreshList = async (event) => {
+  openModal.value = false;
+  await initFunction();
+};
+
 const handleUpdatePassword = async () => {
   const payload = {
     senha_atual: actualPassword.value,
@@ -86,7 +98,22 @@ onMounted(async () => {
       v-if="!loading && user"
       class="container pt-5 flex flex-column justify-center"
     >
-      <h2 class="mb-3">Dados do Usuário:</h2>
+      <div class="user-img flex gap-1 align-center mb-5">
+        <img
+          src="../../assets/img/png/user_default_large.png"
+          alt=""
+          width="200px"
+          v-if="!user.user_img"
+        />
+        <img
+          :src="user.user_img"
+          alt=""
+          v-else
+          style="width: 200px; height: 200px; object-fit: cover"
+        />
+        <BaseButton label="Alterar Foto" @click="openModal = true" />
+      </div>
+      <h2 class="mt-4 mb-3">Dados do Usuário:</h2>
       <div class="input-container mb-3">
         <label>Nome de Usuário:</label>
         <BaseInput class="input" v-model="user.nome" :disabled="disableEdit" />
@@ -129,6 +156,13 @@ onMounted(async () => {
     <div v-else class="loading">
       <BaseLoading class="loading-icon" />
     </div>
+
+    <UserImageModal
+      :open="openModal"
+      @update:open="cancel($event)"
+      @update:refresh="refreshList($event)"
+      :info="user"
+    />
 
     <BaseAlertError
       v-if="error"
