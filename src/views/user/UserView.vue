@@ -109,7 +109,12 @@ onMounted(async () => {
           :src="user.user_img"
           alt=""
           v-else
-          style="width: 200px; height: 200px; object-fit: cover"
+          style="
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+          "
         />
         <BaseButton label="Alterar Foto" @click="openModal = true" />
       </div>

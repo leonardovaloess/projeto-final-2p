@@ -237,15 +237,21 @@ watch(
                 :key="index"
               >
                 <img
-                  v-if="usuario.aluno_img"
-                  :src="usuario.aluno_img"
+                  v-if="usuario.user_img"
+                  :src="usuario.user_img"
                   alt="usuario img"
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                  "
                 />
                 <img
                   v-else
                   src="../../../../assets/img/png/user_default.png"
                   alt=""
-                  width="30px"
+                  width="40px"
                 />
                 <span>{{ usuario.nome }}</span>
               </div>
