@@ -297,7 +297,7 @@ watch(
 
 <style scoped lang="scss">
 .user-card {
-  padding: 15px;
+  padding: 10px;
   border: 2px solid rgb(201, 201, 201);
   border-radius: 10px;
   display: flex;
