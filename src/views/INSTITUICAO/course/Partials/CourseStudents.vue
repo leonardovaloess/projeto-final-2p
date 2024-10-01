@@ -382,5 +382,18 @@ h4 {
     padding: 10px 20px 10px 40px;
     border-left: 1px solid rgba(65, 65, 65, 0.31);
   }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    height: 800px;
+    .left,
+    .right {
+      height: 600px !important;
+      width: 100%;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+  }
 }
 </style>
