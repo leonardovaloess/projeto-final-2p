@@ -13,7 +13,11 @@ import { useUserStore } from "@/stores/users";
 import BaseLoading from "@/components/BaseLoading.vue";
 
 const courseStore = useCourseStore();
-const { cadastrarAlunosNoCurso, alunosCadastradosNoCurso } = courseStore;
+const {
+  cadastrarAlunosNoCurso,
+  alunosCadastradosNoCurso,
+  removerAlunoDoCurso,
+} = courseStore;
 
 const userStore = useUserStore();
 const { getAlunos } = userStore;
@@ -27,12 +31,7 @@ const filteredOptions = computed(() => {
 
 const loading = ref(false);
 
-const options = ref([
-  {
-    label: "Adicionar Todos",
-    value: "todos",
-  },
-]);
+const options = ref([]);
 
 const props = defineProps({
   open: Boolean,
@@ -71,10 +70,11 @@ const handlePayload = async () => {
     const response = await cadastrarAlunosNoCurso(payload);
 
     if (response) {
-      close.value = false;
-      emit("update:open", false);
-      emit("update:refresh", true);
-      textSuccess.value = "Curso deletado com Sucesso!";
+      alunosSelecionados.value = [];
+
+      await initFunction();
+
+      textSuccess.value = "Alunos Cadastrados com Sucesso!";
 
       success.value = true;
 
@@ -88,7 +88,7 @@ const handlePayload = async () => {
         error.value = false;
       }, 3000);
 
-      textError.value = "Não foi possivel deletar o Curso";
+      textError.value = "Não foi possivel Cadastrar os Alunos";
     }
   }
 };
@@ -114,6 +114,33 @@ watch(
 const handleClose = () => {
   close.value = false;
   emit("update:open", false);
+};
+
+const handleRemoveStudent = async (id) => {
+  const payload = {
+    aluno_id: id,
+  };
+
+  const response = await removerAlunoDoCurso(payload, props.curso_id);
+
+  if (response) {
+    await initFunction();
+    textSuccess.value = "Aluno removido com Sucesso!";
+
+    success.value = true;
+
+    setTimeout(() => {
+      success.value = false;
+    }, 3000);
+  } else {
+    error.value = true;
+
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
+
+    textError.value = "Não foi possivel remover o Aluno";
+  }
 };
 
 const initFunction = async () => {
@@ -236,24 +263,40 @@ watch(
                 v-for="(usuario, index) in usuariosCadastrados"
                 :key="index"
               >
-                <img
-                  v-if="usuario.user_img"
-                  :src="usuario.user_img"
-                  alt="usuario img"
-                  style="
-                    width: 40px;
-                    height: 40px;
-                    object-fit: cover;
-                    border-radius: 50%;
-                  "
-                />
-                <img
-                  v-else
-                  src="../../../../assets/img/png/user_default.png"
-                  alt=""
-                  width="40px"
-                />
-                <span>{{ usuario.nome }}</span>
+                <div class="flex gap-05 align-center">
+                  <img
+                    v-if="usuario.user_img"
+                    :src="usuario.user_img"
+                    alt="usuario img"
+                    style="
+                      width: 40px;
+                      height: 40px;
+                      object-fit: cover;
+                      border-radius: 50%;
+                    "
+                  />
+                  <img
+                    v-else
+                    src="../../../../assets/img/png/user_default.png"
+                    alt=""
+                    width="40px"
+                  />
+                  <span>{{ usuario.nome }}</span>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 48 48"
+                  style="cursor: pointer"
+                  fill="none"
+                  @click="handleRemoveStudent(usuario.id)"
+                >
+                  <path
+                    d="M14 12V6C14 5.46957 14.2107 4.96086 14.5858 4.58579C14.9609 4.21071 15.4696 4 16 4H32C32.5304 4 33.0391 4.21071 33.4142 4.58579C33.7893 4.96086 34 5.46957 34 6V12H44V16H40V42C40 42.5304 39.7893 43.0392 39.4142 43.4142C39.0391 43.7893 38.5304 44 38 44H10C9.46957 44 8.96086 43.7893 8.58579 43.4142C8.21071 43.0392 8 42.5304 8 42V16H4V12H14ZM18 8V12H30V8H18Z"
+                    fill="red"
+                  />
+                </svg>
               </div>
             </div>
             <div v-else>
@@ -302,6 +345,8 @@ watch(
   border-radius: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-right: 14px;
   gap: 10px;
 }
 

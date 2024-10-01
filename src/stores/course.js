@@ -47,6 +47,15 @@ export const useCourseStore = defineStore("course", () => {
     }
   }
 
+  async function removerAlunoDoCurso(payload, id) {
+    try {
+      const response = await api.course.removerAlunoDoCurso(payload, id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function alunosCadastradosNoCurso(curso_id) {
     try {
       const response = await api.course.alunosCadastradosNoCurso(curso_id);
@@ -63,5 +72,6 @@ export const useCourseStore = defineStore("course", () => {
     deleteCourse,
     cadastrarAlunosNoCurso,
     alunosCadastradosNoCurso,
+    removerAlunoDoCurso,
   };
 });

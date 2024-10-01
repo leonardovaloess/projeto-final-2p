@@ -114,8 +114,8 @@ const handleSelect = (item, id) => {
 <style scoped lang="scss">
 .card-container {
   position: relative;
-  width: 250px;
-  height: 250px;
+  width: 240px;
+  height: 240px;
   background-color: rgb(255, 255, 255);
   box-shadow: 1px 3px 16px rgba(0, 0, 0, 0.219);
   border-radius: 6px;

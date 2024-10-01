@@ -14,6 +14,9 @@ export default (httpClient) => ({
   cadastrarAlunosNoCurso: (data) => {
     return httpClient.post(`/alunosCursos`, data); //curso_id, alunos => [{aluno_id: 1}, {aluno_id: 2}]
   },
+  removerAlunoDoCurso: (data, id) => {
+    return httpClient.delete(`/alunosCursos/${id}`, data); //curso_id, alunos => [{aluno_id: 1}, {aluno_id: 2}]
+  },
   alunosCadastradosNoCurso: (curso_id) => {
     return httpClient.get(`/alunosCursos/${curso_id}`); //curso_id, alunos => [{aluno_id: 1}, {aluno_id: 2}]
   },
