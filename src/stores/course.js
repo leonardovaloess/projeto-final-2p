@@ -38,10 +38,30 @@ export const useCourseStore = defineStore("course", () => {
     }
   }
 
+  async function cadastrarAlunosNoCurso(payload) {
+    try {
+      const response = await api.course.cadastrarAlunosNoCurso(payload);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function alunosCadastradosNoCurso(curso_id) {
+    try {
+      const response = await api.course.alunosCadastradosNoCurso(curso_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
     createCourse,
     getCourses,
     editCourse,
     deleteCourse,
+    cadastrarAlunosNoCurso,
+    alunosCadastradosNoCurso,
   };
 });

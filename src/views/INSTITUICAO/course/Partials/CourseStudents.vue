@@ -1,6 +1,6 @@
 <script setup>
 import BaseButton from "@/components/buttons/BaseButton.vue";
-import BaseInput from "@/components/input/BaseInput.vue";
+
 import BaseModal from "@/components/modal/BaseModal.vue";
 import { onMounted, ref, computed } from "vue";
 import { watch } from "vue";
@@ -10,9 +10,10 @@ import { useCourseStore } from "@/stores/course";
 import BaseSelect from "@/components/select/BaseSelect.vue";
 import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
 import { useUserStore } from "@/stores/users";
+import BaseLoading from "@/components/BaseLoading.vue";
 
 const courseStore = useCourseStore();
-const { cadastrarAluno } = courseStore;
+const { cadastrarAlunosNoCurso, alunosCadastradosNoCurso } = courseStore;
 
 const userStore = useUserStore();
 const { getAlunos } = userStore;
@@ -24,6 +25,8 @@ const filteredOptions = computed(() => {
   );
 });
 
+const loading = ref(false);
+
 const options = ref([
   {
     label: "Adicionar Todos",
@@ -33,6 +36,7 @@ const options = ref([
 
 const props = defineProps({
   open: Boolean,
+  curso_id: Number,
 });
 
 const selectValue = ref({
@@ -54,30 +58,40 @@ const success = ref(false);
 const close = ref(props.open);
 
 const handlePayload = async () => {
-  const response = await deleteCourse(courseToEditInModal.value.id);
+  if (alunosSelecionados.value.length > 0) {
+    const payload = {
+      curso_id: props.curso_id,
+      alunos_id: [],
+    };
 
-  if (response) {
-    close.value = false;
-    emit("update:open", false);
-    emit("update:refresh", true);
-    textSuccess.value = "Curso deletado com Sucesso!";
+    alunosSelecionados.value.forEach((aluno) => {
+      payload.alunos_id.push({ aluno_id: aluno.value });
+    });
 
-    success.value = true;
+    const response = await cadastrarAlunosNoCurso(payload);
 
-    setTimeout(() => {
-      success.value = false;
-    }, 3000);
-  } else {
-    error.value = true;
+    if (response) {
+      close.value = false;
+      emit("update:open", false);
+      emit("update:refresh", true);
+      textSuccess.value = "Curso deletado com Sucesso!";
 
-    setTimeout(() => {
-      error.value = false;
-    }, 3000);
+      success.value = true;
 
-    textError.value = "Não foi possivel deletar o Curso";
+      setTimeout(() => {
+        success.value = false;
+      }, 3000);
+    } else {
+      error.value = true;
+
+      setTimeout(() => {
+        error.value = false;
+      }, 3000);
+
+      textError.value = "Não foi possivel deletar o Curso";
+    }
   }
 };
-
 watch(
   () => props.open,
   (newVal) => {
@@ -103,7 +117,9 @@ const handleClose = () => {
 };
 
 const initFunction = async () => {
+  loading.value = true;
   const alunos = await getAlunos();
+  usuariosCadastrados.value = await alunosCadastradosNoCurso(props.curso_id);
 
   alunos.forEach((aluno) => {
     options.value.push({
@@ -111,11 +127,17 @@ const initFunction = async () => {
       value: aluno.id,
     });
   });
+  loading.value = false;
 };
 
-onMounted(async () => {
-  await initFunction();
-});
+watch(
+  () => props.curso_id,
+  async (newVal) => {
+    if (newVal !== null) {
+      await initFunction();
+    }
+  }
+);
 
 watch(
   () => selectValue.value.value,
@@ -203,15 +225,45 @@ watch(
           <div class="ALunos-para-cadastrar"></div>
         </div>
         <div class="right">
-          <h4>Alunos Cadastrados</h4>
-          <div
-            class="flex flex-column gap-1"
-            v-if="usuariosCadastrados.length > 0"
-          >
-            <div class="user-card"></div>
+          <div v-if="!loading">
+            <h4 class="mb-4">Alunos Cadastrados</h4>
+            <div
+              class="flex flex-column gap-1"
+              v-if="usuariosCadastrados.length > 0"
+            >
+              <div
+                class="user-card"
+                v-for="(usuario, index) in usuariosCadastrados"
+                :key="index"
+              >
+                <img
+                  v-if="usuario.aluno_img"
+                  :src="usuario.aluno_img"
+                  alt="usuario img"
+                />
+                <img
+                  v-else
+                  src="../../../../assets/img/png/user_default.png"
+                  alt=""
+                  width="30px"
+                />
+                <span>{{ usuario.nome }}</span>
+              </div>
+            </div>
+            <div v-else>
+              <BaseNoDataAlert width="300" text="Nenhum aluno cadastrado" />
+            </div>
           </div>
-          <div v-else>
-            <BaseNoDataAlert width="300" text="Nenhum aluno cadastrado" />
+          <div
+            v-else
+            class="flex w-100 align-center justify-center"
+            style="height: 400px; position: relative"
+          >
+            <h4 class="mb-4" style="position: absolute; top: 0">
+              Alunos Cadastrados
+            </h4>
+
+            <BaseLoading />
           </div>
         </div>
       </div>
@@ -219,7 +271,12 @@ watch(
     <template v-slot:footer>
       <div class="footer flex gap-1">
         <BaseButton class="cancel btn" label="Cancelar" @click="handleClose" />
-        <BaseButton class="btn" label="Confirmar" @click="handlePayload" />
+        <BaseButton
+          class="btn"
+          label="Cadastrar"
+          @click="handlePayload"
+          :disabled="alunosSelecionados.length < 0"
+        />
       </div>
     </template>
   </BaseModal>
@@ -233,6 +290,15 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.user-card {
+  padding: 15px;
+  border: 2px solid rgb(201, 201, 201);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .aluno-selecionado-card {
   padding: 15px;
   border: 2px solid rgb(201, 201, 201);
@@ -297,12 +363,16 @@ h4 {
   overflow-y: auto;
   .left {
     width: 50%;
+    height: 400px;
+    overflow-y: auto;
     padding: 10px 40px 10px 20px;
     border-right: 1px solid rgba(65, 65, 65, 0.31);
   }
 
   .right {
     width: 50%;
+    height: 400px;
+    overflow-y: auto;
     padding: 10px 20px 10px 40px;
     border-left: 1px solid rgba(65, 65, 65, 0.31);
   }

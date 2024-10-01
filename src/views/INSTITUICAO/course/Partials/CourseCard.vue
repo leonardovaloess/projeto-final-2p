@@ -22,6 +22,7 @@ const props = defineProps({
 const cancel = (ev) => {
   openModal.value = ev;
   openDeleteModal.value = ev;
+  openStudentsModal.value = ev;
   courseToEdit.value = null;
 };
 
@@ -66,6 +67,7 @@ const handleSelect = (item, id) => {
     openDeleteModal.value = true;
   }
   if (id == 2) {
+    courseToEdit.value = item.id;
     openStudentsModal.value = true;
   }
   if (id == 3) {
@@ -98,7 +100,7 @@ const handleSelect = (item, id) => {
     :open="openStudentsModal"
     @update:open="cancel($event)"
     @update:refresh="refreshList($event)"
-    :info="courseToEdit"
+    :curso_id="courseToEdit"
   />
 
   <DeleteCourseModal
