@@ -172,6 +172,14 @@ h2 {
   overflow-x: auto;
 }
 
+.col-options {
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 table {
   width: 100%; /* Ajusta a largura da tabela para o container */
   border-collapse: collapse;
@@ -180,6 +188,8 @@ table {
   overflow-x: auto;
   border-radius: 10px;
 }
+
+.col-options,
 th,
 td {
   padding: 20px;
@@ -205,6 +215,12 @@ caption {
   margin: 10px;
 }
 /* Define uma altura fixa para as linhas da tabela */
+.col-options {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
 
 .m-0 {
   margin: 0;

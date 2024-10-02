@@ -17,7 +17,7 @@ onMounted(() => {
       <thead>
         <tr>
           <th v-for="field in fields" :key="field.key">{{ field.label }}</th>
-          <th v-if="props.hasOptions == true">OPÇÕES</th>
+          <th class="col-options" v-if="props.hasOptions == true">OPÇÕES</th>
         </tr>
       </thead>
       <tbody>

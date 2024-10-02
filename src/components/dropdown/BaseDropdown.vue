@@ -29,8 +29,8 @@ const props = defineProps({
     <div class="dropdown-btn">
       <svg
         class="pointer hover-fx"
-        width="18"
-        height="18"
+        width="22"
+        height="22"
         viewBox="0 0 16 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -61,29 +61,28 @@ const props = defineProps({
 .dropdown {
   position: relative;
   z-index: 10;
+  height: 24px;
   outline: none;
-  width: 100%;
-  margin-top: -10px;
-  left: 50;
+  width: 38px;
 }
 
 .dropdown-btn {
-  color: var(--color-white);
+  color: #fff;
   position: absolute;
   cursor: pointer;
-  width: 100%;
+
   z-index: 0;
 }
 
 .ghost {
   position: absolute;
-  right: 0;
+  width: 30px;
 }
 
 .dropdown-content {
   position: absolute;
   top: -20px;
-  left: 20px;
+  right: 30px;
   background-color: #fff;
   box-shadow: 0px 3px 5px rgba(9, 30, 66, 0.2);
   border-radius: 8px;

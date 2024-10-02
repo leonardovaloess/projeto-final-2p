@@ -127,8 +127,8 @@ const handleSelect = (item, id) => {
   }
   .dropdown-card {
     position: absolute;
-    left: 10px;
-    top: 20px;
+    right: 0px;
+    top: 14px;
   }
 
   h2 {
