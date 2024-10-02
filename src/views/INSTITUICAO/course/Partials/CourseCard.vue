@@ -128,7 +128,7 @@ const handleSelect = (item, id) => {
   .dropdown-card {
     position: absolute;
     right: 0px;
-    top: 14px;
+    top: 15px;
   }
 
   h2 {
@@ -137,7 +137,7 @@ const handleSelect = (item, id) => {
     font-size: 16px;
     position: absolute;
     padding: 10px;
-    background-color: rgba(214, 214, 214, 0.829);
+    background-color: rgb(255, 255, 255);
     bottom: 0;
   }
 }

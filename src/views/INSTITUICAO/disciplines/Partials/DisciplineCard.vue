@@ -106,8 +106,8 @@ onMounted(() => {
   }
   .dropdown-card {
     position: absolute;
-    left: 10px;
-    top: 20px;
+    right: 0px;
+    top: 15px;
   }
 
   h2 {
@@ -116,7 +116,7 @@ onMounted(() => {
     font-size: 16px;
     position: absolute;
     padding: 10px;
-    background-color: rgba(214, 214, 214, 0.894);
+    background-color: rgb(255, 255, 255);
     bottom: 0;
   }
 }
