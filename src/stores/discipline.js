@@ -38,10 +38,20 @@ export const useDisciplineStore = defineStore("discipline", () => {
     }
   }
 
+  async function getMyDisciplines() {
+    try {
+      const response = await api.discipline.getMyDisciplines();
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
     createDiscipline,
     getDisciplines,
     editDiscipline,
     deleteDiscipline,
+    getMyDisciplines,
   };
 });

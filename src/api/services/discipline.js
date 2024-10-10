@@ -11,4 +11,8 @@ export default (httpClient) => ({
   deleteDiscipline: (id, data) => {
     return httpClient.delete(`/disciplinas/${id}`, data);
   },
+
+  getMyDisciplines: () => {
+    return httpClient.get(`/myDisciplinas`);
+  },
 });

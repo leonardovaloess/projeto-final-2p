@@ -14,6 +14,16 @@ const links1 = ref([
 
 const links2 = ref([
   {
+    label: "Home",
+    opened: true,
+    childreen: [
+      {
+        name: "Disciplinas",
+        path: "/myDisciplines",
+      },
+    ],
+  },
+  {
     label: "Usuário",
     opened: true,
     childreen: [

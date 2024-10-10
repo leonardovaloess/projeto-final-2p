@@ -56,6 +56,12 @@ const router = createRouter({
           name: "Perfil",
           component: () => import("../views/user/UserView.vue"),
         },
+        {
+          path: "/myDisciplines",
+          name: "Minhas Disciplinas",
+          component: () =>
+            import("../views/my-disciplines/MyDisciplinesView.vue"),
+        },
       ],
     },
     {
