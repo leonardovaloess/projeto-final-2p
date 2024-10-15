@@ -59,14 +59,13 @@ const handleSelect = (item, id) => {
     router.push(`/course/${item.id}/disciplines`);
   }
 };
-
-onMounted(() => {
-  console.log(props.fields);
-});
 </script>
 
 <template>
-  <div class="card-container">
+  <div
+    class="card-container"
+    @click="router.push(`/discipline/${discipline.id}`)"
+  >
     <img :src="discipline.disciplina_img" alt="" />
     <h2 class="w-100">{{ discipline.nome }}</h2>
   </div>
@@ -76,6 +75,7 @@ onMounted(() => {
 .card-container {
   position: relative;
   width: 250px;
+  cursor: pointer;
   height: 250px;
   background-color: rgb(255, 255, 255);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.221);
@@ -98,6 +98,14 @@ onMounted(() => {
     padding: 10px;
     background-color: rgb(255, 255, 255);
     bottom: 0;
+  }
+
+  &:hover {
+    transition: 0.4s;
+    opacity: 80%;
+    h2 {
+      text-decoration: underline;
+    }
   }
 }
 </style>

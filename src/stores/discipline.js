@@ -46,6 +46,25 @@ export const useDisciplineStore = defineStore("discipline", () => {
       console.log(error);
     }
   }
+  async function getDisciplineById(disciplina_id) {
+    try {
+      const response = await api.discipline.getDisciplineById(disciplina_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getDisciplineProfessor(disciplina_id) {
+    try {
+      const response = await api.discipline.getDisciplineProfessor(
+        disciplina_id
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return {
     createDiscipline,
@@ -53,5 +72,7 @@ export const useDisciplineStore = defineStore("discipline", () => {
     editDiscipline,
     deleteDiscipline,
     getMyDisciplines,
+    getDisciplineById,
+    getDisciplineProfessor,
   };
 });

@@ -62,6 +62,11 @@ const router = createRouter({
           component: () =>
             import("../views/my-disciplines/MyDisciplinesView.vue"),
         },
+        {
+          path: "/discipline/:disciplina_id",
+          name: "Disciplina",
+          component: () => import("../views/discipline/DisciplineView.vue"),
+        },
       ],
     },
     {

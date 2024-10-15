@@ -29,7 +29,6 @@ professor_id
 payload {
 aluno_id
 curso_id
-
 }
 
 

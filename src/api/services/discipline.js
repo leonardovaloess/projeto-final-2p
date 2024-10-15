@@ -15,4 +15,11 @@ export default (httpClient) => ({
   getMyDisciplines: () => {
     return httpClient.get(`/myDisciplinas`);
   },
+
+  getDisciplineById: (disciplina_id) => {
+    return httpClient.get(`/getDisciplina/${disciplina_id}`);
+  },
+  getDisciplineProfessor: (disciplina_id) => {
+    return httpClient.get(`/getProfessorDisciplina/${disciplina_id}`);
+  },
 });
