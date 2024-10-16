@@ -36,6 +36,7 @@ const options = ref([]);
 const props = defineProps({
   open: Boolean,
   curso_id: Number,
+  option_id: Number,
 });
 
 const selectValue = ref({
@@ -144,6 +145,8 @@ const handleRemoveStudent = async (id) => {
 };
 
 const initFunction = async () => {
+  options.value = [];
+
   loading.value = true;
   const alunos = await getAlunos();
   usuariosCadastrados.value = await alunosCadastradosNoCurso(props.curso_id);
@@ -160,7 +163,7 @@ const initFunction = async () => {
 watch(
   () => props.curso_id,
   async (newVal) => {
-    if (newVal !== null) {
+    if (newVal !== null && props.option_id == 2) {
       await initFunction();
     }
   }

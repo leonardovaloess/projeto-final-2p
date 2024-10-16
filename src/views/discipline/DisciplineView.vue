@@ -41,7 +41,7 @@ onMounted(async () => {
     <div class="main-container w-100" v-if="!loading">
       <div class="users-list">
         <div class="professor">
-          <h4>Professor Responsável:</h4>
+          <h4>Professor:</h4>
           <div class="UserCard" v-if="professor">
             <img v-if="professor.user_img" :src="professor.user_img" alt="" />
             <img v-else src="../../assets/img/png/user_default.png" alt="" />
@@ -88,7 +88,7 @@ onMounted(async () => {
 
     h4 {
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 400;
     }
   }
 }

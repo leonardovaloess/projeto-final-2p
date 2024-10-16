@@ -11,7 +11,7 @@ const openModal = ref(false);
 const openDeleteModal = ref(false);
 
 const openStudentsModal = ref(false);
-
+const option_id = ref(null);
 const router = useRouter();
 const courseToEdit = ref(null);
 const emit = defineEmits(["refresh"]);
@@ -20,6 +20,7 @@ const props = defineProps({
 });
 
 const cancel = (ev) => {
+  option_id.value = null;
   openModal.value = ev;
   openDeleteModal.value = ev;
   openStudentsModal.value = ev;
@@ -28,6 +29,8 @@ const cancel = (ev) => {
 
 const refreshList = async (ev) => {
   if (ev == true) {
+    option_id.value = null;
+
     openModal.value = false;
     openDeleteModal.value = false;
     emit("refresh", true);
@@ -68,6 +71,7 @@ const handleSelect = (item, id) => {
   }
   if (id == 2) {
     courseToEdit.value = item.id;
+    option_id.value = 2;
     openStudentsModal.value = true;
   }
   if (id == 3) {
@@ -98,6 +102,7 @@ const handleSelect = (item, id) => {
 
   <CourseStudents
     :open="openStudentsModal"
+    :option_id="option_id"
     @update:open="cancel($event)"
     @update:refresh="refreshList($event)"
     :curso_id="courseToEdit"
