@@ -22,6 +22,8 @@ const {
 const userStore = useUserStore();
 const { getAlunos } = userStore;
 
+const textError = ref(null);
+
 const filteredOptions = computed(() => {
   if (!selectValue.value.label) return options.value;
   return options.value.filter((item) =>

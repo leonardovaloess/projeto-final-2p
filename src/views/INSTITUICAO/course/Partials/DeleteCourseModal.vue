@@ -18,6 +18,7 @@ const props = defineProps({
 
 const error = ref(false);
 const textSuccess = ref("");
+const textError = ref("");
 
 const emit = defineEmits(["update:open", "update:refresh"]);
 
