@@ -22,14 +22,16 @@ onMounted(() => {
       </thead>
       <tbody>
         <slot name="body"></slot>
-        <slot
-          v-if="props.hasOptions == true"
-          class="col-options"
-          name="options"
-        ></slot>
+        <slot v-if="props.hasOptions == true" name="options"></slot>
       </tbody>
     </table>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.background-table {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 10px;
+}
+</style>

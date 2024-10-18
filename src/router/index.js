@@ -63,6 +63,12 @@ const router = createRouter({
             import("../views/my-disciplines/MyDisciplinesView.vue"),
         },
         {
+          path: "/myStudents",
+          name: "Meus Alunos",
+          component: () =>
+            import("../views/my-disciplines/MyDisciplinesView.vue"),
+        },
+        {
           path: "/discipline/:disciplina_id",
           name: "Disciplina",
           component: () => import("../views/discipline/DisciplineView.vue"),

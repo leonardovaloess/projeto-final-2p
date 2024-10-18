@@ -4,7 +4,7 @@ import AuthService from "./services/auth";
 import usersService from "./services/users";
 import CourseService from "./services/course";
 import DisciplineService from "./services/discipline";
-
+import taskService from "./services/task";
 const baseURL = import.meta.env.VITE_URL_API;
 
 const httpClient = axios.create({ baseURL });
@@ -67,4 +67,5 @@ export default {
   user: usersService(httpClient),
   course: CourseService(httpClient),
   discipline: DisciplineService(httpClient),
+  task: taskService(httpClient),
 };

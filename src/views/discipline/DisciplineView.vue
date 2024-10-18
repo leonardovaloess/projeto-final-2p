@@ -6,7 +6,7 @@ import BaseLoading from "@/components/BaseLoading.vue";
 import { useDisciplineStore } from "@/stores/discipline";
 import { useRoute } from "vue-router";
 import { useCourseStore } from "@/stores/course";
-
+import TaskContainer from "./partials/TaskContainer.vue";
 const disciplineStore = useDisciplineStore();
 const { getDisciplineById, getDisciplineProfessor } = disciplineStore;
 
@@ -14,6 +14,8 @@ const courseStore = useCourseStore();
 const { alunosCadastradosNoCurso } = courseStore;
 
 const route = useRoute();
+
+const menuSelectedId = ref(0);
 
 const disciplineData = ref([]);
 const alunos = ref([]);
@@ -38,7 +40,33 @@ onMounted(async () => {
 
 <template>
   <div class="page-background">
-    <div class="main-container w-100" v-if="!loading">
+    <div class="page-head mb-5" v-if="!loading">
+      <h1>{{ disciplineData.nome }}</h1>
+    </div>
+    <div class="main-container mt-1 w-100" v-if="!loading">
+      <div class="discipline-nav-menu">
+        <span
+          @click="menuSelectedId = 0"
+          :style="
+            menuSelectedId == 0
+              ? `color: black; text-decoration: underline;`
+              : ''
+          "
+          >Tarefas</span
+        >
+        <span
+          @click="menuSelectedId = 1"
+          :style="
+            menuSelectedId == 1
+              ? `color: black; text-decoration: underline;`
+              : ''
+          "
+          >Avisos</span
+        >
+      </div>
+      <div class="main-content">
+        <TaskContainer v-if="menuSelectedId == 0" />
+      </div>
       <div class="users-list">
         <div class="professor">
           <h4>Professor:</h4>
@@ -70,22 +98,58 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-.main-container {
+.page-head {
   width: 100%;
-  position: relative;
-  gap: 40px;
-  justify-content: space-around;
+
+  h1 {
+    font-size: 18px;
+    color: rgb(85, 85, 85);
+    font-weight: 500;
+  }
+
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(202, 202, 202, 0.561);
+}
+
+.main-container {
+  padding: 0 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 5fr 1.5fr;
+  gap: 60px;
+
   flex: 1;
 
   @media (max-width: 630px) {
     margin-top: 20px;
   }
 
-  .users-list {
-    width: 250px;
-    position: absolute;
-    right: 0;
+  .discipline-nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 
+    h2 {
+      font-size: 24px;
+    }
+    span {
+      color: grey;
+
+      width: min-content;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .main-content {
+    padding: 0 20px;
+  }
+
+  .users-list {
+    width: 100%;
     h4 {
       font-size: 15px;
       font-weight: 400;
@@ -97,7 +161,7 @@ onMounted(async () => {
   border-bottom: 1px solid rgb(204, 204, 204);
   padding: 15px 0;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   align-items: center;
   gap: 12px;
   img {
@@ -163,7 +227,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 1.5rem;
   height: 100%;
 }
 </style>

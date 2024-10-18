@@ -21,6 +21,10 @@ const links2 = ref([
         name: "Disciplinas",
         path: "/myDisciplines",
       },
+      {
+        name: "Alunos",
+        path: "/myStudents",
+      },
     ],
   },
   {

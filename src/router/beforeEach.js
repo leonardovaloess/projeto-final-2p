@@ -8,7 +8,7 @@ export default async (to) => {
   // Mapeamento de rotas permitidas por tipo de usuário
   const userRoutes = {
     1: ["Perfil"], // Rotas permitidas para user_type_id = 1
-    2: ["Perfil", "Minhas Disciplinas", "Disciplina"], // Rotas permitidas para user_type_id = 2
+    2: ["Perfil", "Minhas Disciplinas", "Disciplina", "Meus Alunos"], // Rotas permitidas para user_type_id = 2
     3: ["Cursos", "Alunos", "Professores", "Perfil", "Disciplinas"], // Rotas permitidas para user_type_id = 3
   };
 

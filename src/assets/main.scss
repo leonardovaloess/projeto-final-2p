@@ -162,19 +162,8 @@ h2 {
   justify-content: center;
 }
 
-.background-table {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  border-radius: 7px;
-  width: 100%;
-  display: flex;
-  overflow-x: auto;
-}
-
 .col-options {
   padding: 20px;
-
   display: flex;
   align-items: center;
   justify-content: end;
@@ -183,10 +172,8 @@ h2 {
 table {
   width: 100%; /* Ajusta a largura da tabela para o container */
   border-collapse: collapse;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   overflow-x: auto;
-  border-radius: 10px;
 }
 
 .col-options,
@@ -194,7 +181,6 @@ th,
 td {
   padding: 20px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
   height: min-content;
   unicode-bidi: isolate;
 }
@@ -204,23 +190,23 @@ th {
   min-width: 160px;
   text-transform: uppercase;
 }
+
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 tr:hover {
   background-color: #ddd;
 }
+
+thead {
+  border-radius: 20px;
+}
 caption {
   font-size: 1.5em;
   margin: 10px;
 }
+
 /* Define uma altura fixa para as linhas da tabela */
-.col-options {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
 
 .m-0 {
   margin: 0;
