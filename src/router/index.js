@@ -68,10 +68,16 @@ const router = createRouter({
           component: () =>
             import("../views/my-disciplines/MyDisciplinesView.vue"),
         },
+
         {
           path: "/discipline/:disciplina_id",
           name: "Disciplina",
           component: () => import("../views/discipline/DisciplineView.vue"),
+        },
+        {
+          path: "/task/:task_id",
+          name: "Tarefa",
+          component: () => import("../views/task/TaskView.vue"),
         },
       ],
     },

@@ -7,7 +7,7 @@ import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
 import BaseTextarea from "@/components/input/BaseTextarea.vue";
-import { useCourseStore } from "@/stores/course";
+
 import { useRoute } from "vue-router";
 import { useTaskStore } from "@/stores/task";
 
@@ -81,7 +81,7 @@ const handlePayload = async () => {
       }, 3000);
     }
   } else {
-    const response = await editCourse(
+    const response = await editTask(
       taskToEditInModal.value.id,
       taskToEditInModal.value
     );

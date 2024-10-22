@@ -1,5 +1,6 @@
 <script setup>
 import CreateEditTask from "./CreateEditTask.vue";
+import DeleteTaskModal from "./DeleteTaskModal.vue";
 import BaseInput from "@/components/input/BaseInput.vue";
 import { useTaskStore } from "@/stores/task";
 import { onMounted, ref, computed } from "vue";
@@ -19,7 +20,7 @@ const data = ref(false);
 
 const filteredData = computed(() => {
   if (!search.value) return data.value;
-  return tableData.value.filter((item) =>
+  return data.value.filter((item) =>
     item.nome.toLowerCase().includes(search.value.toLowerCase())
   );
 });
@@ -82,15 +83,6 @@ const handleSelect = (item, id) => {
     courseToEdit.value = item;
     openDeleteModal.value = true;
   }
-  if (id == 2) {
-    courseToEdit.value = item.id;
-    option_id.value = 2;
-    openStudentsModal.value = true;
-  }
-  if (id == 3) {
-    localStorage.setItem("course_id", item.id);
-    router.push(`/course/${item.id}/disciplines`);
-  }
 };
 
 onMounted(async () => {
@@ -128,8 +120,14 @@ onMounted(async () => {
             fill="grey"
           />
         </svg>
-        <span>{{ data.nome }}</span>
-        <BaseDropdown class="dropdown" :options="options" />
+        <RouterLink :to="`/task/${data.id}`" class="link">{{
+          data.nome
+        }}</RouterLink>
+        <BaseDropdown
+          class="dropdown"
+          :options="options"
+          @select="(option) => handleSelect(data, option.id)"
+        />
       </div>
       <div v-else class="w-100 flex align-center justify-center">
         <span>Nenhuma Tarefa</span>
@@ -147,7 +145,7 @@ onMounted(async () => {
     :info="courseToEdit"
   />
 
-  <DeleteCourseModal
+  <DeleteTaskModal
     :open="openDeleteModal"
     @update:open="cancel($event)"
     @update:refresh="refreshList($event)"
@@ -159,6 +157,7 @@ onMounted(async () => {
 .card-task {
   border: 2px solid rgb(191, 191, 191);
   padding: 15px;
+  color: black !important;
   display: flex;
   position: relative;
   align-items: center;
@@ -166,10 +165,21 @@ onMounted(async () => {
   border-radius: 5px;
   font-size: 14px;
   color: rgb(46, 46, 46);
+  text-decoration: none;
+  .link {
+    color: black;
+    text-decoration: none;
+  }
 
   .dropdown {
     position: absolute;
     right: 0;
+  }
+
+  &:hover {
+    transition: 0.4s;
+    text-decoration: underline;
+    background-color: rgb(241, 241, 241);
   }
 }
 
