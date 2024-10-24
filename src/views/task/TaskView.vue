@@ -126,6 +126,8 @@ onMounted(async () => {
 .file {
   text-decoration: underline;
   color: rgb(93, 93, 93);
+
+  width: fit-content;
 }
 h3 {
   font-weight: 500;
