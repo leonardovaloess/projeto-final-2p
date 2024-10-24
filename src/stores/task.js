@@ -45,11 +45,21 @@ export const useTaskStore = defineStore("task", () => {
       console.log(error);
     }
   }
+
+  async function getTaskFile(tarefa_id) {
+    try {
+      const response = await api.task.getTaskFile(tarefa_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     createTask,
     getTasks,
     getTaskById,
     deleteTask,
     postTaskFile,
+    getTaskFile,
   };
 });

@@ -8,7 +8,7 @@ import { useTaskStore } from "@/stores/task";
 import BaseTextarea from "@/components/input/BaseTextarea.vue";
 
 const taskStore = useTaskStore();
-const { getTaskById, postTaskFile } = taskStore;
+const { getTaskById, postTaskFile, getTaskFile } = taskStore;
 const route = useRoute();
 
 const menuSelectedId = ref(0);
@@ -16,6 +16,7 @@ const files = ref(null);
 const taskData = ref(null);
 const alunos = ref([]);
 const professor = ref(null);
+const taskFiles = ref([]);
 
 const loading = ref(false);
 loading.value = true;
@@ -24,11 +25,32 @@ loading.value = false;
 const initFunction = async () => {
   loading.value = true;
   taskData.value = await getTaskById(route.params.task_id);
+  taskFiles.value = await getTaskFile(route.params.task_id);
   loading.value = false;
 };
 
 const onFileSelected = (ev) => {
   files.value = Array.from(ev.target.files);
+};
+
+const downloadFile = (file) => {
+  // Supondo que a URL base do seu servidor seja 'https://seuservidor.com/'
+
+  const baseUrl = "https://squid-app-ivp7d.ondigitalocean.app/api/";
+  const downloadUrl = `${baseUrl}${file.material}`;
+
+  // Cria um elemento <a> dinamicamente
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = file.titulo;
+  link.target = "_blank"; // Opcional: abre em nova aba
+
+  // Adiciona o elemento ao DOM e aciona o download
+  document.body.appendChild(link);
+  link.click();
+
+  // Remove o elemento do DOM após o clique
+  document.body.removeChild(link);
 };
 
 watch(
@@ -38,7 +60,6 @@ watch(
       // Criando FormData
       const formData = new FormData();
       formData.append("titulo", files.value[0].name);
-      formData.append("descricao", "aaa");
       formData.append("material", files.value[0]); // Adicionando o arquivo
       formData.append("tarefa_id", route.params.task_id);
 
@@ -46,6 +67,7 @@ watch(
 
       // Enviando o FormData no POST
       await postTaskFile(formData);
+      await initFunction();
     }
   }
 );
@@ -64,6 +86,15 @@ onMounted(async () => {
         <h3 class="mb-3">Descrição:</h3>
         {{ taskData.descricao }}
         <h3 style="font-size: 16px" class="mt-5 mb-3">Arquivos:</h3>
+        <div v-if="taskFiles.length > 0" class="flex flex-column gap-05 mb-3">
+          <span
+            class="file"
+            v-for="file in taskFiles"
+            :href="file.material"
+            @click="downloadFile(file)"
+            >{{ file.titulo }}</span
+          >
+        </div>
         <input
           class="file-input"
           type="file"
@@ -91,6 +122,10 @@ onMounted(async () => {
 <style scoped lang="scss">
 .file-input {
   font-size: 12px;
+}
+.file {
+  text-decoration: underline;
+  color: rgb(93, 93, 93);
 }
 h3 {
   font-weight: 500;

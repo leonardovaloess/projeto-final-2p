@@ -12,6 +12,9 @@ export default (httpClient) => ({
     return httpClient.get(`/getTarefa/${task_id}`); //nome, descricao, periodos
   },
   postTaskFile: (payload) => {
-    return httpClient.post(`/materialComplementar`, payload); //nome, descricao, periodos
+    return httpClient.post(`/materiais`, payload); //nome, descricao, periodos
+  },
+  getTaskFile: (tarefa_id) => {
+    return httpClient.get(`/materiais/${tarefa_id}`); //nome, descricao, periodos
   },
 });

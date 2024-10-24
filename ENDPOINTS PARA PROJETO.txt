@@ -62,3 +62,33 @@ ENDPOINTS PARA ALUNOS
 /myDisciplinas
 /myCurso
 
+
+ENPOINTS AVISOS
+
+/avisos = retorna todos os avisos do banco no método get
+
+/avisos/{disciplina_id} = retorna todos os avisos que foram cadastrados na disciplina no get
+
+post /avisos => cadastra avisos
+payload {
+
+aviso
+disciplina_id
+}
+
+put e delete
+
+
+ENDPOINTS MATERIAL ATIVIDADES
+
+/materiais = retorna todos os materiais do banco no get
+
+/materiais/{tarefa_id} = retorna todos os materiais da tarefa no get
+
+post /materiais
+
+payload {
+titulo,
+material (arquivo),
+tarefa_id
+}
