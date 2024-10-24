@@ -36,7 +36,7 @@ const onFileSelected = (ev) => {
 const downloadFile = (file) => {
   // Supondo que a URL base do seu servidor seja 'https://seuservidor.com/'
 
-  const baseUrl = "https://squid-app-ivp7d.ondigitalocean.app/api/";
+  const baseUrl = "https://squid-app-ivp7d.ondigitalocean.app";
   const downloadUrl = `${baseUrl}${file.material}`;
 
   // Cria um elemento <a> dinamicamente

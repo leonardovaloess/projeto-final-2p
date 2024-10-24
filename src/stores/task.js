@@ -19,9 +19,9 @@ export const useTaskStore = defineStore("task", () => {
     }
   }
 
-  async function getTasks() {
+  async function getTasks(disciplina_id) {
     try {
-      const response = await api.task.getTasks();
+      const response = await api.task.getTasks(disciplina_id);
       return response.data;
     } catch (error) {
       console.log(error);

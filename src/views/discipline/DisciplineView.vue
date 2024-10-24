@@ -7,6 +7,7 @@ import { useDisciplineStore } from "@/stores/discipline";
 import { useRoute } from "vue-router";
 import { useCourseStore } from "@/stores/course";
 import TaskContainer from "./partials/TaskContainer.vue";
+import WarningsContainer from "./partials/WarningsContainer.vue";
 const disciplineStore = useDisciplineStore();
 const { getDisciplineById, getDisciplineProfessor } = disciplineStore;
 
@@ -66,6 +67,7 @@ onMounted(async () => {
       </div>
       <div class="main-content">
         <TaskContainer v-if="menuSelectedId == 0" />
+        <WarningsContainer v-if="menuSelectedId == 1" />
       </div>
       <div class="users-list">
         <div class="professor">
@@ -120,10 +122,6 @@ onMounted(async () => {
 
   flex: 1;
 
-  @media (max-width: 630px) {
-    margin-top: 20px;
-  }
-
   .discipline-nav-menu {
     display: flex;
     flex-direction: column;
@@ -153,6 +151,21 @@ onMounted(async () => {
     h4 {
       font-size: 15px;
       font-weight: 400;
+    }
+  }
+
+  @media (max-width: 630px) {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .main-content {
+      padding: 0;
+      width: 100%;
+    }
+
+    .users-list {
+      display: none;
     }
   }
 }

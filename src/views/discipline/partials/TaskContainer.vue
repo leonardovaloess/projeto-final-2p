@@ -5,12 +5,13 @@ import BaseInput from "@/components/input/BaseInput.vue";
 import { useTaskStore } from "@/stores/task";
 import { onMounted, ref, computed } from "vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import BaseLoading from "@/components/BaseLoading.vue";
 
 const openModal = ref(false);
 const loading = ref(false);
 
+const route = useRoute();
 const taskStore = useTaskStore();
 const { getTasks } = taskStore;
 
@@ -37,8 +38,10 @@ const props = defineProps({
 });
 
 const initFunction = async () => {
+  console.log(route.params.disciplina_id);
+
   loading.value = true;
-  data.value = await getTasks();
+  data.value = await getTasks(route.params.disciplina_id);
   loading.value = false;
 };
 
@@ -63,11 +66,6 @@ const refreshList = async (ev) => {
 
 const options = [
   {
-    id: 0,
-    name: "Editar",
-    icon: "edit",
-  },
-  {
     id: 1,
     name: "Excluir",
     icon: "delete",
@@ -75,10 +73,6 @@ const options = [
 ];
 
 const handleSelect = (item, id) => {
-  if (id == 0) {
-    courseToEdit.value = item;
-    openModal.value = true;
-  }
   if (id == 1) {
     courseToEdit.value = item;
     openDeleteModal.value = true;
@@ -103,7 +97,7 @@ onMounted(async () => {
 
     <div class="cards flex column gap-1" v-if="!loading">
       <div
-        v-if="filteredData.length"
+        v-if="filteredData"
         class="card-task"
         v-for="data in filteredData"
         :key="data.id"
@@ -187,5 +181,21 @@ onMounted(async () => {
   text-decoration: underline;
   width: 220px;
   color: rgb(117, 117, 117);
+}
+
+@media (max-width: 630px) {
+  .button-container {
+    flex-direction: column;
+    position: relative;
+    align-items: flex-start;
+    height: 80px;
+  }
+
+  .line-button {
+    width: fit-content;
+    position: absolute;
+    left: 0px;
+    bottom: 40px;
+  }
 }
 </style>
