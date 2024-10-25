@@ -28,7 +28,6 @@ const textSuccess = ref(null);
 
 const comments = ref(null);
 const route = useRoute();
-const user_id = localStorage.getItem("user_id");
 const comment = ref(null);
 const menuSelectedId = ref(0);
 const files = ref(null);
@@ -77,6 +76,8 @@ const downloadFile = (file) => {
 };
 
 const handleSendComment = async () => {
+  const user_id = localStorage.getItem("user_id");
+
   if (comment.value) {
     const payload = {
       comentario: comment.value,
