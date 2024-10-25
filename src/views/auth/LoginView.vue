@@ -27,6 +27,7 @@ const handleSubmit = async () => {
   if (login) {
     localStorage.setItem("token-auth", login.token);
     localStorage.setItem("user_type_id", login.user.type_id);
+    localStorage.setItem("user_id", login.user.id);
 
     if (login.user.type_id !== 3) {
       router.push({ path: "/profile" });

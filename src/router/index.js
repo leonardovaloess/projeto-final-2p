@@ -79,6 +79,11 @@ const router = createRouter({
           name: "Tarefa",
           component: () => import("../views/task/TaskView.vue"),
         },
+        {
+          path: "/warning/:warning_id",
+          name: "Aviso",
+          component: () => import("../views/warning/WarningView.vue"),
+        },
       ],
     },
     {

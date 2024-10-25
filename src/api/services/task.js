@@ -18,4 +18,13 @@ export default (httpClient) => ({
   getTaskFile: (tarefa_id) => {
     return httpClient.get(`/materiais/${tarefa_id}`); //nome, descricao, periodos
   },
+  postTaskComment: (payload) => {
+    return httpClient.post(`/comentarios/store`, payload); //nome, descricao, periodos
+  },
+  getTaskComment: (tarefa_id) => {
+    return httpClient.get(`/comentarios/get/${tarefa_id}`); //nome, descricao, periodos
+  },
+  deleteTaskComment: (tarefa_id) => {
+    return httpClient.delete(`/comentarios/delete/${tarefa_id}`); //nome, descricao, periodos
+  },
 });

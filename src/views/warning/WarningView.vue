@@ -1,0 +1,201 @@
+<script setup>
+import { ref, onMounted, watch } from "vue";
+
+import BaseLoading from "@/components/BaseLoading.vue";
+
+import { useRoute } from "vue-router";
+import { useTaskStore } from "@/stores/task";
+import BaseTextarea from "@/components/input/BaseTextarea.vue";
+import BaseButton from "@/components/buttons/BaseButton.vue";
+import { useWarningsStore } from "@/stores/warnings";
+
+const warningStore = useWarningsStore();
+const { getWarningById } = warningStore;
+
+const comments = ref(null);
+const route = useRoute();
+const user_id = localStorage.getItem("user_id");
+const comment = ref(null);
+
+const files = ref(null);
+const warningData = ref(null);
+
+const taskFiles = ref([]);
+
+const loading = ref(false);
+
+const initFunction = async () => {
+  loading.value = true;
+  warningData.value = await getWarningById(route.params.warning_id);
+
+  loading.value = false;
+};
+
+const handleSendComment = async () => {
+  if (comment.value) {
+    const payload = {
+      comentario: comment.value,
+      tarefa_id: route.params.task_id,
+      user_id: user_id,
+    };
+    const response = await postTaskComment(payload);
+
+    if (response) {
+      await initFunction();
+    }
+  }
+};
+
+onMounted(async () => {
+  await initFunction();
+});
+</script>
+
+<template>
+  <div class="page-background">
+    <div class="page-head mb-5" v-if="!loading && warningData">
+      <h1>{{ warningData.titulo }}</h1>
+    </div>
+    <div class="main-container mt-1 w-100" v-if="!loading && warningData">
+      <div class="description-container">
+        <h3 class="mb-3">Descrição:</h3>
+        {{ warningData.aviso }}
+      </div>
+      <div class="material-container"></div>
+      <div class="comments-container mb-5" v-if="!loading && warningData">
+        <h3 class="mb-2">Comentários:</h3>
+        <BaseTextarea
+          style="height: 80px; border-width: 1.5px"
+          placeholder="Deixe um comentário sobre a atividade..."
+          v-model="comment"
+        />
+
+        <div class="comment-button flex align-end justify-end">
+          <BaseButton label="Enviar Comentário." @click="handleSendComment" />
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="loading">
+      <BaseLoading class="loading-icon" />
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.file-input {
+  font-size: 12px;
+}
+.file {
+  text-decoration: underline;
+  color: rgb(93, 93, 93);
+
+  width: fit-content;
+}
+h3 {
+  font-weight: 500;
+  font-size: 16px;
+}
+.page-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h1 {
+    font-size: 18px;
+    color: rgb(85, 85, 85);
+    font-weight: 500;
+  }
+
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(202, 202, 202, 0.561);
+}
+
+.main-container {
+  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+
+  @media (max-width: 630px) {
+    margin-top: 20px;
+  }
+}
+
+.UserCard {
+  border-bottom: 1px solid rgb(204, 204, 204);
+  padding: 15px 0;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  gap: 12px;
+  img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &:last-of-type {
+    border: none;
+  }
+}
+.loading {
+  height: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 630px) {
+    .loading-icon > svg {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+.top {
+  gap: 1rem;
+  justify-content: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
+
+  .base-input {
+    flex: content;
+  }
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    gap: 1rem;
+
+    .btns-container {
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+
+      .base-button {
+        width: 100%;
+        font-size: 12px;
+      }
+    }
+  }
+
+  @media (max-width: 400px) {
+    .btns-container {
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+  }
+}
+
+.page-background {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  height: 100%;
+}
+</style>

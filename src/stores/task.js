@@ -54,6 +54,33 @@ export const useTaskStore = defineStore("task", () => {
       console.log(error);
     }
   }
+
+  async function getTaskComment(tarefa_id) {
+    try {
+      const response = await api.task.getTaskComment(tarefa_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function postTaskComment(data) {
+    try {
+      const response = await api.task.postTaskComment(data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deleteTaskComment(data) {
+    try {
+      const response = await api.task.deleteTaskComment(data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     createTask,
     getTasks,
@@ -61,5 +88,8 @@ export const useTaskStore = defineStore("task", () => {
     deleteTask,
     postTaskFile,
     getTaskFile,
+    getTaskComment,
+    postTaskComment,
+    deleteTaskComment,
   };
 });

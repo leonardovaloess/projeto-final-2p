@@ -27,10 +27,19 @@ export const useWarningsStore = defineStore("warnings", () => {
       console.log(error);
     }
   }
+  async function getWarningById(warning_id) {
+    try {
+      const response = await api.warnings.getWarningById(warning_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return {
     createWarning,
     getWarnings,
     deleteWarning,
+    getWarningById,
   };
 });

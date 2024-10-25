@@ -69,12 +69,6 @@ ENPOINTS AVISOS
 
 /avisos/{disciplina_id} = retorna todos os avisos que foram cadastrados na disciplina no get
 
-post /avisos => cadastra avisos
-payload {
-
-aviso
-disciplina_id
-}
 
 put e delete
 
