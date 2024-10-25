@@ -15,6 +15,8 @@ const route = useRoute();
 const taskStore = useTaskStore();
 const { getTasks } = taskStore;
 
+const userTypeId = ref(null);
+
 const openDeleteModal = ref(false);
 
 const data = ref(false);
@@ -41,6 +43,7 @@ const initFunction = async () => {
   console.log(route.params.disciplina_id);
 
   loading.value = true;
+  userTypeId.value = localStorage.getItem("user_type_id");
   data.value = await getTasks(route.params.disciplina_id);
   loading.value = false;
 };
@@ -90,7 +93,12 @@ onMounted(async () => {
       class="button-container mb-5 w-100 gap-05 flex align-center justify-end"
     >
       <BaseInput placeholder="Buscar Tarefa..." v-model="search" />
-      <button class="line-button" @click="openModal = true">
+
+      <button
+        class="line-button"
+        @click="openModal = true"
+        v-if="userTypeId !== '1'"
+      >
         + Adicionar Tarefa
       </button>
     </div>

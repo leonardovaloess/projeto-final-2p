@@ -26,6 +26,7 @@ const success = ref(false);
 const textError = ref(null);
 const textSuccess = ref(null);
 
+const userTypeId = ref(null);
 const comments = ref(null);
 const route = useRoute();
 const comment = ref(null);
@@ -42,6 +43,7 @@ loading.value = false;
 
 const initFunction = async () => {
   loading.value = true;
+  userTypeId.value = localStorage.getItem("user_type_id");
   taskData.value = await getTaskById(route.params.task_id);
   taskFiles.value = await getTaskFile(route.params.task_id);
   const commentsData = await getTaskComment(route.params.task_id);
@@ -171,6 +173,7 @@ onMounted(async () => {
           >
         </div>
         <input
+          v-if="userTypeId !== '1'"
           class="file-input"
           type="file"
           name="file"

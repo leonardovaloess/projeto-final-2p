@@ -5,6 +5,9 @@ export default (httpClient) => ({
   getDisciplines: (curso_id) => {
     return httpClient.get(`/disciplinas/${curso_id}`);
   },
+  getDisciplinesStudent: (curso_id) => {
+    return httpClient.get(`/getDisciplinas/${curso_id}`);
+  },
   editDiscipline: (id, data) => {
     return httpClient.put(`/disciplinas/${id}`, data); //nome, carga horaria, professor_id curso_id
   },

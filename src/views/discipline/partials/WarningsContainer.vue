@@ -9,6 +9,7 @@ import { useRoute, useRouter } from "vue-router";
 import BaseLoading from "@/components/BaseLoading.vue";
 import { useWarningsStore } from "@/stores/warnings";
 
+const userTypeId = ref(null);
 const openModal = ref(false);
 const loading = ref(false);
 const route = useRoute();
@@ -39,6 +40,7 @@ const props = defineProps({
 
 const initFunction = async () => {
   loading.value = true;
+  userTypeId.value = localStorage.getItem("user_type_id");
   data.value = await getWarnings(route.params.disciplina_id);
   loading.value = false;
 };
@@ -92,7 +94,11 @@ onMounted(async () => {
       class="button-container mb-5 w-100 gap-05 flex align-center justify-end"
     >
       <BaseInput placeholder="Buscar Aviso..." v-model="search" />
-      <button class="line-button" @click="openModal = true">
+      <button
+        class="line-button"
+        @click="openModal = true"
+        v-if="userTypeId !== '1'"
+      >
         + Adicionar Aviso
       </button>
     </div>
