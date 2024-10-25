@@ -1,6 +1,16 @@
 import { ref } from "vue";
 const links1 = ref([
   {
+    label: "Home",
+    opened: true,
+    childreen: [
+      {
+        name: "Cursos",
+        path: "/myCourses",
+      },
+    ],
+  },
+  {
     label: "Usuário",
     opened: true,
     childreen: [

@@ -65,6 +65,14 @@ export const useCourseStore = defineStore("course", () => {
     }
   }
 
+  async function getMyCourses() {
+    try {
+      const response = await api.course.getMyCourses();
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     createCourse,
     getCourses,
@@ -73,5 +81,6 @@ export const useCourseStore = defineStore("course", () => {
     cadastrarAlunosNoCurso,
     alunosCadastradosNoCurso,
     removerAlunoDoCurso,
+    getMyCourses,
   };
 });
