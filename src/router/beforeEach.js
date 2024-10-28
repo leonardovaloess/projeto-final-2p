@@ -28,7 +28,7 @@ export default async (to) => {
 
   // Redireciona para o home se estiver logado e tentar acessar a página de login
   if (to.name === "login" && token) {
-    return { path: `/home` };
+    return { path: `/profile` };
   }
 
   // Verifica se a rota exige autenticação
