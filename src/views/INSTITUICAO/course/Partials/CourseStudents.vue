@@ -408,10 +408,6 @@ h4 {
   justify-content: center;
 }
 
-.cancel {
-  background-color: rgb(252, 31, 31);
-}
-
 .body-container {
   display: flex;
   width: 100%;

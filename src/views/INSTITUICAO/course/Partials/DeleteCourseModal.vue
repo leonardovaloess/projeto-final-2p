@@ -147,8 +147,4 @@ const handleClose = () => {
   align-items: center;
   justify-content: center;
 }
-
-.cancel {
-  background-color: rgb(252, 31, 31);
-}
 </style>

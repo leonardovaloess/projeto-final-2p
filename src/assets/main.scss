@@ -3,6 +3,7 @@
 :root {
   --primary: #00358a;
   --secondary: #1a43c0;
+  --red: rgb(252, 31, 31);
 }
 
 .poppins-thin {
@@ -455,4 +456,8 @@ caption {
 
 .p-6 {
   padding: 3rem; // 48px
+}
+
+.cancel {
+  background-color: var(--red) !important;
 }
