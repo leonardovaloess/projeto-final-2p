@@ -81,7 +81,7 @@ const props = defineProps({
 
 .dropdown-content {
   position: absolute;
-  top: -30px;
+  top: -20px;
   right: 30px;
   background-color: #fff;
   box-shadow: 0px 3px 5px rgba(9, 30, 66, 0.2);
@@ -113,7 +113,6 @@ const props = defineProps({
 
 .dropdown:focus .dropdown-content {
   outline: none;
-  transform: translateY(20px);
   display: block;
   opacity: 1;
 }
