@@ -34,11 +34,10 @@ const userTypeId = ref(null);
 const comments = ref(null);
 const route = useRoute();
 const comment = ref(null);
-const menuSelectedId = ref(0);
+
 const files = ref(null);
 const taskData = ref(null);
-const alunos = ref([]);
-const professor = ref(null);
+
 const taskFiles = ref([]);
 
 const loading = ref(false);
