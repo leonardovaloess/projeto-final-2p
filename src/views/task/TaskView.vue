@@ -176,13 +176,13 @@ onMounted(async () => {
       <h1>{{ taskData.nome }}</h1>
       <BaseButton
         label="Enviar Tarefa"
-        v-if="userTypeId == '1' && !taskSubmitData"
+        v-if="userTypeId == '1' && !taskSubmitData.id"
         @click="openSubmitModal = true"
       />
       <span
         style="font-size: 14px"
         class="task-submit-text"
-        v-else-if="userTypeId == '1' && taskSubmitData"
+        v-else-if="userTypeId == '1' && taskSubmitData.id"
         >Tarefa Entregue - {{ formatDate(taskSubmitData.created_at) }}</span
       >
     </div>
