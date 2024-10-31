@@ -81,6 +81,15 @@ export const useTaskStore = defineStore("task", () => {
       console.log(error);
     }
   }
+
+  async function submitTask(data) {
+    try {
+      const response = await api.task.submitTask(data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     createTask,
     getTasks,
@@ -91,5 +100,6 @@ export const useTaskStore = defineStore("task", () => {
     getTaskComment,
     postTaskComment,
     deleteTaskComment,
+    submitTask,
   };
 });

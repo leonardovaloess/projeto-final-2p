@@ -27,4 +27,7 @@ export default (httpClient) => ({
   deleteTaskComment: (tarefa_id) => {
     return httpClient.delete(`/comentarios/delete/${tarefa_id}`); //nome, descricao, periodos
   },
+  submitTask: (payload) => {
+    return httpClient.post(`/enviarTarefa`, payload); //tarefa_id, arquivo, texto
+  },
 });

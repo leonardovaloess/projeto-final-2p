@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import TaskSubmitModal from "./partials/TaskSubmitModal.vue";
 
 import BaseLoading from "@/components/BaseLoading.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
@@ -23,9 +24,12 @@ const {
 const error = ref(false);
 const success = ref(false);
 
+const openSubmitModal = ref(false);
+
 const textError = ref(null);
 const textSuccess = ref(null);
 
+const user_id = ref(null);
 const userTypeId = ref(null);
 const comments = ref(null);
 const route = useRoute();
@@ -41,10 +45,15 @@ const loading = ref(false);
 loading.value = true;
 loading.value = false;
 
+const cancel = (ev) => {
+  openSubmitModal.value = ev;
+};
+
 const initFunction = async () => {
   loading.value = true;
   userTypeId.value = localStorage.getItem("user_type_id");
   taskData.value = await getTaskById(route.params.task_id);
+  user_id.value = localStorage.getItem("user_id");
   taskFiles.value = await getTaskFile(route.params.task_id);
   const commentsData = await getTaskComment(route.params.task_id);
   if (commentsData) {
@@ -157,6 +166,11 @@ onMounted(async () => {
   <div class="page-background">
     <div class="page-head mb-5" v-if="!loading && taskData">
       <h1>{{ taskData.nome }}</h1>
+      <BaseButton
+        label="Enviar Tarefa"
+        v-if="userTypeId == '1'"
+        @click="openSubmitModal = true"
+      />
     </div>
     <div class="main-container mt-1 w-100" v-if="!loading && taskData">
       <div class="description-container">
@@ -222,9 +236,10 @@ onMounted(async () => {
                   alt=""
                   v-else
                 />
+
                 <span style="font-weight: 500">{{ comment.user.nome }}</span>
                 <svg
-                  v-if="(user_id = comment.user.id)"
+                  v-if="user_id == comment.user.id"
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
@@ -256,6 +271,13 @@ onMounted(async () => {
       <BaseLoading class="loading-icon" />
     </div>
 
+    <TaskSubmitModal
+      :open="openSubmitModal"
+      @update:open="cancel($event)"
+      @update:refresh="refreshList($event)"
+      :info="user"
+    />
+
     <BaseAlertError v-if="error" :text="textError" />
     <BaseAlertSuccess v-if="success" :text="textSuccess" />
   </div>
@@ -268,7 +290,7 @@ onMounted(async () => {
 .file {
   text-decoration: underline;
   color: rgb(93, 93, 93);
-
+  cursor: pointer;
   width: fit-content;
 }
 h3 {
