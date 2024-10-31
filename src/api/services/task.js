@@ -30,4 +30,7 @@ export default (httpClient) => ({
   submitTask: (payload) => {
     return httpClient.post(`/enviarTarefa`, payload); //tarefa_id, arquivo, texto
   },
+  getTaskStatus: (tarefa_id) => {
+    return httpClient.get(`/getStatusTarefa/${tarefa_id}`); //nome, descricao, periodos
+  },
 });

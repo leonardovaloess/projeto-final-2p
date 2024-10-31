@@ -2,6 +2,7 @@
 import { ref, onMounted, watch } from "vue";
 import TaskSubmitModal from "./partials/TaskSubmitModal.vue";
 
+import formatDate from "@/utils/date";
 import BaseLoading from "@/components/BaseLoading.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
@@ -16,6 +17,7 @@ const {
   getTaskById,
   postTaskFile,
   getTaskFile,
+  getTaskStatus,
   postTaskComment,
   getTaskComment,
   deleteTaskComment,
@@ -34,6 +36,8 @@ const userTypeId = ref(null);
 const comments = ref(null);
 const route = useRoute();
 const comment = ref(null);
+
+const taskSubmitData = ref(null);
 
 const files = ref(null);
 const taskData = ref(null);
@@ -54,6 +58,11 @@ const initFunction = async () => {
   taskData.value = await getTaskById(route.params.task_id);
   user_id.value = localStorage.getItem("user_id");
   taskFiles.value = await getTaskFile(route.params.task_id);
+
+  if (userTypeId.value == "1") {
+    taskSubmitData.value = await getTaskStatus(route.params.task_id);
+  }
+
   const commentsData = await getTaskComment(route.params.task_id);
   if (commentsData) {
     comments.value = commentsData.comentarios;
@@ -167,9 +176,15 @@ onMounted(async () => {
       <h1>{{ taskData.nome }}</h1>
       <BaseButton
         label="Enviar Tarefa"
-        v-if="userTypeId == '1'"
+        v-if="userTypeId == '1' && !taskSubmitData"
         @click="openSubmitModal = true"
       />
+      <span
+        style="font-size: 14px"
+        class="task-submit-text"
+        v-else-if="userTypeId == '1' && taskSubmitData"
+        >Tarefa Entregue - {{ formatDate(taskSubmitData.created_at) }}</span
+      >
     </div>
     <div class="main-container mt-1 w-100" v-if="!loading && taskData">
       <div class="description-container">
@@ -185,6 +200,7 @@ onMounted(async () => {
             >{{ file.titulo }}</span
           >
         </div>
+        <div v-else>Nenhum Arquivo</div>
         <input
           v-if="userTypeId !== '1'"
           class="file-input"
@@ -283,6 +299,9 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
+.task-submit-text {
+  color: rgb(0, 209, 0);
+}
 .file-input {
   font-size: 12px;
 }

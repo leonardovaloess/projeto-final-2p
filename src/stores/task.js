@@ -63,6 +63,14 @@ export const useTaskStore = defineStore("task", () => {
       console.log(error);
     }
   }
+  async function getTaskStatus(tarefa_id) {
+    try {
+      const response = await api.task.getTaskStatus(tarefa_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function postTaskComment(data) {
     try {
@@ -94,6 +102,7 @@ export const useTaskStore = defineStore("task", () => {
     createTask,
     getTasks,
     getTaskById,
+    getTaskStatus,
     deleteTask,
     postTaskFile,
     getTaskFile,
