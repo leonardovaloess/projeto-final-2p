@@ -107,5 +107,9 @@ const handleSelect = (item, id) => {
       text-decoration: underline;
     }
   }
+
+  @media (max-width: 650px) {
+    width: 100%;
+  }
 }
 </style>

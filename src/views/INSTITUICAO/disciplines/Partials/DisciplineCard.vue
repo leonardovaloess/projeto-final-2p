@@ -119,5 +119,9 @@ onMounted(() => {
     background-color: rgb(255, 255, 255);
     bottom: 0;
   }
+
+  @media (max-width: 650px) {
+    width: 100%;
+  }
 }
 </style>
