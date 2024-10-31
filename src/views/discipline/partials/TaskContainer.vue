@@ -126,6 +126,7 @@ onMounted(async () => {
           data.nome
         }}</RouterLink>
         <BaseDropdown
+          v-if="userTypeId !== '1'"
           class="dropdown"
           :options="options"
           @select="(option) => handleSelect(data, option.id)"
