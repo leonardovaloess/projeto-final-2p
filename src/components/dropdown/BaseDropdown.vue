@@ -81,7 +81,7 @@ const props = defineProps({
 
 .dropdown-content {
   position: absolute;
-  top: -20px;
+  top: -30px;
   right: 30px;
   background-color: #fff;
   box-shadow: 0px 3px 5px rgba(9, 30, 66, 0.2);
@@ -92,6 +92,8 @@ const props = defineProps({
   transition: 0.15s ease-out;
   max-height: 155px;
   overflow-y: auto;
+
+  animation: slide-down 0.3s forwards;
 }
 
 .button-medium {
@@ -113,6 +115,7 @@ const props = defineProps({
 
 .dropdown:focus .dropdown-content {
   outline: none;
+
   display: block;
   opacity: 1;
 }
@@ -137,5 +140,16 @@ const props = defineProps({
   outline: none;
   visibility: hidden;
   opacity: 0;
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0; /* Começa invisível */
+    transform: translateY(-20px); /* Começa deslocado para cima */
+  }
+  100% {
+    opacity: 1; /* Torna-se visível */
+    transform: translateY(0); /* Move para a posição original */
+  }
 }
 </style>
