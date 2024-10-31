@@ -56,7 +56,7 @@ onMounted(async () => {
         class="base-input"
         v-model="search"
         placeholder="Buscar Disciplina..."
-      />aaa
+      />
       <div class="btns-container flex gap-1"></div>
     </div>
     <div class="tasks" v-if="!loading">
