@@ -307,7 +307,11 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .task-submit-text {
-  color: rgb(0, 209, 0);
+  color: rgb(2, 124, 2);
+
+  background-color: rgb(177, 251, 177);
+  padding: 3px 15px;
+  border-radius: 20px;
 }
 .file-input {
   font-size: 12px;
@@ -334,6 +338,7 @@ h3 {
   }
 
   padding-bottom: 20px;
+
   border-bottom: 2px solid rgba(202, 202, 202, 0.561);
 }
 
