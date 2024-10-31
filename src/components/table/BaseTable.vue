@@ -31,7 +31,6 @@ onMounted(() => {
 <style scoped lang="scss">
 .background-table {
   overflow-x: auto;
-  overflow-y: hidden;
   border-radius: 10px;
 }
 </style>

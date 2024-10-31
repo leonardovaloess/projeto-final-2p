@@ -167,6 +167,7 @@ h2 {
   padding: 20px;
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: end;
 }
 
@@ -175,6 +176,8 @@ table {
   border-collapse: collapse;
   background-color: #fff;
   overflow-x: auto;
+
+  margin-bottom: 10%;
 }
 
 .col-options,
