@@ -176,6 +176,10 @@ onMounted(async () => {
   flex-wrap: wrap;
   padding: 1rem;
   gap: 30px;
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
 }
 
 .page-background {

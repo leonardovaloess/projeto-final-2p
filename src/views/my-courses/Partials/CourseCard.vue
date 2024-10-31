@@ -56,5 +56,9 @@ const props = defineProps({
       text-decoration: underline;
     }
   }
+
+  @media (max-width: 650px) {
+    width: 100% !important;
+  }
 }
 </style>
