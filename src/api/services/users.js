@@ -38,4 +38,8 @@ export default (httpClient) => ({
   forgotPassword: (payload) => {
     return httpClient.put(`/forgotPassword`, payload); // email senha
   },
+
+  getStudentsByProfessor: () => {
+    return httpClient.get(`/alunosProf`);
+  },
 });

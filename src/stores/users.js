@@ -91,6 +91,15 @@ export const useUserStore = defineStore("user", () => {
     }
   }
 
+  async function getStudentsByProfessor() {
+    try {
+      const response = await api.user.getStudentsByProfessor();
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
     createUser,
     editAluno,
@@ -102,5 +111,6 @@ export const useUserStore = defineStore("user", () => {
     deleteAluno,
     editUserProfile,
     editUserPassword,
+    getStudentsByProfessor,
   };
 });
