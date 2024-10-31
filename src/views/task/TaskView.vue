@@ -52,6 +52,13 @@ const cancel = (ev) => {
   openSubmitModal.value = ev;
 };
 
+const refreshList = async (ev) => {
+  if (ev == true) {
+    openSubmitModal.value = false;
+    await initFunction();
+  }
+};
+
 const initFunction = async () => {
   loading.value = true;
   userTypeId.value = localStorage.getItem("user_type_id");

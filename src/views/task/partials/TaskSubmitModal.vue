@@ -45,16 +45,17 @@ const onFileSelected = (ev) => {
 const handlePayload = async () => {
   const formData = new FormData();
   formData.append("tarefa_id", payload.value.tarefa_id);
-  formData.append("texto", payload.value.texto);
-  formData.append("arquivo", payload.value.arquivo[0]);
-
-  console.log(payload.value.arquivo[0]);
+  formData.append("texto", payload.value.texto || null);
+  formData.append(
+    "arquivo",
+    payload.value.arquivo ? payload.value.arquivo[0] : null
+  );
 
   const response = await submitTask(formData);
   if (response) {
     textSuccess.value = "Tarefa Enviada com Sucesso!";
     success.value = true;
-    emit("update:refresh");
+    emit("update:refresh", true);
     setTimeout(() => {
       success.value = false;
     }, 3000);
