@@ -29,10 +29,12 @@ const handleSubmit = async () => {
     localStorage.setItem("user_type_id", login.user.type_id);
     localStorage.setItem("user_id", login.user.id);
 
-    if (login.user.type_id !== 3) {
-      router.push({ path: "/profile" });
-    } else {
+    if (login.user.type_id == 2) {
+      router.push({ path: "/myDisciplines" });
+    } else if (login.user.type_id == 3) {
       router.push({ path: "/course" });
+    } else if (login.user.type_id == 1) {
+      router.push({ path: "/myCourses" });
     }
   } else {
     error.value = true;
