@@ -2,7 +2,8 @@
 import { ref, onMounted, watch } from "vue";
 
 import BaseLoading from "@/components/BaseLoading.vue";
-
+import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
+import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import { useRoute } from "vue-router";
 import { useTaskStore } from "@/stores/task";
 import BaseTextarea from "@/components/input/BaseTextarea.vue";
@@ -10,24 +11,35 @@ import BaseButton from "@/components/buttons/BaseButton.vue";
 import { useWarningsStore } from "@/stores/warnings";
 
 const warningStore = useWarningsStore();
-const { getWarningById } = warningStore;
+const {
+  getWarningById,
+  getWarningComments,
+  postWarningComment,
+  deleteWarningComment,
+} = warningStore;
 
 const comments = ref(null);
 const route = useRoute();
 const user_id = localStorage.getItem("user_id");
 const comment = ref(null);
 
-const files = ref(null);
-const warningData = ref(null);
+const error = ref(false);
+const success = ref(false);
 
-const taskFiles = ref([]);
+const textError = ref(null);
+const textSuccess = ref(null);
+
+const warningData = ref(null);
 
 const loading = ref(false);
 
 const initFunction = async () => {
   loading.value = true;
   warningData.value = await getWarningById(route.params.warning_id);
-
+  const commentsData = await getWarningComments(route.params.warning_id);
+  if (commentsData) {
+    comments.value = commentsData.comentarios;
+  }
   loading.value = false;
 };
 
@@ -35,14 +47,49 @@ const handleSendComment = async () => {
   if (comment.value) {
     const payload = {
       comentario: comment.value,
-      tarefa_id: route.params.task_id,
-      user_id: user_id,
+      aviso_id: route.params.warning_id,
     };
-    const response = await postTaskComment(payload);
+    const response = await postWarningComment(payload);
 
     if (response) {
       await initFunction();
+      comment.value = null;
+      success.value = true;
+      textSuccess.value = "Comentário Enviado com Sucesso!";
+      setTimeout(() => {
+        success.value = false;
+      }, 3000);
+    } else {
+      error.value = true;
+      textError.value = "Erro ao enviar comentário!";
+      setTimeout(() => {
+        error.value = false;
+      }, 3000);
     }
+  } else {
+    error.value = true;
+    textError.value = "Comentário não pode ser Vazio!";
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
+  }
+};
+
+const handleDeleteComment = async (comentario_id) => {
+  const response = await deleteWarningComment(comentario_id);
+  if (response) {
+    await initFunction();
+    success.value = true;
+    textSuccess.value = "Comentário Removido com Sucesso!";
+    setTimeout(() => {
+      success.value = false;
+    }, 3000);
+  } else {
+    error.value = true;
+    textError.value = "Erro ao Remover Comentário";
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
   }
 };
 
@@ -73,12 +120,73 @@ onMounted(async () => {
         <div class="comment-button flex align-end justify-end">
           <BaseButton label="Enviar Comentário." @click="handleSendComment" />
         </div>
+        <div class="comments">
+          <div v-if="comments" class="flex flex-column gap-1">
+            <div
+              v-for="comment in comments"
+              :key="comment.id"
+              class="flex flex-column gap-06 w-100"
+            >
+              <div class="flex align-center" style="gap: 12px">
+                <img
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                  "
+                  src="../../../src/assets/img/png/user_default.png"
+                  alt=""
+                  v-if="!comment.user.user_img"
+                />
+                <img
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                  "
+                  :src="comment.user.user_img"
+                  alt=""
+                  v-else
+                />
+
+                <span style="font-weight: 500">{{ comment.user.nome }}</span>
+                <svg
+                  v-if="user_id == comment.user.id"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 48 48"
+                  style="cursor: pointer"
+                  fill="none"
+                  @click="handleDeleteComment(comment.id)"
+                >
+                  <path
+                    d="M14 12V6C14 5.46957 14.2107 4.96086 14.5858 4.58579C14.9609 4.21071 15.4696 4 16 4H32C32.5304 4 33.0391 4.21071 33.4142 4.58579C33.7893 4.96086 34 5.46957 34 6V12H44V16H40V42C40 42.5304 39.7893 43.0392 39.4142 43.4142C39.0391 43.7893 38.5304 44 38 44H10C9.46957 44 8.96086 43.7893 8.58579 43.4142C8.21071 43.0392 8 42.5304 8 42V16H4V12H14ZM18 8V12H30V8H18Z"
+                    fill="red"
+                  />
+                </svg>
+              </div>
+
+              <span style="margin-left: 50px; color: rgb(85, 85, 85)"
+                >· {{ comment.comentario }}</span
+              >
+            </div>
+          </div>
+          <div v-else class="w-100 flex justify-center">
+            <span> Nenhum comentário </span>
+          </div>
+        </div>
       </div>
     </div>
 
     <div v-else class="loading">
       <BaseLoading class="loading-icon" />
     </div>
+
+    <BaseAlertError v-if="error" :text="textError" />
+    <BaseAlertSuccess v-if="success" :text="textSuccess" />
   </div>
 </template>
 

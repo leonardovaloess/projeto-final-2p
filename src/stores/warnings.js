@@ -36,10 +36,40 @@ export const useWarningsStore = defineStore("warnings", () => {
     }
   }
 
+  async function getWarningComments(warning_id) {
+    try {
+      const response = await api.warnings.getWarningComments(warning_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function postWarningComment(data) {
+    try {
+      const response = await api.warnings.postWarningComment(data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deleteWarningComment(warning_id) {
+    try {
+      const response = await api.warnings.deleteWarningComment(warning_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
     createWarning,
     getWarnings,
     deleteWarning,
     getWarningById,
+    getWarningComments,
+    deleteWarningComment,
+    postWarningComment,
   };
 });
