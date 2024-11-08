@@ -28,7 +28,7 @@ onMounted(() => {
   new Chart(canvas, {
     type: "bar",
     data: {
-      labels: ["Nota 1", "Nota 2", "Nota 3", "Nota 4", "Nota 5"], // Representa as cinco notas
+      labels: ["Tarefa 1", "Tarefa 2", "Tarefa 3", "Tarefa 4", "Tarefa 5"], // Representa as cinco notas
       datasets: [
         {
           label: "Notas do Aluno",

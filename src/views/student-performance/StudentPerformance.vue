@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, computed } from "vue";
 
 import BaseLoading from "@/components/BaseLoading.vue";
-
+import BaseTable from "@/components/table/BaseTable.vue";
 import { useUserStore } from "@/stores/users";
 import PieChart from "./partials/PieChart.vue";
 import BarChart from "./partials/BarChart.vue";
@@ -20,6 +20,34 @@ const tasksData = ref(null);
 const aluno = ref(null);
 
 const loading = ref(false);
+
+const fields = [
+  { key: "tarefa", label: "Tarefa" },
+  { key: "nota", label: "Nota" },
+];
+
+const tableData = [
+  {
+    tarefa: "Tarefa 1",
+    nota: "8",
+  },
+  {
+    tarefa: "Tarefa 2",
+    nota: "6,5",
+  },
+  {
+    tarefa: "Tarefa 3",
+    nota: "9",
+  },
+  {
+    tarefa: "Tarefa 4",
+    nota: "7.5",
+  },
+  {
+    tarefa: "Tarefa 5",
+    nota: "10",
+  },
+];
 
 const initFunction = async () => {
   loading.value = true;
@@ -76,12 +104,20 @@ onMounted(async () => {
               <span style="font-weight: 600">Email: </span
               >{{ aluno.email }}</span
             >
+            <span
+              ><span style="font-weight: 600" class="badge-mobile"
+                >Status:
+              </span>
+              <span class="badge badge-mobile">Aprovado</span></span
+            >
           </div>
         </div>
         <div style="height: 50px">
           <span
-            ><span style="font-weight: 600">Status: </span>
-            <span class="badge">Risco de Reprovação</span></span
+            ><span style="font-weight: 600" class="badge-desktop"
+              >Status:
+            </span>
+            <span class="badge badge-desktop">Aprovado</span></span
           >
         </div>
       </div>
@@ -98,10 +134,24 @@ onMounted(async () => {
           <span style="font-weight: 600">Notas do Aluno</span>
           <BarChart />
           <span
-            ><span style="font-weight: 600">Média das Notas:</span>
-            {{ tasksData.porcentagem_de_envio }}</span
+            ><span style="font-weight: 600">Média das Notas:</span> 8,2</span
           >
         </div>
+      </div>
+      <div class="table-container" style="margin-top: 40px">
+        <BaseTable :fields="fields">
+          <template v-slot:body>
+            <tr v-for="(row, index) in tableData" :key="index">
+              <td v-for="field in fields" :key="field.key">
+                {{
+                  field.key == "created_at"
+                    ? formatDate(row[field.key])
+                    : row[field.key]
+                }}
+              </td>
+            </tr>
+          </template>
+        </BaseTable>
       </div>
     </div>
     <div class="loading" v-if="loading">
@@ -112,11 +162,11 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .badge {
-  background-color: yellow;
-  padding: 1px 10px;
+  color: rgb(2, 124, 2);
   margin-left: 3px;
-  border-radius: 10px;
-  color: rgb(108, 108, 10);
+  background-color: rgb(177, 251, 177);
+  padding: 3px 15px;
+  border-radius: 20px;
 }
 .loading {
   height: 400px;
@@ -139,6 +189,37 @@ onMounted(async () => {
     width: 100%;
     padding: 20px;
     justify-content: space-between;
+    .badge-mobile {
+      display: none;
+    }
+    @media (max-width: 466px) {
+      flex-direction: column;
+      justify-content: flex-end;
+
+      margin-bottom: 0 !important;
+      div {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          width: 140px;
+          height: 140px;
+        }
+      }
+
+      .badge-mobile {
+        display: inline;
+      }
+      .badge {
+        text-align: center;
+        width: 100%;
+      }
+      .badge-desktop {
+        display: none;
+      }
+    }
   }
   .page-container {
     display: flex;
@@ -155,6 +236,14 @@ onMounted(async () => {
       flex-direction: column;
       gap: 10px;
       align-items: center;
+    }
+
+    @media (max-width: 800px) {
+      flex-direction: column;
+
+      .charts {
+        width: 100%;
+      }
     }
   }
 }
