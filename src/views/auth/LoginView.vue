@@ -86,7 +86,7 @@ watch(payload.value, () => {
           />
         </div>
         <div class="flex input-container w-100">
-          <RouterLink class="password-span-text w-100" to="/register"
+          <RouterLink class="password-span-text w-100" to="/recover-password"
             >Esqueceu a senha?</RouterLink
           >
         </div>

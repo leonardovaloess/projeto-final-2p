@@ -18,7 +18,7 @@ const router = createRouter({
       component: () => import("../views/auth/RegisterView.vue"),
     },
     {
-      path: "/recover-password/:hash",
+      path: "/recover-password",
       name: "recover-password",
       component: () => import("../views/auth/RecoverPassword.vue"),
     },
