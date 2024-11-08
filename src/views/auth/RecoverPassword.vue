@@ -81,6 +81,7 @@ watch(payload.value, () => {
           <label>Nova senha</label>
 
           <input
+            type="password"
             placeholder="Insira sua nova senha"
             :value="payload.senha"
             @input="(ev) => (payload.senha = ev.target.value)"
