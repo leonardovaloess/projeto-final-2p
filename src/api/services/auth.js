@@ -8,4 +8,7 @@ export default (httpClient) => ({
   userLogout: () => {
     return httpClient.post("/logout");
   },
+  recoverPassword: (payload) => {
+    return httpClient.post("/recuperarSenha", payload);
+  },
 });

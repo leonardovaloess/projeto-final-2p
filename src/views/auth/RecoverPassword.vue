@@ -6,35 +6,34 @@ import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BasePasswordInput from "@/components/input/BasePasswordInput.vue";
 import BaseLoading from "@/components/BaseLoading.vue";
 import { watch } from "vue";
+import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
 
 const authStore = useAuthStore();
-const { userLogin } = authStore;
+const { recoverPassword } = authStore;
 
 const loading = ref(false);
 const error = ref(false);
 const router = useRouter();
 const disabled = ref(true);
-
+const success = ref(false);
 const payload = ref({
   email: "",
-  senha: "",
+  nova_senha: "",
 });
 
 const handleSubmit = async () => {
   loading.value = true;
-  const login = await userLogin(payload.value);
 
-  if (login) {
-    localStorage.setItem("token-auth", login.token);
-    localStorage.setItem("user_type_id", login.user.type_id);
-    localStorage.setItem("user_id", login.user.id);
+  if (payload.value.email && payload.value.nova_senha) {
+    const newPassword = await recoverPassword(payload.value);
+    if (newPassword) {
+      success.value = true;
 
-    if (login.user.type_id == 2) {
-      router.push({ path: "/myDisciplines" });
-    } else if (login.user.type_id == 3) {
-      router.push({ path: "/course" });
-    } else if (login.user.type_id == 1) {
-      router.push({ path: "/myCourses" });
+      setTimeout(() => {
+        success.value = false;
+      }, 3000);
+
+      //router.push({ name: "login" });
     }
   } else {
     error.value = true;
@@ -53,7 +52,7 @@ const handleKeyPress = (event) => {
 };
 
 watch(payload.value, () => {
-  if (payload.value.email.length > 1 && payload.value.senha.length > 1) {
+  if (payload.value.email.length > 1 && payload.value.nova_senha.length > 1) {
     disabled.value = false;
   } else {
     disabled.value = true;
@@ -83,8 +82,8 @@ watch(payload.value, () => {
           <input
             type="password"
             placeholder="Insira sua nova senha"
-            :value="payload.senha"
-            @input="(ev) => (payload.senha = ev.target.value)"
+            :value="payload.nova_senha"
+            @input="(ev) => (payload.nova_senha = ev.target.value)"
             @keydown="handleKeyPress"
           />
         </div>
@@ -150,10 +149,15 @@ watch(payload.value, () => {
           alt=""
           style="width: 110px; margin: auto"
         />
+        <BaseAlertSuccess
+          v-if="success"
+          type="success"
+          text="Senha recuperada com sucesso!"
+        />
         <BaseAlertError
           v-if="error"
           type="error"
-          text="Email ou senha incorretos"
+          text="Preencha todos os campos"
         />
       </div>
     </div>

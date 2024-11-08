@@ -22,7 +22,6 @@ export const useAuthStore = defineStore("auth", () => {
       console.log(error);
     }
   }
-
   async function userLogout() {
     try {
       const response = await api.auth.userLogout();
@@ -31,9 +30,17 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (error) {}
   }
 
+  async function recoverPassword(payload) {
+    try {
+      const response = await api.auth.recoverPassword(payload);
+
+      return response.data;
+    } catch (error) {}
+  }
+
   return {
     userLogin,
-
+    recoverPassword,
     registerUser,
     userLogout,
   };
