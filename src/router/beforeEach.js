@@ -20,6 +20,7 @@ export default async (to) => {
       "Minhas Disciplinas",
       "Disciplina",
       "Meus Alunos",
+      "Desempenho do Aluno",
       "Tarefa",
       "Aviso",
     ], // Rotas permitidas para user_type_id = 2

@@ -33,4 +33,7 @@ export default (httpClient) => ({
   getTaskStatus: (tarefa_id) => {
     return httpClient.get(`/getStatusTarefa/${tarefa_id}`); //nome, descricao, periodos
   },
+  getUserCompletedTasksDashboard: (aluno_id) => {
+    return httpClient.get(`/tarefasAlunosConcluidas/${aluno_id}`); //nome, descricao, periodos
+  },
 });

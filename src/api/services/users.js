@@ -42,4 +42,7 @@ export default (httpClient) => ({
   getStudentsByProfessor: () => {
     return httpClient.get(`/alunosProf`);
   },
+  getAlunoById: (aluno_id) => {
+    return httpClient.get(`/getAluno/${aluno_id}`);
+  },
 });

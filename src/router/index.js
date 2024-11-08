@@ -80,6 +80,12 @@ const router = createRouter({
           name: "Meus Alunos",
           component: () => import("../views/my-students/MyStudentsView.vue"),
         },
+        {
+          path: "/student-performance/:aluno_id",
+          name: "Desempenho do Aluno",
+          component: () =>
+            import("../views/student-performance/StudentPerformance.vue"),
+        },
 
         {
           path: "/discipline/:disciplina_id",

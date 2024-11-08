@@ -10,10 +10,11 @@ import BaseTable from "@/components/table/BaseTable.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import { useUserStore } from "@/stores/users";
 import formatDate from "@/utils/date";
+import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
 const { getStudentsByProfessor } = userStore;
-
+const router = useRouter();
 const fields = [
   { key: "id", label: "id" },
   { key: "nome", label: "Nome" },
@@ -36,7 +37,7 @@ const filteredData = computed(() => {
   );
 });
 
-const alunoToEdit = ref(null);
+const aluno = ref(null);
 
 const loading = ref(false);
 loading.value = true;
@@ -57,12 +58,8 @@ const handleSelect = (item, id) => {
   console.log("id", id);
 
   if (id == 0) {
-    alunoToEdit.value = item;
-    openModal.value = true;
-  }
-  if (id == 1) {
-    alunoToEdit.value = item;
-    openDeleteModal.value = true;
+    aluno.value = item;
+    router.push(`/student-performance/${aluno.value.id}`);
   }
 };
 

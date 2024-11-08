@@ -98,6 +98,15 @@ export const useTaskStore = defineStore("task", () => {
       console.log(error);
     }
   }
+
+  async function getUserCompletedTasksDashboard(aluno_id) {
+    try {
+      const response = await api.task.getUserCompletedTasksDashboard(aluno_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     createTask,
     getTasks,
@@ -110,5 +119,6 @@ export const useTaskStore = defineStore("task", () => {
     postTaskComment,
     deleteTaskComment,
     submitTask,
+    getUserCompletedTasksDashboard,
   };
 });
