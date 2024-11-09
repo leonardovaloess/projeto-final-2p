@@ -68,7 +68,7 @@ watch(payload.value, () => {
           <label>Nome da Instituição</label>
           <input
             type="text"
-            placeholder="Insira seu nome de usuário"
+            placeholder="Nome da Instituição"
             :value="payload.nome"
             @input="(ev) => (payload.nome = ev.target.value)"
           />
@@ -77,7 +77,7 @@ watch(payload.value, () => {
           <label>Email</label>
           <input
             type="email"
-            placeholder="Insira seu email"
+            placeholder="Email (nome@email_institucional) ex: puc@puc.edu"
             :value="payload.email"
             @input="(ev) => (payload.email = ev.target.value)"
           />
@@ -95,7 +95,7 @@ watch(payload.value, () => {
           <label>Confirme sua senha</label>
           <input
             type="password"
-            placeholder="Crie sua senha"
+            placeholder="Confirme sua senha"
             :value="passwordConfirm"
             @input="(ev) => (passwordConfirm = ev.target.value)"
           />

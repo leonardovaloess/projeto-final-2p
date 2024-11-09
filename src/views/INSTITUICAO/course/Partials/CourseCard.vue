@@ -86,7 +86,7 @@ const handleSelect = (item, id) => {
     <BaseDropdown
       :options="options"
       class="dropdown-card"
-      :white-icon="true"
+      :white-icon="false"
       @select="(option) => handleSelect(course, option.id)"
     />
     <img :src="course.curso_img" alt="" />
@@ -133,7 +133,13 @@ const handleSelect = (item, id) => {
   .dropdown-card {
     position: absolute;
     right: 0px;
-    top: 15px;
+    top: 0px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    padding-right: 35px;
+    border-bottom-left-radius: 50%;
   }
 
   h2 {

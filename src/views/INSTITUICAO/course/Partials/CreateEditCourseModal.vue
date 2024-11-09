@@ -2,7 +2,7 @@
 import BaseButton from "@/components/buttons/BaseButton.vue";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
@@ -14,6 +14,25 @@ const { createCourse, editCourse } = courseStore;
 const props = defineProps({
   open: Boolean,
   info: Object,
+});
+
+const disabled = computed(() => {
+  if (!props.info) {
+    if (!payload.value.nome || !payload.value.curso_img) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    if (
+      !courseToEditInModal.value.nome ||
+      !courseToEditInModal.value.curso_img
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 });
 
 const error = ref(false);
@@ -171,6 +190,7 @@ const handleClose = () => {
         <BaseButton class="cancel btn" label="Cancelar" @click="handleClose" />
         <BaseButton
           class="btn"
+          :disabled="disabled"
           :label="!props.info ? 'Cadastrar' : 'Salvar'"
           @click="handlePayload"
         />

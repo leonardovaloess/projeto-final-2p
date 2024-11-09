@@ -71,7 +71,7 @@ onMounted(() => {
     <BaseDropdown
       :options="options"
       class="dropdown-card"
-      :white-icon="true"
+      :white-icon="false"
       @select="(option) => handleSelect(discipline, option.id)"
     />
     <img :src="discipline.disciplina_img" alt="" />
@@ -107,7 +107,13 @@ onMounted(() => {
   .dropdown-card {
     position: absolute;
     right: 0px;
-    top: 15px;
+    top: 0px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    padding-right: 35px;
+    border-bottom-left-radius: 50%;
   }
 
   h2 {
