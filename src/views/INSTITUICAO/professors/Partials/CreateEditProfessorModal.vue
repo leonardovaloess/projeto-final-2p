@@ -136,7 +136,7 @@ const handleClose = () => {
     </template>
     <template v-slot:body>
       <div class="body" v-if="!props.info">
-        <label>Nome do professor</label>
+        <label>Nome do professor:</label>
         <BaseInput
           class="input"
           v-model="payload.nome"
@@ -150,7 +150,7 @@ const handleClose = () => {
           label="Descrição (opcional)"
           placeholder="Email:"
         />
-        <label>Senha:</label>
+        <label>Senha (mínimo 6 caracteres):</label>
         <BaseInput
           class="input"
           v-model="payload.senha"

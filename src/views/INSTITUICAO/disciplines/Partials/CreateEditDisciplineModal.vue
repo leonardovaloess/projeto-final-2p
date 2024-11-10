@@ -56,6 +56,29 @@ const filteredOptions = computed(() => {
   );
 });
 
+const disabled = computed(() => {
+  if (!props.info) {
+    if (
+      !payload.value.disciplina_img ||
+      !payload.value.nome ||
+      !payload.value.professor_id
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    if (
+      !courseToEditInModal.value.nome ||
+      !courseToEditInModal.value.disciplina_img
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+});
+
 const handlePayload = async () => {
   if (!props.info) {
     if (payload.value.nome && payload.value.professor_id) {
@@ -78,6 +101,10 @@ const handlePayload = async () => {
           carga_horaria: "999",
           curso_id: route.params.course_id,
           disciplina_img: "",
+        };
+        selectValue.value = {
+          label: "",
+          value: null,
         };
       } else {
         error.value = true;
@@ -105,7 +132,7 @@ const handlePayload = async () => {
       close.value = false;
       emit("update:open", false);
       emit("update:refresh", true);
-      textSuccess.value = "Curso editado com Sucesso!";
+      textSuccess.value = "Disciplina editada com Sucesso!";
 
       success.value = true;
 
@@ -119,7 +146,7 @@ const handlePayload = async () => {
         error.value = false;
       }, 3000);
 
-      textError.value = "Não foi possivel editar o Professor";
+      textError.value = "Não foi possivel editar a disciplina";
     }
   }
 };
@@ -212,7 +239,7 @@ onMounted(async () => {
       </div>
       <div class="body" v-else>
         <div class="flex flex-column gap-05">
-          <label>Nome do Curso</label>
+          <label>Nome da Disciplina</label>
           <BaseInput
             class="input"
             v-model="courseToEditInModal.nome"
@@ -234,6 +261,7 @@ onMounted(async () => {
         <BaseButton class="cancel btn" label="Cancelar" @click="handleClose" />
         <BaseButton
           class="btn"
+          :disabled="disabled"
           :label="!props.info ? 'Cadastrar' : 'Salvar'"
           @click="handlePayload"
         />

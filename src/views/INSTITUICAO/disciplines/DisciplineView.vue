@@ -85,7 +85,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="tasks" v-if="!loading">
-      <div v-if="filteredData">
+      <div v-if="filteredData.length">
         <div class="cards-container">
           <DisciplineCard
             @refresh="refreshListCard"
@@ -97,7 +97,7 @@ onMounted(async () => {
       </div>
       <div v-else>
         <BaseNoDataAlert
-          text="Nenhum Curso Cadastrado"
+          text="Nenhuma Disciplina Cadastrada"
           title="Nenhum Dado Encontrado!"
         />
       </div>
