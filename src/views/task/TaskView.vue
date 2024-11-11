@@ -180,7 +180,7 @@ onMounted(async () => {
 <template>
   <div class="page-background">
     <div class="page-head mb-5" v-if="!loading && taskData">
-      <h1>{{ taskData.nome }}</h1>
+      <h1>{{ taskData.nome }} - {{ formatDate(taskData.data_entrega) }}</h1>
       <BaseButton
         label="Enviar Tarefa"
         v-if="userTypeId == '1' && !taskSubmitData.id"

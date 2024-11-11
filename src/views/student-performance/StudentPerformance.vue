@@ -8,6 +8,7 @@ import PieChart from "./partials/PieChart.vue";
 import BarChart from "./partials/BarChart.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useTaskStore } from "@/stores/task";
+import BaseNoDataAlert from "@/components/BaseNoDataAlert.vue";
 const taskStore = useTaskStore();
 const { getUserCompletedTasksDashboard } = taskStore;
 const userStore = useUserStore();
@@ -54,19 +55,21 @@ const initFunction = async () => {
   aluno.value = await getAlunoById(route.params.aluno_id);
   tasksData.value = await getUserCompletedTasksDashboard(route.params.aluno_id);
 
-  chartData.value = {
-    labels: ["Tarefas Entregues", "Tarefas Não entregues"],
-    datasets: [
-      {
-        data: [
-          tasksData.value.tarefas_feitas,
-          tasksData.value.tarefas_nao_feitas,
-        ],
-        backgroundColor: ["#1a43c0", "#6188d3"],
-        hoverOffset: 4,
-      },
-    ],
-  };
+  if (tasksData.value) {
+    chartData.value = {
+      labels: ["Tarefas Entregues", "Tarefas Não entregues"],
+      datasets: [
+        {
+          data: [
+            tasksData.value.tarefas_feitas,
+            tasksData.value.tarefas_nao_feitas,
+          ],
+          backgroundColor: ["#1a43c0", "#6188d3"],
+          hoverOffset: 4,
+        },
+      ],
+    };
+  }
 
   loading.value = false;
 };
@@ -78,7 +81,7 @@ onMounted(async () => {
 
 <template>
   <div class="page-background">
-    <div class="main-content" v-if="!loading && aluno && tasksData">
+    <div class="main-content" v-if="!loading && aluno">
       <div class="page-header flex align-center gap-1 w-100 mb-4">
         <div class="flex align-center gap-1">
           <img
@@ -124,11 +127,20 @@ onMounted(async () => {
       <div class="page-container w-100">
         <div class="charts">
           <span style="font-weight: 600">Entregas das Tarefas</span>
-          <PieChart :data="chartData" />
-          <span
-            ><span style="font-weight: 600">Porcentagem de Envio:</span>
-            {{ tasksData.porcentagem_de_envio }}%</span
-          >
+          <div v-if="tasksData" class="flex flex-column align-center gap-05">
+            <PieChart :data="chartData" />
+            <span
+              ><span style="font-weight: 600">Porcentagem de Envio:</span>
+              {{ tasksData.porcentagem_de_envio }}%</span
+            >
+          </div>
+          <div v-else>
+            <BaseNoDataAlert
+              width="257px"
+              title="Nenhum dado encontrado!"
+              text="Não há Tarefas cadastradas pelo Professor"
+            />
+          </div>
         </div>
         <div class="charts">
           <span style="font-weight: 600">Notas do Aluno</span>

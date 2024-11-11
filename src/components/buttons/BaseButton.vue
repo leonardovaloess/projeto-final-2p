@@ -30,7 +30,8 @@ button {
 }
 
 .disabled {
-  opacity: 0.5;
+  opacity: 0.3;
+  background-color: var(--secondary) !important;
 
   &:hover {
     background-color: var(--secondary);

@@ -7,7 +7,7 @@ import { onMounted, ref, computed } from "vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import { useRoute, useRouter } from "vue-router";
 import BaseLoading from "@/components/BaseLoading.vue";
-
+import formatDate from "@/utils/date.js";
 const openModal = ref(false);
 const loading = ref(false);
 
@@ -122,9 +122,9 @@ onMounted(async () => {
             fill="grey"
           />
         </svg>
-        <RouterLink :to="`/task/${data.id}`" class="link">{{
-          data.nome
-        }}</RouterLink>
+        <RouterLink :to="`/task/${data.id}`" class="link"
+          >{{ data.nome }} - {{ formatDate(data.data_entrega) }}</RouterLink
+        >
         <BaseDropdown
           v-if="userTypeId !== '1'"
           class="dropdown"

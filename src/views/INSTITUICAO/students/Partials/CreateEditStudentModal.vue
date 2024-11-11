@@ -2,7 +2,7 @@
 import BaseButton from "@/components/buttons/BaseButton.vue";
 import BaseInput from "@/components/input/BaseInput.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { watch } from "vue";
 import BaseAlertError from "@/components/Alert/BaseAlertError.vue";
 import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
@@ -31,6 +31,22 @@ const payload = ref({
   email: "",
   senha: "",
   type_id: "1",
+});
+
+const disabled = computed(() => {
+  if (!props.info) {
+    if (!payload.value.nome || !payload.value.email || !payload.value.senha) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    if (!alunoToEditInModal.value.nome || !alunoToEditInModal.value.email) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 });
 
 const handlePayload = async () => {
@@ -182,6 +198,7 @@ const handleClose = () => {
           class="btn"
           :label="!props.info ? 'Cadastrar' : 'Salvar'"
           @click="handlePayload"
+          :disabled="disabled"
         />
       </div>
     </template>
