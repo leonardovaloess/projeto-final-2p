@@ -225,7 +225,7 @@ onMounted(async () => {
           placeholder="Deixe um comentário sobre a atividade..."
           v-model="comment"
         />
-        <div class="comment-button flex align-end justify-end">
+        <div class="comment-button mb-2 flex align-end justify-end">
           <BaseButton label="Enviar Comentário." @click="handleSendComment" />
         </div>
         <div class="comments">
