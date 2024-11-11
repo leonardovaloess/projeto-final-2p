@@ -14,6 +14,7 @@ export default async (to) => {
       "Aviso",
       "Meus Cursos",
       "Disciplinas do Curso",
+      "Quadro de Tarefas",
     ], // Rotas permitidas para user_type_id = 1
     2: [
       "Perfil",

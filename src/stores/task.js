@@ -107,6 +107,15 @@ export const useTaskStore = defineStore("task", () => {
       console.log(error);
     }
   }
+
+  async function getAllTasksStatus() {
+    try {
+      const response = await api.task.getAllTasksStatus();
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     createTask,
     getTasks,
@@ -120,5 +129,6 @@ export const useTaskStore = defineStore("task", () => {
     deleteTaskComment,
     submitTask,
     getUserCompletedTasksDashboard,
+    getAllTasksStatus,
   };
 });

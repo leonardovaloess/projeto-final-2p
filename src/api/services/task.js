@@ -36,4 +36,7 @@ export default (httpClient) => ({
   getUserCompletedTasksDashboard: (aluno_id) => {
     return httpClient.get(`/tarefasAlunosConcluidas/${aluno_id}`); //nome, descricao, periodos
   },
+  getAllTasksStatus: () => {
+    return httpClient.get(`/getStatusTodasTarefas`); //nome, descricao, periodos
+  },
 });

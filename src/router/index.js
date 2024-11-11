@@ -98,6 +98,11 @@ const router = createRouter({
           component: () => import("../views/task/TaskView.vue"),
         },
         {
+          path: "/task-board",
+          name: "Quadro de Tarefas",
+          component: () => import("../views/board/BoardView.vue"),
+        },
+        {
           path: "/warning/:warning_id",
           name: "Aviso",
           component: () => import("../views/warning/WarningView.vue"),
