@@ -21,6 +21,7 @@ const {
   postTaskComment,
   getTaskComment,
   deleteTaskComment,
+  getTaskGrade,
 } = taskStore;
 
 const error = ref(false);
@@ -39,6 +40,7 @@ const comment = ref(null);
 
 const taskSubmitData = ref(null);
 
+const taskGrade = ref(null);
 const files = ref(null);
 const taskData = ref(null);
 
@@ -68,6 +70,7 @@ const initFunction = async () => {
 
   if (userTypeId.value == "1") {
     taskSubmitData.value = await getTaskStatus(route.params.task_id);
+    taskGrade.value = await getTaskGrade(route.params.task_id);
   }
 
   const commentsData = await getTaskComment(route.params.task_id);
@@ -186,12 +189,14 @@ onMounted(async () => {
         v-if="userTypeId == '1' && !taskSubmitData.id"
         @click="openSubmitModal = true"
       />
-      <span
-        style="font-size: 14px"
-        class="task-submit-text"
-        v-else-if="userTypeId == '1' && taskSubmitData.id"
-        >Tarefa Entregue - {{ formatDate(taskSubmitData.created_at) }}</span
-      >
+      <div v-else-if="userTypeId == '1' && taskSubmitData.id">
+        <span style="font-size: 14px" class="task-submit-text"
+          >Tarefa Entregue - {{ formatDate(taskSubmitData.created_at) }}</span
+        >
+        <span class="ml-4 mr-3" style="font-size: 14px"
+          >Nota: {{ taskGrade.length ? taskGrade[0][0].nota : "_" }}/10</span
+        >
+      </div>
     </div>
     <div class="main-container mt-1 w-100" v-if="!loading && taskData">
       <div class="description-container">
@@ -218,6 +223,7 @@ onMounted(async () => {
         />
       </div>
       <div class="material-container"></div>
+
       <div class="comments-container mb-5" v-if="!loading && taskData">
         <h3 class="mb-2">Comentários:</h3>
         <BaseTextarea

@@ -6,8 +6,10 @@ import BaseLoading from "@/components/BaseLoading.vue";
 import { useDisciplineStore } from "@/stores/discipline";
 import { useRoute } from "vue-router";
 import { useCourseStore } from "@/stores/course";
+import SubmitContainer from "./partials/SubmitContainer.vue";
 import TaskContainer from "./partials/TaskContainer.vue";
 import WarningsContainer from "./partials/WarningsContainer.vue";
+
 const disciplineStore = useDisciplineStore();
 const { getDisciplineById, getDisciplineProfessor } = disciplineStore;
 
@@ -17,7 +19,7 @@ const { alunosCadastradosNoCurso } = courseStore;
 const route = useRoute();
 
 const menuSelectedId = ref(0);
-
+const userTypeId = ref(null);
 const disciplineData = ref([]);
 const alunos = ref([]);
 const professor = ref(null);
@@ -28,6 +30,7 @@ loading.value = false;
 
 const initFunction = async () => {
   loading.value = true;
+  userTypeId.value = localStorage.getItem("user_type_id");
   disciplineData.value = await getDisciplineById(route.params.disciplina_id);
   alunos.value = await alunosCadastradosNoCurso(disciplineData.value.curso_id);
   professor.value = await getDisciplineProfessor(route.params.disciplina_id);
@@ -64,10 +67,21 @@ onMounted(async () => {
           "
           >Avisos</span
         >
+        <span
+          v-if="userTypeId == 2"
+          @click="menuSelectedId = 2"
+          :style="
+            menuSelectedId == 2
+              ? `color: black; text-decoration: underline;`
+              : ''
+          "
+          >Envios</span
+        >
       </div>
       <div class="main-content">
         <TaskContainer v-if="menuSelectedId == 0" />
         <WarningsContainer v-if="menuSelectedId == 1" />
+        <SubmitContainer v-if="menuSelectedId == 2" />
       </div>
       <div class="users-list">
         <div class="professor">

@@ -107,6 +107,16 @@ const router = createRouter({
           name: "Aviso",
           component: () => import("../views/warning/WarningView.vue"),
         },
+        {
+          path: "/submit/:submit_id",
+          name: "Envio",
+          component: () => import("../views/submit/SubmitView.vue"),
+        },
+        {
+          path: "/grades",
+          name: "Notas",
+          component: () => import("../views/boletim/GradesContainer.vue"),
+        },
       ],
     },
     {

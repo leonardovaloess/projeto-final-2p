@@ -39,4 +39,19 @@ export default (httpClient) => ({
   getAllTasksStatus: () => {
     return httpClient.get(`/getStatusTodasTarefas`); //nome, descricao, periodos
   },
+  getAllSubmitTasksByDiscipline: (disciplina_id) => {
+    return httpClient.get(`/getTarefasEntregues/${disciplina_id}`); //nome, descricao, periodos
+  },
+  getTaskSubmitById: (envio_id) => {
+    return httpClient.get(`/getEnvioTarefaById/${envio_id}`); //nome, descricao, periodos
+  },
+  postTaskGrade: (payload) => {
+    return httpClient.post(`/notas`, payload); //nome, descricao, periodos
+  },
+  getTaskGrade: (tarefa_id) => {
+    return httpClient.get(`/myNotas/${tarefa_id}`); //nome, descricao, periodos
+  },
+  getTasksAndGrades: (disciplina_id) => {
+    return httpClient.get(`/getTarefasENotas/${disciplina_id}`); //nome, descricao, periodos
+  },
 });

@@ -9,6 +9,10 @@ const links1 = ref([
         path: "/myCourses",
       },
       {
+        name: "Notas",
+        path: "/grades",
+      },
+      {
         name: "Quadro",
         path: "/task-board",
       },

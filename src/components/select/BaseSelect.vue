@@ -25,7 +25,7 @@ const handleSelect = (option) => {
 <template>
   <div class="select-container">
     <input
-      placeholder="Selecione..."
+      :placeholder="props.placeholder ? props.placeholder : 'Selecione...'"
       :value="props.modelValue"
       @focusin="showOptions = true"
       @focusout="showOptions = false"

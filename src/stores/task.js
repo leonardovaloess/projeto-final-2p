@@ -116,6 +116,53 @@ export const useTaskStore = defineStore("task", () => {
       console.log(error);
     }
   }
+
+  async function getAllSubmitTasksByDiscipline(disciplina_id) {
+    try {
+      const response = await api.task.getAllSubmitTasksByDiscipline(
+        disciplina_id
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getTaskSubmitById(envio_id) {
+    try {
+      const response = await api.task.getTaskSubmitById(envio_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function postTaskGrade(payload) {
+    try {
+      const response = await api.task.postTaskGrade(payload);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getTaskGrade(tarefa_id) {
+    try {
+      const response = await api.task.getTaskGrade(tarefa_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getTasksAndGrades(disciplina_id) {
+    try {
+      const response = await api.task.getTasksAndGrades(disciplina_id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     createTask,
     getTasks,
@@ -130,5 +177,10 @@ export const useTaskStore = defineStore("task", () => {
     submitTask,
     getUserCompletedTasksDashboard,
     getAllTasksStatus,
+    getAllSubmitTasksByDiscipline,
+    getTaskSubmitById,
+    postTaskGrade,
+    getTaskGrade,
+    getTasksAndGrades,
   };
 });

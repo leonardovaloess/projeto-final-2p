@@ -1,7 +1,4 @@
 export default async (to) => {
-  // Define o título da página (opcional)
-  // document.title = `${to.name} - TCE PR`;
-
   const token = localStorage.getItem("token-auth");
   const user_type_id = localStorage.getItem("user_type_id");
 
@@ -15,6 +12,7 @@ export default async (to) => {
       "Meus Cursos",
       "Disciplinas do Curso",
       "Quadro de Tarefas",
+      "Notas",
     ], // Rotas permitidas para user_type_id = 1
     2: [
       "Perfil",
@@ -24,6 +22,7 @@ export default async (to) => {
       "Desempenho do Aluno",
       "Tarefa",
       "Aviso",
+      "Envio",
     ], // Rotas permitidas para user_type_id = 2
     3: ["Cursos", "Alunos", "Professores", "Perfil", "Disciplinas"], // Rotas permitidas para user_type_id = 3
   };
