@@ -166,6 +166,7 @@ h3 {
         padding: 15px;
         border-radius: 10px;
         width: 100%;
+        margin-top: 10px;
       }
     }
 
