@@ -59,7 +59,7 @@ const handlePayload = async () => {
       if (response) {
         emit("update:refresh", true);
         success.value = true;
-        textSuccess.value = "A nota deve ser entre 0 e 10 apenas";
+        textSuccess.value = "Nota atribuída com sucesso";
         setTimeout(() => {
           success.value = false;
         }, 3000);
